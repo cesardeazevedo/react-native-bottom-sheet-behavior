@@ -1,10 +1,8 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Text,
   View,
@@ -12,7 +10,8 @@ import {
   ScrollView,
   StyleSheet,
   AppRegistry,
-} from 'react-native';
+  TouchableNativeFeedback,
+} from 'react-native'
 
 const { width, height } = Dimensions.get('window')
 
@@ -22,6 +21,37 @@ import {
 } from './lib'
 
 class bottomSheetBehavior extends Component {
+  state = {
+    buttons: [0]
+  };
+
+  handleAddButton() {
+    const { buttons } = this.state
+    const length = buttons.length || 0
+    this.setState({ buttons: [
+      ...buttons,
+      length + 1
+    ]})
+  }
+
+  handleRemoveButton(index) {
+    const { buttons } = this.state
+    this.setState({ buttons: [
+      ...buttons.slice(0, index),
+      ...buttons.slice(index + 1)
+    ]})
+  }
+
+  renderButton(key, index) {
+    return (
+      <TouchableNativeFeedback key={index} onPress={() => this.handleRemoveButton(index)}>
+        <View style={styles.button}>
+          <Text style={styles.buttonLabel}>{key}</Text>
+        </View>
+      </TouchableNativeFeedback>
+    )
+  }
+
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
@@ -36,6 +66,11 @@ class bottomSheetBehavior extends Component {
             Press Cmd+R to reload,{'\n'}
             Cmd+D or shake for dev menu
           </Text>
+          <TouchableNativeFeedback onPress={this.handleAddButton.bind(this)}>
+            <View style={styles.button}>
+              <Text style={styles.buttonLabel}>Add Item</Text>
+            </View>
+          </TouchableNativeFeedback>
         </View>
         <BottomSheetBehavior>
           <View style={styles.bottomSheet}>
@@ -43,22 +78,12 @@ class bottomSheetBehavior extends Component {
               <Text style={styles.label}>BottomSheetBehavior !</Text>
             </View>
             <View style={styles.bottomSheetContent}>
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Fusce facilisis purus id odio finibus, non tincidunt est pellentesque.
-                Etiam tincidunt vestibulum pharetra.
-                Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                Nam lacus ante, tempor blandit odio at, scelerisque euismod magna.
-                Morbi sit amet tellus lectus. Sed facilisis nisl magna, non consequat justo fringilla et.
-                Nunc nec efficitur orci. Sed aliquet metus hendrerit nulla mollis, id porta lacus posuere.
-                Sed auctor felis risus, ut rutrum nunc sodales vitae. Morbi congue, enim in volutpat faucibus, elit odio finibus arcu, in vestibulum tortor arcu egestas justo.
-                Aliquam in ex nisl. Nam turpis enim, lacinia et augue in, luctus bibendum nulla.
-              </Text>
+              {this.state.buttons.map(this.renderButton.bind(this))}
             </View>
           </View>
         </BottomSheetBehavior>
       </CoordinatorLayout>
-    );
+    )
   }
 }
 
@@ -69,10 +94,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   content: {
-    flex: 1,
-    backgroundColor: 'transparent',
+    paddingTop: 24,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 20,
@@ -84,31 +109,34 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
-  item: {
-    height: 100,
-    marginTop: 4,
-    backgroundColor: 'grey'
-  },
   bottomSheet: {
-    // RelativeLayout should wrap it but doens't work.
-    height: 200,
-
     backgroundColor: '#3F51B5',
   },
   bottomSheetHeader: {
-    padding: 18,
+    padding: 12,
   },
   bottomSheetContent: {
-    // flex: 1,
-    // height,
     padding: 18,
-    backgroundColor: 'white'
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  button: {
+    padding: 6,
+    paddingHorizontal: 14,
+    height: 30,
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    marginVertical: 1,
+    backgroundColor: '#333',
+  },
+  buttonLabel: {
+    color: 'white'
   },
   label: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
   },
-});
+})
 
-AppRegistry.registerComponent('bottomSheetBehavior', () => bottomSheetBehavior);
+AppRegistry.registerComponent('bottomSheetBehavior', () => bottomSheetBehavior)
