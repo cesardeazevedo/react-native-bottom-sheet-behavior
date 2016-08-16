@@ -72,7 +72,7 @@ class bottomSheetBehavior extends Component {
             </View>
           </TouchableNativeFeedback>
         </View>
-        <BottomSheetBehavior>
+        <BottomSheetBehavior peekHeight={50} hideable={true}>
           <View style={styles.bottomSheet}>
             <View style={styles.bottomSheetHeader}>
               <Text style={styles.label}>BottomSheetBehavior !</Text>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3F51B5',
   },
   bottomSheetHeader: {
-    padding: 12,
+    padding: 14,
   },
   bottomSheetContent: {
     padding: 18,

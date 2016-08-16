@@ -1,5 +1,6 @@
 package com.bottomsheetbehavior;
 
+import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -7,6 +8,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -25,6 +27,16 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
     @Override
     public BottomSheetBehaviorView createViewInstance(ThemedReactContext context) {
         return new BottomSheetBehaviorView(context);
+    }
+
+    @ReactProp(name = "hideable")
+    public void setSelectedTab(BottomSheetBehaviorView view, boolean hideable) {
+        view.setHideable(hideable);
+    }
+
+    @ReactProp(name = "peekHeight")
+    public void setSelectedTab(BottomSheetBehaviorView view, int peekHeight) {
+        view.setPeekHeight(peekHeight);
     }
 
     @Override
