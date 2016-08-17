@@ -3,11 +3,22 @@
   "version": "0.0.1",
   "private": true,
   "description": "React Native wrapper for android BottomSheetBehavior",
+  "author": "Cesar Augusto <cesardeazevedo@outlook.com>",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
-  "dependencies": {
-    "react": "15.2.1",
-    "react-native": "^0.31.0"
+  "keywords": [
+    "android",
+    "react-native",
+    "bottom-sheet-behavior",
+    "coordinatorLayout"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cesardeazevedo/react-native-bottom-sheet-behavior.git"
+  },
+  "peerDependencies": {
+    "react": ">=15.2.1",
+    "react-native": ">=0.30.0"
   }
 }
