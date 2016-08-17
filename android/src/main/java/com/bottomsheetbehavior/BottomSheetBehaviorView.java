@@ -27,6 +27,10 @@ public class BottomSheetBehaviorView extends RelativeLayout {
         bottomSheetBehavior = BottomSheetBehavior.from(this);
     }
 
+    public void setState(int state) {
+        bottomSheetBehavior.setState(state);
+    }
+
     public void setPeekHeight(int peekHeight) {
         int peekHeightPixel = (int) PixelUtil.toPixelFromDIP(peekHeight);
         bottomSheetBehavior.setPeekHeight(peekHeightPixel);
