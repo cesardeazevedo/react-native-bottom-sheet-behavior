@@ -26,7 +26,9 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
 
     @Override
     public BottomSheetBehaviorView createViewInstance(ThemedReactContext context) {
-        return new BottomSheetBehaviorView(context);
+        BottomSheetBehaviorView bottomSheet = new BottomSheetBehaviorView(context);
+//        bottomSheet.bottomSheetBehavior.setBottomSheetCallback();
+        return bottomSheet;
     }
 
     @ReactProp(name = "hideable")

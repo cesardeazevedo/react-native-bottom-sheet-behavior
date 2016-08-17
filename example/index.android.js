@@ -18,7 +18,7 @@ const { width, height } = Dimensions.get('window')
 import {
   CoordinatorLayout,
   BottomSheetBehavior,
-} from './lib'
+} from 'react-native-bottom-sheet-behavior'
 
 class bottomSheetBehavior extends Component {
   state = {
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
   },
 })
 
-AppRegistry.registerComponent('bottomSheetBehavior', () => bottomSheetBehavior)
+AppRegistry.registerComponent('example', () => bottomSheetBehavior)

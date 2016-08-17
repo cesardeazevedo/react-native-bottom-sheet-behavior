@@ -37,14 +37,5 @@ npm-debug.log
 # BUCK
 buck-out/
 \.buckd/
-android/.gradle
-android/.idea
-android/app
-android/gradle/*
-android/gradlew
-android/gradlew.bat
-android/loca.properties
-android/android.iml
-android/bottomSheetBehavior.iml
 android/app/libs
 android/keystores/debug.keystore

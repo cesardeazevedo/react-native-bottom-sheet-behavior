@@ -1,7 +1,9 @@
-package com.bottomsheetbehavior;
+package com.example;
 
 import android.app.Application;
 import android.util.Log;
+
+import com.bottomsheetbehavior.BottomSheetBehaviorPackage;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
