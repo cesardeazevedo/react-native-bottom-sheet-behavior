@@ -11,6 +11,8 @@ import com.facebook.react.uimanager.PixelUtil;
 
 public class BottomSheetBehaviorView extends RelativeLayout {
 
+    private final static int DEFAULT_PEEK_HEIGHT = 50;
+
     public BottomSheetBehavior<BottomSheetBehaviorView> bottomSheetBehavior;
 
     public BottomSheetBehaviorView(Context context) {
@@ -25,6 +27,7 @@ public class BottomSheetBehaviorView extends RelativeLayout {
         this.setLayoutParams(params);
 
         bottomSheetBehavior = BottomSheetBehavior.from(this);
+        bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(DEFAULT_PEEK_HEIGHT));
     }
 
     public void setState(int state) {

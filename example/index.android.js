@@ -85,7 +85,7 @@ class bottomSheetBehavior extends Component {
         </View>
         <BottomSheetBehavior
           peekHeight={50}
-          hideable={true}
+          hideable={false}
           state={this.state.state}
           onSlide={this.handleSlide.bind(this)}>
           <View style={styles.bottomSheet}>

@@ -49,7 +49,7 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
         view.setHideable(hideable);
     }
 
-    @ReactProp(name = "peekHeight")
+    @ReactProp(name = "peekHeight", defaultInt = 50)
     public void setPeekHeight(BottomSheetBehaviorView view, int peekHeight) {
         view.setPeekHeight(peekHeight);
     }
