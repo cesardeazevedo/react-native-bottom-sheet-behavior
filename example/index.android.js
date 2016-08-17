@@ -22,7 +22,9 @@ import {
 
 class bottomSheetBehavior extends Component {
   state = {
-    buttons: [0]
+    offset:   0,
+    state:    0,
+    buttons: [0],
   };
 
   handleAddButton() {
@@ -42,6 +44,15 @@ class bottomSheetBehavior extends Component {
     ]})
   }
 
+  handleState(state) {
+    this.setState({ state })
+  }
+
+  handleSlide(e) {
+    const offset = e.nativeEvent.offset
+    this.setState({ offset })
+  }
+
   renderButton(key, index) {
     return (
       <TouchableNativeFeedback key={index} onPress={() => this.handleRemoveButton(index)}>
@@ -56,23 +67,27 @@ class bottomSheetBehavior extends Component {
     return (
       <CoordinatorLayout style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.welcome}>
-            Welcome to React Native!
-          </Text>
-          <Text style={styles.instructions}>
-            To get started, edit index.ios.js
-          </Text>
-          <Text style={styles.instructions}>
-            Press Cmd+R to reload,{'\n'}
-            Cmd+D or shake for dev menu
-          </Text>
           <TouchableNativeFeedback onPress={this.handleAddButton.bind(this)}>
             <View style={styles.button}>
               <Text style={styles.buttonLabel}>Add Item</Text>
             </View>
           </TouchableNativeFeedback>
+          <TouchableNativeFeedback onPress={() => this.handleState(BottomSheetBehavior.STATE_EXPANDED)}>
+            <View style={styles.button}>
+              <Text style={styles.buttonLabel}>Expanded</Text>
+            </View>
+          </TouchableNativeFeedback>
+          <TouchableNativeFeedback onPress={() => this.handleState(BottomSheetBehavior.STATE_COLLAPSED)}>
+            <View style={styles.button}>
+              <Text style={styles.buttonLabel}>Collapsed</Text>
+            </View>
+          </TouchableNativeFeedback>
         </View>
-        <BottomSheetBehavior peekHeight={50} hideable={true}>
+        <BottomSheetBehavior
+          peekHeight={50}
+          hideable={true}
+          state={this.state.state}
+          onSlide={this.handleSlide.bind(this)}>
           <View style={styles.bottomSheet}>
             <View style={styles.bottomSheetHeader}>
               <Text style={styles.label}>BottomSheetBehavior !</Text>
@@ -94,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   content: {
-    paddingTop: 24,
+    paddingTop: 4,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
