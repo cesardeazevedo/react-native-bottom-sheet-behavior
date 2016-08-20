@@ -17,4 +17,9 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
     public CoordinatorLayoutView createViewInstance(ThemedReactContext context) {
         return new CoordinatorLayoutView(context);
     }
+
+    @Override
+    public boolean needsCustomLayoutForChildren() {
+        return true;
+    }
 }
