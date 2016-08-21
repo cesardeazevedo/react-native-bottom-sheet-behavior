@@ -6,6 +6,10 @@ react-native wrapper for android BottomSheetBehavior
 > This is still very experimental.
 
 
+[![npm version](https://badge.fury.io/js/react-native-bottom-sheet-behavior.svg)](https://badge.fury.io/js/react-native-bottom-sheet-behavior)
+
+
+
 ## Demo
 
 ![react-native-bottom-sheet-behavior](http://i.stack.imgur.com/lHAL9.gif)
