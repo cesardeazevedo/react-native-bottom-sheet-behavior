@@ -26,7 +26,8 @@ public class BottomSheetBehaviorPackage implements ReactPackage {
     public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
         return Arrays.<ViewManager>asList(
                 new BottomSheetBehaviorManager(),
-                new CoordinatorLayoutManager()
+                new CoordinatorLayoutManager(),
+                new FloatingActionButtonManager()
         );
     }
 }
