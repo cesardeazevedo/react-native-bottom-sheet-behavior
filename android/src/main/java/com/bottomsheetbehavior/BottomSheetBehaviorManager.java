@@ -41,7 +41,10 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
 
     @ReactProp(name = "state", defaultInt = 4)
     public void setState(BottomSheetBehaviorView view, int state) {
-        view.setState(state);
+        try {
+            view.setState(state);
+        } catch (Exception e) {
+        }
     }
 
     @ReactProp(name = "hideable")
