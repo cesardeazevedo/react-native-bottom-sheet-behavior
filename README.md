@@ -83,16 +83,49 @@ You will need to wrap your view into a `CoordinatorLayout` in order to make it w
           <CoordinatorLayout style={styles.container}>
             <View style={{ flex: 1 }}></View>
             <BottomSheetBehavior
+                ref="bottomSheet"
                 peekHeight={50}
                 hideable={true}
                 state={BottomSheetBehavior.STATE_COLLAPSED}>
                 <View></View>
             </BottomSheetBehavior>
+            <FloatingActionButton ref="fab" />
           </CoordinatorLayout>
       )
     }
 
 ```
+
+
+## FloatingActionButton
+
+If your are using FloatingActionButton, you'll need to connect it to the BottomSheetBehavior, in order to follow when it's dragging.
+
+this be can done like this
+
+```js
+  componentDidMount() {
+    this.refs.fab.setAnchorId(this.refs.bottomSheet)
+  }
+```
+
+### Support for react-native-vector-icons
+
+You can also use [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) on FloatingActionButton, which will load automatically the icon for you.
+
+```js
+  import Icon from 'react-native-vector-icons/Ionicons'
+
+  ...
+
+  render() {
+    return (
+      <FloatingActionButton icon={"directions"} iconProvider={Icon} />
+    )
+  }
+```
+
+You can check [GoogleMapsView.js](https://github.com/cesardeazevedo/react-native-bottom-sheet-behavior/blob/master/example/views/GoogleMapsView.js) example
 
 BottomSheetBehavior properties
 
@@ -114,9 +147,22 @@ BottomSheetBehavior States
 | 4     | STATE_COLLAPSED |
 | 5     | STATE_HIDDEN    |
 
+
+FloatingActionButton properties
+
+| Prop                | Description                                        |
+| ------------------- | ---------------------------------------------------|
+| src                 | Drawable file under the drawable android folder    |
+| icon                | react-native-vector-icons name                     |
+| iconProvider        | Icon package provided by react-native-vector-icons |
+| iconColor           | Icon color                                         |
+| backgroundColor     | Background color                                   |
+| hidden              | Hiddes the FloatingActionButton                    |
+| rippleEffect        | Enable rippleEffect                                |
+| onPress             | Callback called when touch is released             |
+
 ## Roadmap
 
-~~* Events callback (STATE_EXPANDED, STATE_COLLAPSED, STATE_DRAGGING, STATE_HIDDEN, STATE_SETTLING)~~
 * [CustomBottomSheetBehavior like Google Maps](https://github.com/miguelhincapie/CustomBottomSheetBehavior)
 
 
