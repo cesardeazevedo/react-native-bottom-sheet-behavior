@@ -2,156 +2,95 @@
  * @flow
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import {
-  Text,
   View,
   Dimensions,
-  ScrollView,
   StyleSheet,
   AppRegistry,
-  TouchableNativeFeedback,
+  DrawerLayoutAndroid,
+  NavigationExperimental,
 } from 'react-native'
 
-const { width, height } = Dimensions.get('window')
+import DrawerMenu from './DrawerMenu'
+import { SimpleView, GoogleMapsView } from './views'
 
-import {
-  CoordinatorLayout,
-  BottomSheetBehavior,
-} from 'react-native-bottom-sheet-behavior'
+const { width } = Dimensions.get('window')
 
-class bottomSheetBehavior extends Component {
-  state = {
-    offset:   0,
-    state:    0,
-    buttons: [0],
+const {
+ CardStack: NavigationCardStack,
+ StateUtils: NavigationStateUtils
+} = NavigationExperimental
+
+class BSBExample extends Component {
+  static childContextTypes = {
+    openDrawer: PropTypes.func,
+    closeDrawer: PropTypes.func
   };
 
-  handleAddButton() {
-    const { buttons } = this.state
-    const length = buttons.length || 0
-    this.setState({ buttons: [
-      ...buttons,
-      length + 1
-    ]})
+  state = {
+    navigationState: {
+      index: 0,
+      routes: [
+        { key: 'GoogleMaps' },
+        { key: 'Simple' }
+      ]
+    }
+  };
+
+  getChildContext() {
+    return {
+      openDrawer:  ::this.handleOpenDrawer,
+      closeDrawer: ::this.handleCloseDrawer,
+    }
   }
 
-  handleRemoveButton(index) {
-    const { buttons } = this.state
-    this.setState({ buttons: [
-      ...buttons.slice(0, index),
-      ...buttons.slice(index + 1)
-    ]})
+  handleOpenDrawer() {
+    this.refs.drawer.openDrawer()
   }
 
-  handleState(state) {
-    this.setState({ state })
+  handleCloseDrawer() {
+    this.refs.drawer.closeDrawer()
   }
 
-  handleSlide(e) {
-    const offset = e.nativeEvent.offset
-    this.setState({ offset })
+  handlePush(route) {
+    const { navigationState } = this.state
+    this.setState({
+      navigationState: NavigationStateUtils.jumpTo(navigationState, route)
+    })
   }
 
-  renderButton(key, index) {
+  renderScene(props) {
+    const { key } = props.scene.route
     return (
-      <TouchableNativeFeedback key={index} onPress={() => this.handleRemoveButton(index)}>
-        <View style={styles.button}>
-          <Text style={styles.buttonLabel}>{key}</Text>
-        </View>
-      </TouchableNativeFeedback>
+      <View style={styles.container}>
+        {key === 'Simple'     && <SimpleView />}
+        {key === 'GoogleMaps' && <GoogleMapsView />}
+      </View>
     )
   }
 
   render() {
     return (
-      <CoordinatorLayout style={styles.container}>
-        <View style={styles.content}>
-          <TouchableNativeFeedback onPress={this.handleAddButton.bind(this)}>
-            <View style={styles.button}>
-              <Text style={styles.buttonLabel}>Add Item</Text>
-            </View>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback onPress={() => this.handleState(BottomSheetBehavior.STATE_EXPANDED)}>
-            <View style={styles.button}>
-              <Text style={styles.buttonLabel}>Expanded</Text>
-            </View>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback onPress={() => this.handleState(BottomSheetBehavior.STATE_COLLAPSED)}>
-            <View style={styles.button}>
-              <Text style={styles.buttonLabel}>Collapsed</Text>
-            </View>
-          </TouchableNativeFeedback>
-        </View>
-        <BottomSheetBehavior
-          peekHeight={50}
-          hideable={false}
-          state={this.state.state}
-          onSlide={this.handleSlide.bind(this)}>
-          <View style={styles.bottomSheet}>
-            <View style={styles.bottomSheetHeader}>
-              <Text style={styles.label}>BottomSheetBehavior !</Text>
-            </View>
-            <View style={styles.bottomSheetContent}>
-              {this.state.buttons.map(this.renderButton.bind(this))}
-            </View>
-          </View>
-        </BottomSheetBehavior>
-      </CoordinatorLayout>
+      <DrawerLayoutAndroid
+        ref="drawer"
+        drawerWidth={width - 56}
+        renderNavigationView={() => <DrawerMenu push={::this.handlePush} />}
+        >
+        <NavigationCardStack
+          renderScene={::this.renderScene}
+          navigationState={this.state.navigationState}
+        />
+      </DrawerLayoutAndroid>
     )
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
   },
-  content: {
-    paddingTop: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  bottomSheet: {
-    backgroundColor: '#3F51B5',
-  },
-  bottomSheetHeader: {
-    padding: 14,
-  },
-  bottomSheetContent: {
-    padding: 18,
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  button: {
-    padding: 6,
-    paddingHorizontal: 14,
-    height: 30,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    marginVertical: 1,
-    backgroundColor: '#333',
-  },
-  buttonLabel: {
-    color: 'white'
-  },
-  label: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: 'white',
-  },
 })
 
-AppRegistry.registerComponent('example', () => bottomSheetBehavior)
+AppRegistry.registerComponent('BSBExample', () => BSBExample)
