@@ -39,7 +39,7 @@ MainApplication.java
 
 ```
 
-android/app/settings.gradle
+android/app/build.gradle
 
 
 ```diff
