@@ -52,7 +52,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
 
     public void setIconColor(String color) {
         try {
-            if (icon != null) {
+            if (icon != null && android.os.Build.VERSION.SDK_INT >= 21) {
                 icon.mutate().setTint(Color.parseColor(color));
             }
         } catch (Exception ex) {
