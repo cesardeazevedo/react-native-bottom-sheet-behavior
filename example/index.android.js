@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 
 import DrawerMenu from './DrawerMenu'
-import { SimpleView, GoogleMapsView } from './views'
+import { SimpleView, NestedScrollView, GoogleMapsView } from './views'
 
 const { width } = Dimensions.get('window')
 
@@ -33,7 +33,8 @@ class BSBExample extends Component {
       index: 0,
       routes: [
         { key: 'GoogleMaps' },
-        { key: 'Simple' }
+        { key: 'Simple' },
+        { key: 'NestedScroll' }
       ]
     }
   };
@@ -64,8 +65,9 @@ class BSBExample extends Component {
     const { key } = props.scene.route
     return (
       <View style={styles.container}>
-        {key === 'Simple'     && <SimpleView />}
-        {key === 'GoogleMaps' && <GoogleMapsView />}
+        {key === 'Simple'       && <SimpleView />}
+        {key === 'NestedScroll' && <NestedScrollView />}
+        {key === 'GoogleMaps'   && <GoogleMapsView />}
       </View>
     )
   }

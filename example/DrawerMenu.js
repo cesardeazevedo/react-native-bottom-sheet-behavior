@@ -12,6 +12,7 @@ import npm from './node_modules/react-native-bottom-sheet-behavior/package.json'
 
 const MENU = [
   { name: 'Simple', icon: 'ios-navigate-outline' },
+  { name: 'NestedScroll', icon: 'ios-list' },
   { name: 'GoogleMaps', icon: 'md-map' }
 ]
 
