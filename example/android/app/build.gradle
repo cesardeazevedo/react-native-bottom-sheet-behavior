@@ -96,6 +96,9 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
+    aaptOptions {
+      additionalParameters "--no-version-vectors"
+    }
     splits {
         abi {
             reset()
