@@ -27,7 +27,8 @@ public class BottomSheetBehaviorPackage implements ReactPackage {
         return Arrays.<ViewManager>asList(
                 new BottomSheetBehaviorManager(),
                 new CoordinatorLayoutManager(),
-                new FloatingActionButtonManager()
+                new FloatingActionButtonManager(),
+                new ReactNestedScrollViewManager()
         );
     }
 }
