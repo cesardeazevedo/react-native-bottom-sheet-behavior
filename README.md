@@ -1,5 +1,5 @@
 # react-native-bottom-sheet-behavior
-react-native wrapper for android BottomSheetBehavior
+react-native wrapper for android [BottomSheetBehavior](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html), supports [FloatingActionButton](https://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html) and [NestedScrollView](https://developer.android.com/reference/android/support/v4/widget/NestedScrollView.html).
 
 [![npm version](https://badge.fury.io/js/react-native-bottom-sheet-behavior.svg)](https://badge.fury.io/js/react-native-bottom-sheet-behavior)
 
@@ -7,6 +7,14 @@ react-native wrapper for android BottomSheetBehavior
 
 ![react-native-bottom-sheet-behavior](http://i.imgur.com/LL3gBVM.gif)
 
+## Components
+
+There's some components included in this package.
+
+* CoordinatorLayout
+* BottomSheetBehavior
+* FloatingActionButton
+* NestedScrollView
 
 ## Install
 
@@ -62,19 +70,18 @@ include ':app'
 +   include ':react-native-bottom-sheet-behavior'
 +   project(':react-native-bottom-sheet-behavior').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bottom-sheet-behavior/android')
 
-
 ```
 
 ## Usage
 
-You will need to wrap your view into a `CoordinatorLayout` in order to make it work.
+You will need to wrap your view into a `CoordinatorLayout` to make it work.
 
 ```js
 
     render() {
       return (
           <CoordinatorLayout style={styles.container}>
-            <View style={{ flex: 1 }}></View>
+            <View style={{ flex: 1, backgroundColor: 'transparent' }}></View>
             <BottomSheetBehavior
                 ref="bottomSheet"
                 peekHeight={50}
@@ -89,6 +96,8 @@ You will need to wrap your view into a `CoordinatorLayout` in order to make it w
 
 ```
 
+> *NOTE*
+> Make sure that your view has a `backgroundColor` style to prevent some "bugs" when render the container.
 
 ## FloatingActionButton
 
@@ -120,6 +129,16 @@ You can also use [react-native-vector-icons](https://github.com/oblador/react-na
 
 You can check [GoogleMapsView.js](https://github.com/cesardeazevedo/react-native-bottom-sheet-behavior/blob/master/example/views/GoogleMapsView.js) example
 
+## NestedScrollView
+
+NestedScrollView allows you scroll inside bottom sheet continuously, it's a fork from react-native `ScrollView`, and it should work as the same.
+
+![react-native](http://i.imgur.com/EaXBCa0.gif)
+
+[NestedScrollView.js](https://github.com/cesardeazevedo/react-native-bottom-sheet-behavior/blob/master/example/views/NestedScrollView.js) example
+
+## API
+
 BottomSheetBehavior properties
 
 | Prop            | Description                                                                | Default Value |
@@ -148,7 +167,7 @@ FloatingActionButton properties
 | src                 | Drawable file under the drawable android folder    |
 | icon                | react-native-vector-icons name                     |
 | iconProvider        | Icon package provided by react-native-vector-icons |
-| iconColor           | Icon color                                         |
+| iconColor           | Icon color (API >= 21)                             |
 | backgroundColor     | Background color                                   |
 | hidden              | Hiddes the FloatingActionButton                    |
 | rippleEffect        | Enable rippleEffect                                |
