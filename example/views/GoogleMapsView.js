@@ -84,6 +84,14 @@ class GoogleMapsView extends Component {
       }).start()
     }
 
+    if (newState === BottomSheetBehavior.STATE_COLLAPSED) {
+      this.setState({ fabColor: PRIMARY_COLOR })
+      Animated.timing(this.state.bottomSheetColor, {
+        duration: 50,
+        toValue: 0,
+      }).start()
+    }
+
     this.bottomSheetState = newState
     this.setState({ bottomSheetState: newState })
   }
