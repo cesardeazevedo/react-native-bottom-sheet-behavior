@@ -105,7 +105,7 @@ class NestedScroll extends Component {
               <Text style={styles.label}>NestedScrollView !</Text>
             </View>
             <View style={styles.bottomSheetContent} >
-              <NestedScrollView onScroll={e => console.log(e)} style={styles.scroll}>
+              <NestedScrollView style={styles.scroll}>
                 {this.state.buttons.map(::this.renderButton)}
               </NestedScrollView>
             </View>
