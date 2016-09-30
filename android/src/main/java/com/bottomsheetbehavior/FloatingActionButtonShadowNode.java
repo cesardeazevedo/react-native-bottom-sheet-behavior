@@ -3,11 +3,11 @@ package com.bottomsheetbehavior;
 import android.view.View;
 import android.view.ViewGroup;
 import com.facebook.csslayout.CSSMeasureMode;
-import com.facebook.csslayout.CSSNode;
+import com.facebook.csslayout.CSSNodeAPI;
 import com.facebook.csslayout.MeasureOutput;
 import com.facebook.react.uimanager.LayoutShadowNode;
 
-public class FloatingActionButtonShadowNode extends LayoutShadowNode implements CSSNode.MeasureFunction {
+public class FloatingActionButtonShadowNode extends LayoutShadowNode implements CSSNodeAPI.MeasureFunction {
     private int mWidth;
     private int mHeight;
     private boolean mMeasured;
@@ -17,7 +17,7 @@ public class FloatingActionButtonShadowNode extends LayoutShadowNode implements 
     }
 
     @Override
-    public void measure(CSSNode node, float width, CSSMeasureMode widthMode, float height, CSSMeasureMode heightMode, MeasureOutput measureOutput) {
+    public void measure(CSSNodeAPI node, float width, CSSMeasureMode widthMode, float height, CSSMeasureMode heightMode, MeasureOutput measureOutput) {
         if(!mMeasured) {
             FloatingActionButtonView nodeView = new FloatingActionButtonView(getThemedContext());
             final int spec = View.MeasureSpec.makeMeasureSpec(
