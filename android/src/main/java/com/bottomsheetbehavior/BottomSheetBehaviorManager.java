@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
@@ -26,6 +27,7 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
     private final static String REACT_CLASS = "RCTBottomSheetBehaviorAndroid";
 
     public static final int COMMAND_SET_REQUEST_LAYOUT = 1;
+    public static final int COMMAND_SET_BOTTOM_SHEET_STATE = 2;
 
     @Override
     public String getName() {
@@ -59,7 +61,9 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
 
     @Override
     public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of("setRequestLayout", COMMAND_SET_REQUEST_LAYOUT);
+        return MapBuilder
+          .of("setRequestLayout", COMMAND_SET_REQUEST_LAYOUT,
+              "setBottomSheetState", COMMAND_SET_BOTTOM_SHEET_STATE);
     }
 
     @Nullable
@@ -83,13 +87,27 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
 
     @Override
     public void receiveCommand(BottomSheetBehaviorView view, int commandType, @Nullable ReadableArray args) {
-        if (commandType == COMMAND_SET_REQUEST_LAYOUT) {
+        switch (commandType) {
+          case COMMAND_SET_REQUEST_LAYOUT:
             setRequestLayout(view);
+            return;
+          case COMMAND_SET_BOTTOM_SHEET_STATE:
+            setBottomSheetState(view, args);
+            return;
+          default:
+            throw new JSApplicationIllegalArgumentException("Invalid Command");
         }
     }
 
     private void setRequestLayout(BottomSheetBehaviorView view) {
         view.requestLayout();
+    }
+
+    private void setBottomSheetState(BottomSheetBehaviorView view, @Nullable ReadableArray args) {
+        if (!args.isNull(0)) {
+            int newState = args.getInt(0);
+            setState(view, newState);
+        }
     }
 
     public class BottomSheetBehaviorListener extends BottomSheetBehavior.BottomSheetCallback {
