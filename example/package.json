@@ -1,20 +1,20 @@
 {
-  "name": "react-native-bottom-sheet-behavior-example",
-  "version": "0.0.2",
+  "name": "example",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "trash node_modules/react-native-bottom-sheet-behavior && npm install && react-native run-android"
   },
   "dependencies": {
-    "react": "15.3.0",
-    "react-native": "^0.34.0",
+    "react": "15.3.2",
+    "react-native": "^0.34.1",
     "react-native-bottom-sheet-behavior": "../"
   },
   "devDependencies": {
     "babel-preset-react-native-stage-0": "^1.0.1",
     "eslint-plugin-react-native": "^2.0.0",
-    "react-native-maps": "^0.7.1",
+    "react-native-maps": "^0.10.0",
     "react-native-vector-icons": "^2.0.3"
   }
 }
