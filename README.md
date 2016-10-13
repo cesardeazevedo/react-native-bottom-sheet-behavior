@@ -141,13 +141,13 @@ NestedScrollView allows you scroll inside bottom sheet continuously, it's a fork
 
 BottomSheetBehavior properties
 
-| Prop            | Description                                                                | Default Value |
-|-----------------|----------------------------------------------------------------------------|---------------|
-| peekHeight      | Peek Height value in DP                                                    | 50            |
-| hideable        | Allow hide the bottomSheet                                                 | false         |
-| onStateChange   | Callback when bottom sheet state changed                                   |               |
-| onSlide         | Callback continuously called while the user is dragging the bottom sheet   |               |
-
+| Prop            | Description                                                                | Default Value       |
+|-----------------|----------------------------------------------------------------------------|---------------------|
+| state           | The state of the bottom sheet                                              | 4 (STATE_COLLAPSED) |
+| peekHeight      | Peek Height value in DP                                                    | 50                  |
+| hideable        | Allow hide the bottomSheet                                                 | false               |
+| onStateChange   | Callback when bottom sheet state changed                                   |                     |
+| onSlide         | Callback continuously called while the user is dragging the bottom sheet   |                     |
 
 BottomSheetBehavior States
 
