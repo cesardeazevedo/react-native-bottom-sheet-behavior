@@ -27,12 +27,16 @@ const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
 const { width, height } = Dimensions.get('window')
 
-const RippleColor = Platform.Version >= 21
-  ? TouchableNativeFeedback.Ripple('#d1d1d1')
-  : null
+const duration = 120
+const RippleColor = (...args) =>
+  Platform.Version >= 21
+    ? TouchableNativeFeedback.Ripple(...args)
+    : null
 
 const WHITE = '#FFFFFF'
 const PRIMARY_COLOR = '#4589f2'
+const TEXT_BASE_COLOR = '#333'
+const STAR_COLOR = '#FF5722'
 
 class GoogleMapsView extends Component {
   static contextTypes = {
@@ -40,13 +44,12 @@ class GoogleMapsView extends Component {
   };
 
   state = {
-    fabColor: PRIMARY_COLOR,
-    bottomSheetState: BottomSheetBehavior.STATE_COLLAPSED,
-    bottomSheetColor: new Animated.Value(0)
+    bottomSheetColor: 0,
+    bottomSheetColorAnimated: new Animated.Value(0),
   };
 
   componentDidMount() {
-    // Set FAB anchor to follow bottomSheet
+    this.lastState = BottomSheetBehavior.STATE_COLLAPSED
     this.refs.floating.setAnchorId(this.refs.bottomSheet)
   }
 
@@ -59,66 +62,50 @@ class GoogleMapsView extends Component {
     ToastAndroid.show('Pressed', ToastAndroid.SHORT)
   }
 
-  handleBottomSheetOnPress() {
-    const { bottomSheetState, bottomSheetColor } = this.state
+  handleBottomSheetOnPress(e) {
+    const { bottomSheet } = this.refs
 
-    if (bottomSheetState === BottomSheetBehavior.STATE_COLLAPSED) {
-      Animated.timing(bottomSheetColor, { duration: 0, toValue: 1 }).start()
-      this.setState({ bottomSheetState: BottomSheetBehavior.STATE_EXPANDED, fabColor: WHITE })
-    } else if (bottomSheetState === BottomSheetBehavior.STATE_EXPANDED) {
-      Animated.timing(bottomSheetColor, { duration: 30, toValue: 0 }).start()
-      this.setState({ bottomSheetState: BottomSheetBehavior.STATE_COLLAPSED, fabColor: PRIMARY_COLOR })
+    if (this.lastState === BottomSheetBehavior.STATE_COLLAPSED) {
+      this.setState({ bottomSheetColor: 1 })
+      bottomSheet.setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
+    } else if (this.lastState === BottomSheetBehavior.STATE_EXPANDED) {
+      this.setState({ bottomSheetColor: 0 })
+      bottomSheet.setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
     }
   }
 
   handleBottomSheetChange(e) {
     const newState = e.nativeEvent.state
 
-    // Turn active color when starting dragging and remains expanded
-    if (newState === BottomSheetBehavior.STATE_DRAGGING ||
+    if (this.offset > 0.1 &&
+        newState === BottomSheetBehavior.STATE_DRAGGING ||
         newState === BottomSheetBehavior.STATE_EXPANDED) {
-      this.setState({ fabColor: WHITE })
-      Animated.timing(this.state.bottomSheetColor, {
-        duration: 50,
-        toValue: 1,
-      }).start()
+        this.setState({ bottomSheetColor: 1 })
+    }
+    if (newState == BottomSheetBehavior.STATE_SETTLING && !this.settlingExpanded) {
+      this.setState({ bottomSheetColor: 0 })
     }
 
-    if (newState === BottomSheetBehavior.STATE_COLLAPSED) {
-      this.setState({ fabColor: PRIMARY_COLOR })
-      Animated.timing(this.state.bottomSheetColor, {
-        duration: 50,
-        toValue: 0,
-      }).start()
-    }
-
-    this.bottomSheetState = newState
-    this.setState({ bottomSheetState: newState })
+    this.lastState = newState
   }
 
   handleSlide(e) {
-    this.offset = e.nativeEvent.offset
-
     const { bottomSheetColor } = this.state
+    const offset = parseFloat(e.nativeEvent.offset.toFixed(2))
 
-    if (this.bottomSheetState === BottomSheetBehavior.STATE_SETTLING && this.offset < 0.2) {
-      this.setState({ fabColor: PRIMARY_COLOR })
-      Animated.timing(bottomSheetColor, {
-        duration: 50,
-        toValue: 0,
-      }).start()
-    } else {
-      this.setState({ fabColor: WHITE })
-      Animated.timing(bottomSheetColor, {
-        duration: 50,
-        toValue: 1,
-      }).start()
+    this.settlingExpanded = offset >= this.offset
+    this.offset = offset
+
+    if (offset === 0) {
+      this.setState({ bottomSheetColor: 0 })
+    } else if (bottomSheetColor !== 1 && this.lastState === BottomSheetBehavior.STATE_DRAGGING) {
+      this.setState({ bottomSheetColor: 1 })
     }
   }
 
   renderDetailItem(icon, text) {
     return (
-      <TouchableNativeFeedback delayPressIn={0} delayPressOut={0} background={RippleColor}>
+      <TouchableNativeFeedback delayPressIn={0} delayPressOut={0} background={RippleColor('#d1d1d1')}>
         <View>
           <View pointerEvents="none" style={styles.detailItem}>
             <Icon name={icon} size={18} color={PRIMARY_COLOR} />
@@ -130,48 +117,61 @@ class GoogleMapsView extends Component {
   }
 
   renderFloatingActionButton() {
-    const { fabColor } = this.state
+    const { bottomSheetColor } = this.state
+    const isExpanded = bottomSheetColor === 1
     return (
       <FloatingActionButton
         ref="floating"
         rippleEffect={true}
         icon={"directions"}
         iconProvider={IconMDI}
-        iconColor={fabColor === WHITE ? PRIMARY_COLOR : WHITE}
-        onPress={this.handleFabPress}
-        backgroundColor={fabColor}
+        iconColor={!isExpanded ? WHITE : PRIMARY_COLOR}
+        onPress={::this.handleFabPress}
+        backgroundColor={isExpanded ? WHITE : PRIMARY_COLOR}
       />
     )
   }
 
   renderBottomSheet() {
-    const { bottomSheetState, bottomSheetColor } = this.state
+    const {
+      bottomSheetColor,
+      bottomSheetColorAnimated
+    } = this.state
+
+    Animated.timing(bottomSheetColorAnimated, {
+      duration,
+      toValue: bottomSheetColor,
+    }).start()
+
     const headerAnimated = {
-      backgroundColor: bottomSheetColor.interpolate({
+      backgroundColor: bottomSheetColorAnimated.interpolate({
         inputRange:  [0, 1],
-        outputRange: [WHITE, PRIMARY_COLOR]
+        outputRange: [WHITE, PRIMARY_COLOR],
       })
     }
     const textAnimated = {
-      color: bottomSheetColor.interpolate({
+      color: bottomSheetColorAnimated.interpolate({
         inputRange:  [0, 1],
-        outputRange: ['#333', WHITE]
+        outputRange: [TEXT_BASE_COLOR, WHITE],
       })
     }
-    const starsAnimated = bottomSheetColor.interpolate({
-      inputRange:  [0, 1],
-      outputRange: ['#FF5722', WHITE]
-    })
-    const routeTextAnimated = bottomSheetColor.interpolate({
-      inputRange:  [0, 1],
-      outputRange: [PRIMARY_COLOR, WHITE]
-    })
+    const starsAnimated = {
+      color: bottomSheetColorAnimated.interpolate({
+        inputRange:  [0, 1],
+        outputRange: [STAR_COLOR, WHITE],
+      })
+    }
+    const routeTextAnimated = {
+      color: bottomSheetColorAnimated.interpolate({
+        inputRange:  [0, 1],
+        outputRange: [PRIMARY_COLOR, WHITE],
+      })
+    }
 
     return (
       <BottomSheetBehavior
         ref="bottomSheet"
         peekHeight={90}
-        state={bottomSheetState}
         onSlide={::this.handleSlide}
         onStateChange={::this.handleBottomSheetChange}>
         <View style={styles.bottomSheet}>
@@ -182,16 +182,16 @@ class GoogleMapsView extends Component {
                   React Native Bar!
                 </Animated.Text>
                 <View style={styles.starsContainer}>
-                  <Animated.Text style={{ color: starsAnimated, marginRight: 8 }}>5.0</Animated.Text>
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={{ color: starsAnimated }} />
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={{ color: starsAnimated }} />
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={{ color: starsAnimated }} />
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={{ color: starsAnimated }} />
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={{ color: starsAnimated }} />
+                  <Animated.Text style={[starsAnimated, { marginRight: 8 }]}>5.0</Animated.Text>
+                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
+                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
+                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
+                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
+                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
                 </View>
               </View>
               <View style={styles.bottomSheetRight}>
-                <Animated.Text style={[styles.routeLabel, { color: routeTextAnimated }]}>Route</Animated.Text>
+                <Animated.Text style={[styles.routeLabel, routeTextAnimated]}>Route</Animated.Text>
               </View>
             </Animated.View>
           </TouchableWithoutFeedback>
@@ -245,7 +245,7 @@ class GoogleMapsView extends Component {
         <TouchableNativeFeedback
           delayPressIn={0}
           delayPressOut={0}
-          background={RippleColor}
+          background={RippleColor('#d1d1d1', true)}
           onPress={::this.handleOpenDrawer}>
           <View style={styles.buttonIcon}>
             <Icon name="md-menu" size={20} />
@@ -259,7 +259,7 @@ class GoogleMapsView extends Component {
         <TouchableNativeFeedback
           delayPressIn={0}
           delayPressOut={0}
-          background={RippleColor}>
+          background={RippleColor('#d1d1d1', true)}>
           <View style={styles.buttonIcon}>
             <Icon name="md-mic" size={20} />
           </View>
@@ -309,9 +309,11 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   toolbar: {
+    flex: 1,
+    flexDirection: 'row',
     marginTop: 32,
     marginHorizontal: 12,
-    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 0.5,
     borderColor: 'grey',
@@ -324,8 +326,8 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    height: 50,
-    marginHorizontal: 12,
+    fontSize: 16,
+    marginHorizontal: 8,
   },
   bottomSheet: {
     zIndex: 5,
