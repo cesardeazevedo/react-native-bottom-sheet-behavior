@@ -59,6 +59,11 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
         view.setPeekHeight(peekHeight);
     }
 
+    @ReactProp(name = "elevation", defaultFloat = 0)
+    public void setElevation(BottomSheetBehaviorView view, float elevation) {
+        view.setBottomSheetElevation(elevation);
+    }
+
     @Override
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder

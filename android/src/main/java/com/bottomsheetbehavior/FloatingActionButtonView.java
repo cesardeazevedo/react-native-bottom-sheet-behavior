@@ -74,6 +74,12 @@ public class FloatingActionButtonView extends FloatingActionButton {
         this.setClickable(rippleEffect);
     }
 
+    public void setFabElevation(float elevation) {
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            this.setElevation(elevation);
+        }
+    }
+
     public void setAnchor(int id) {
         ((CoordinatorLayout.LayoutParams) this.getLayoutParams()).setAnchorId(id);
     }

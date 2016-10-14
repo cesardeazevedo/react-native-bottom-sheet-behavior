@@ -75,6 +75,11 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         view.setRippleEffect(rippleEffect);
     }
 
+    @ReactProp(name = "elevation", defaultFloat = 18)
+    public void setElevation(FloatingActionButtonView view, float elevation) {
+        view.setFabElevation(elevation);
+    }
+
     @Override
     public Map<String,Integer> getCommandsMap() {
         return MapBuilder.of("setAnchorId", COMMAND_SET_ANCHOR_ID);

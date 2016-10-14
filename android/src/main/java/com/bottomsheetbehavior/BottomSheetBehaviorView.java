@@ -5,6 +5,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.RelativeLayout;
 
 import com.facebook.react.uimanager.PixelUtil;
@@ -41,6 +42,13 @@ public class BottomSheetBehaviorView extends RelativeLayout {
 
     public void setHideable(boolean hideable) {
         bottomSheetBehavior.setHideable(hideable);
+    }
+
+    public void setBottomSheetElevation(float elevation) {
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+            this.setElevation(elevation);
+            this.setOutlineProvider(ViewOutlineProvider.BOUNDS);
+        }
     }
 
     @Override
