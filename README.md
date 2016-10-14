@@ -146,6 +146,7 @@ BottomSheetBehavior properties
 | state           | The state of the bottom sheet                                              | 4 (STATE_COLLAPSED) |
 | peekHeight      | Peek Height value in DP                                                    | 50                  |
 | hideable        | Allow hide the bottomSheet                                                 | false               |
+| elevation       | Elevation shadow                                                           | 0                   |
 | onStateChange   | Callback when bottom sheet state changed                                   |                     |
 | onSlide         | Callback continuously called while the user is dragging the bottom sheet   |                     |
 
@@ -162,16 +163,17 @@ BottomSheetBehavior States
 
 FloatingActionButton properties
 
-| Prop                | Description                                        |
-| ------------------- | ---------------------------------------------------|
-| src                 | Drawable file under the drawable android folder    |
-| icon                | react-native-vector-icons name                     |
-| iconProvider        | Icon package provided by react-native-vector-icons |
-| iconColor           | Icon color (API >= 21)                             |
-| backgroundColor     | Background color                                   |
-| hidden              | Hiddes the FloatingActionButton                    |
-| rippleEffect        | Enable rippleEffect                                |
-| onPress             | Callback called when touch is released             |
+| Prop                | Description                                        | Default Value |
+| ------------------- | ---------------------------------------------------|---------------|
+| src                 | Drawable file under the drawable android folder    |               |
+| icon                | react-native-vector-icons name                     |               |
+| iconProvider        | Icon package provided by react-native-vector-icons |               |
+| iconColor           | Icon color (API >= 21)                             |               |
+| backgroundColor     | Background color                                   |               |
+| hidden              | Hiddes the FloatingActionButton                    | false         |
+| rippleEffect        | Enable rippleEffect                                | true          |
+| elevation       		| Elevation shadow                                   | 18            |
+| onPress             | Callback called when touch is released             |               |
 
 ## Roadmap
 
