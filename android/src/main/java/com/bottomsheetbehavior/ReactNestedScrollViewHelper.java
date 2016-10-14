@@ -1,8 +1,4 @@
-package com.bottomsheetbehavior;
 /**
- * This file is copied from https://goo.gl/cP1YU3, only replacing ScrollView to
- * NestedScrollView.
- *//**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
@@ -10,6 +6,8 @@ package com.bottomsheetbehavior;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
+
+package com.bottomsheetbehavior;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +21,7 @@ import com.facebook.react.uimanager.UIManagerModule;
 /**
  * Helper class that deals with emitting Scroll Events.
  *
- * Forked from https://github.com/facebook/react-native/blob/master/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewHelper.java
+ * Forked from https://github.com/facebook/react-native/blob/v0.35.0/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewHelper.java
  */
 public class ReactNestedScrollViewHelper {
 
@@ -72,4 +70,3 @@ public class ReactNestedScrollViewHelper {
                 scrollView.getHeight()));
     }
 }
-

@@ -17,15 +17,16 @@ import android.graphics.Color;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.views.scroll.FpsListener;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
-import com.facebook.react.views.scroll.ReactScrollViewCommandHelper;
 import com.facebook.react.views.scroll.ScrollEventType;
-import com.facebook.react.views.view.ReactClippingViewGroupHelper;
+import com.facebook.react.uimanager.ReactClippingViewGroupHelper;
+import com.facebook.react.views.scroll.ReactScrollViewCommandHelper;
 
 /**
- * Forked from https://github.com/facebook/react-native/blob/4498bc819730e3c513750a04d705883f1d61816d/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewManager.java
+ * Forked from https://github.com/facebook/react-native/blob/v0.35.0/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewManager.java
  *
  * View manager for {@link ReactScrollView} components.
  *
@@ -37,6 +38,15 @@ public class ReactNestedScrollViewManager
     implements ReactScrollViewCommandHelper.ScrollCommandHandler<ReactNestedScrollView> {
 
     private static final String REACT_CLASS = "RCTNestedScrollView";
+    private @Nullable FpsListener mFpsListener = null;
+
+    public ReactNestedScrollViewManager() {
+        this(null);
+    }
+
+    public ReactNestedScrollViewManager(@Nullable FpsListener fpsListener) {
+        mFpsListener = fpsListener;
+    }
 
     @Override
     public String getName() {
@@ -45,7 +55,7 @@ public class ReactNestedScrollViewManager
 
     @Override
     public ReactNestedScrollView createViewInstance(ThemedReactContext context) {
-        return new ReactNestedScrollView(context);
+        return new ReactNestedScrollView(context, mFpsListener);
     }
 
     @ReactProp(name = "scrollEnabled", defaultBoolean = true)
@@ -74,6 +84,18 @@ public class ReactNestedScrollViewManager
     @ReactProp(name = "sendMomentumEvents")
     public void setSendMomentumEvents(ReactNestedScrollView view, boolean sendMomentumEvents) {
         view.setSendMomentumEvents(sendMomentumEvents);
+    }
+
+    /**
+     * Tag used for logging scroll performance on this scroll view. Will force momentum events to be
+     * turned on (see setSendMomentumEvents).
+     *
+     * @param view
+     * @param scrollPerfTag
+     */
+    @ReactProp(name = "scrollPerfTag")
+    public void setScrollPerfTag(ReactNestedScrollView view, String scrollPerfTag) {
+        view.setScrollPerfTag(scrollPerfTag);
     }
 
     /**
