@@ -122,6 +122,7 @@ class GoogleMapsView extends Component {
     return (
       <FloatingActionButton
         ref="floating"
+        elevation={18}
         rippleEffect={true}
         icon={"directions"}
         iconProvider={IconMDI}
@@ -171,6 +172,7 @@ class GoogleMapsView extends Component {
     return (
       <BottomSheetBehavior
         ref="bottomSheet"
+        elevation={16}
         peekHeight={90}
         onSlide={::this.handleSlide}
         onStateChange={::this.handleBottomSheetChange}>
@@ -251,11 +253,13 @@ class GoogleMapsView extends Component {
             <Icon name="md-menu" size={20} />
           </View>
         </TouchableNativeFeedback>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Try restaurants, coffee"
-          placeholderTextColor="#c2c2c2"
-          underlineColorAndroid="transparent" />
+        <View style={styles.toolbarInput}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Try restaurants, coffee"
+            placeholderTextColor="#c2c2c2"
+            underlineColorAndroid="transparent" />
+        </View>
         <TouchableNativeFeedback
           delayPressIn={0}
           delayPressOut={0}
@@ -311,12 +315,12 @@ const styles = StyleSheet.create({
   toolbar: {
     flex: 1,
     flexDirection: 'row',
+    elevation: 2,
     marginTop: 32,
+    height: 54,
     marginHorizontal: 12,
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderWidth: 0.5,
-    borderColor: 'grey',
     borderRadius: 4,
     backgroundColor: WHITE,
   },
@@ -324,9 +328,13 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 50,
   },
+  toolbarInput: {
+    flex: 1,
+  },
   textInput: {
     flex: 1,
     fontSize: 16,
+    marginTop: 8,
     marginHorizontal: 8,
   },
   bottomSheet: {
