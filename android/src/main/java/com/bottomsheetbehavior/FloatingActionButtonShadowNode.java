@@ -17,7 +17,7 @@ public class FloatingActionButtonShadowNode extends LayoutShadowNode implements 
     }
 
     @Override
-    public void measure(CSSNodeAPI node, float width, CSSMeasureMode widthMode, float height, CSSMeasureMode heightMode, MeasureOutput measureOutput) {
+    public long measure(CSSNodeAPI node, float width, CSSMeasureMode widthMode, float height, CSSMeasureMode heightMode) {
         if(!mMeasured) {
             FloatingActionButtonView nodeView = new FloatingActionButtonView(getThemedContext());
             final int spec = View.MeasureSpec.makeMeasureSpec(
@@ -29,7 +29,6 @@ public class FloatingActionButtonShadowNode extends LayoutShadowNode implements 
             mMeasured = true;
         }
 
-        measureOutput.width  = mWidth;
-        measureOutput.height = mHeight;
+        return MeasureOutput.make(mWidth, mHeight);
     }
 }
