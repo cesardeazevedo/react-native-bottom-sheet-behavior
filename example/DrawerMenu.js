@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
     fontFamily: 'sans-serif-medium',
   },
   menuItem: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     height: 46,
