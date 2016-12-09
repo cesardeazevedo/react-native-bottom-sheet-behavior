@@ -9,7 +9,7 @@ react-native wrapper for android [BottomSheetBehavior](https://developer.android
 
 ## Components
 
-There's some components included in this package.
+The following components are included in this package:
 
 * CoordinatorLayout
 * BottomSheetBehavior
@@ -97,13 +97,13 @@ You will need to wrap your view into a `CoordinatorLayout` to make it work.
 ```
 
 > *NOTE*
-> Make sure that your view has a `backgroundColor` style to prevent some "bugs" when render the container.
+> Make sure that your view has a `backgroundColor` style to prevent some "bugs" when rendering the container.
 
 ## FloatingActionButton
 
-If your are using FloatingActionButton, you'll need to connect it to the BottomSheetBehavior, in order to follow when it's dragging.
+If you are using FloatingActionButton, you'll need to connect it to the BottomSheetBehavior, in order to follow when it's dragging.
 
-this be can done like this
+You can achieve it doing this:
 
 ```js
   componentDidMount() {
@@ -113,7 +113,7 @@ this be can done like this
 
 ### Support for react-native-vector-icons
 
-You can also use [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) on FloatingActionButton, which will load automatically the icon for you.
+You can also use [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) on FloatingActionButton, which will automatically load the icon for you.
 
 ```js
   import Icon from 'react-native-vector-icons/Ionicons'
@@ -127,11 +127,11 @@ You can also use [react-native-vector-icons](https://github.com/oblador/react-na
   }
 ```
 
-You can check [GoogleMapsView.js](https://github.com/cesardeazevedo/react-native-bottom-sheet-behavior/blob/master/example/views/GoogleMapsView.js) example
+You can check [GoogleMapsView.js](https://github.com/cesardeazevedo/react-native-bottom-sheet-behavior/blob/master/example/views/GoogleMapsView.js) example.
 
 ## NestedScrollView
 
-NestedScrollView allows you scroll inside bottom sheet continuously, it's a fork from react-native `ScrollView`, and it should work as the same.
+NestedScrollView allows you to scroll inside bottom sheet continuously, it's a fork from react-native `ScrollView`, and it should work the same way.
 
 ![react-native](http://i.imgur.com/EaXBCa0.gif)
 
@@ -170,9 +170,9 @@ FloatingActionButton properties
 | iconProvider        | Icon package provided by react-native-vector-icons |               |
 | iconColor           | Icon color (API >= 21)                             |               |
 | backgroundColor     | Background color                                   |               |
-| hidden              | Hiddes the FloatingActionButton                    | false         |
+| hidden              | Hides FloatingActionButton                         | false         |
 | rippleEffect        | Enable rippleEffect                                | true          |
-| elevation       		| Elevation shadow                                   | 18            |
+| elevation       	  | Elevation shadow                                   | 18            |
 | onPress             | Callback called when touch is released             |               |
 
 ## Roadmap
