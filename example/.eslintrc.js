@@ -1,4 +1,4 @@
-{
+module.exports = {
   "parser"  : "babel-eslint",
   "plugins": [
     "react-native"
@@ -34,4 +34,5 @@
     "react-native/no-color-literals": 0,
     "react/jsx-closing-bracket-location": 0,
   }
-}
+};
+
