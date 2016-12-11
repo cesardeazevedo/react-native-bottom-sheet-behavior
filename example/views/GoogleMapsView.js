@@ -9,11 +9,12 @@ import {
   Dimensions,
   ToastAndroid,
   TouchableNativeFeedback,
+  Keyboard,
   TouchableWithoutFeedback
 } from 'react-native'
 
 import MapView from 'react-native-maps'
-import DismissKeyboard from 'dismissKeyboard'
+// import DismissKeyboard from 'dismissKeyboard'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconMDI from 'react-native-vector-icons/MaterialIcons'
 
@@ -50,20 +51,20 @@ class GoogleMapsView extends Component {
 
   componentDidMount() {
     this.lastState = BottomSheetBehavior.STATE_COLLAPSED
-    this.refs.floating.setAnchorId(this.refs.bottomSheet)
+    this.floating.setAnchorId(this.bottomSheet)
   }
 
-  handleOpenDrawer() {
-    DismissKeyboard()
+  handleOpenDrawer = () => {
+    Keyboard.dismiss()
     this.context.openDrawer()
   }
 
-  handleFabPress() {
+  handleFabPress = () => {
     ToastAndroid.show('Pressed', ToastAndroid.SHORT)
   }
 
-  handleBottomSheetOnPress(e) {
-    const { bottomSheet } = this.refs
+  handleBottomSheetOnPress = () => {
+    const { bottomSheet } = this
 
     if (this.lastState === BottomSheetBehavior.STATE_COLLAPSED) {
       this.setState({ bottomSheetColor: 1 })
@@ -74,22 +75,22 @@ class GoogleMapsView extends Component {
     }
   }
 
-  handleBottomSheetChange(e) {
+  handleBottomSheetChange = (e) => {
     const newState = e.nativeEvent.state
 
     if (this.offset > 0.1 &&
         newState === BottomSheetBehavior.STATE_DRAGGING ||
         newState === BottomSheetBehavior.STATE_EXPANDED) {
-        this.setState({ bottomSheetColor: 1 })
+      this.setState({ bottomSheetColor: 1 })
     }
-    if (newState == BottomSheetBehavior.STATE_SETTLING && !this.settlingExpanded) {
+    if (newState === BottomSheetBehavior.STATE_SETTLING && !this.settlingExpanded) {
       this.setState({ bottomSheetColor: 0 })
     }
 
     this.lastState = newState
   }
 
-  handleSlide(e) {
+  handleSlide = (e) => {
     const { bottomSheetColor } = this.state
     const offset = parseFloat(e.nativeEvent.offset.toFixed(2))
 
@@ -103,37 +104,35 @@ class GoogleMapsView extends Component {
     }
   }
 
-  renderDetailItem(icon, text) {
-    return (
-      <TouchableNativeFeedback delayPressIn={0} delayPressOut={0} background={RippleColor('#d1d1d1')}>
-        <View>
-          <View pointerEvents="none" style={styles.detailItem}>
-            <Icon name={icon} size={18} color={PRIMARY_COLOR} />
-            <Text pointerEvents="none" style={styles.detailText}>{text}</Text>
-          </View>
+  renderDetailItem = (icon, text) => (
+    <TouchableNativeFeedback delayPressIn={0} delayPressOut={0} background={RippleColor('#d1d1d1')}>
+      <View>
+        <View pointerEvents="none" style={styles.detailItem}>
+          <Icon name={icon} size={18} color={PRIMARY_COLOR} />
+          <Text pointerEvents="none" style={styles.detailText}>{text}</Text>
         </View>
-      </TouchableNativeFeedback>
-    )
-  }
+      </View>
+    </TouchableNativeFeedback>
+  );
 
-  renderFloatingActionButton() {
+  renderFloatingActionButton = () => {
     const { bottomSheetColor } = this.state
     const isExpanded = bottomSheetColor === 1
     return (
       <FloatingActionButton
-        ref="floating"
+        ref={(floating) => { this.floating = floating }}
         elevation={18}
         rippleEffect={true}
-        icon={"directions"}
+        icon={'directions'}
         iconProvider={IconMDI}
         iconColor={!isExpanded ? WHITE : PRIMARY_COLOR}
-        onPress={::this.handleFabPress}
+        onPress={this.handleFabPress}
         backgroundColor={isExpanded ? WHITE : PRIMARY_COLOR}
       />
     )
   }
 
-  renderBottomSheet() {
+  renderBottomSheet = () => {
     const {
       bottomSheetColor,
       bottomSheetColorAnimated
@@ -171,13 +170,14 @@ class GoogleMapsView extends Component {
 
     return (
       <BottomSheetBehavior
-        ref="bottomSheet"
+        // ref="bottomSheet"
+        ref={(bottomSheet) => { this.bottomSheet = bottomSheet }}
         elevation={16}
         peekHeight={90}
-        onSlide={::this.handleSlide}
-        onStateChange={::this.handleBottomSheetChange}>
+        onSlide={this.handleSlide}
+        onStateChange={this.handleBottomSheetChange}>
         <View style={styles.bottomSheet}>
-          <TouchableWithoutFeedback onPress={::this.handleBottomSheetOnPress}>
+          <TouchableWithoutFeedback onPress={this.handleBottomSheetOnPress}>
             <Animated.View style={[styles.bottomSheetHeader, headerAnimated]}>
               <View style={styles.bottomSheetLeft}>
                 <Animated.Text style={[styles.bottomSheetTitle, textAnimated]}>
@@ -185,11 +185,11 @@ class GoogleMapsView extends Component {
                 </Animated.Text>
                 <View style={styles.starsContainer}>
                   <Animated.Text style={[starsAnimated, { marginRight: 8 }]}>5.0</Animated.Text>
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
-                  <AnimatedIcon name="md-star" size={16} style={styles.star} style={starsAnimated} />
+                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
+                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
+                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
+                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
+                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
                 </View>
               </View>
               <View style={styles.bottomSheetRight}>
@@ -225,52 +225,48 @@ class GoogleMapsView extends Component {
     )
   }
 
-  renderMaps() {
-    return (
-      <View style={styles.containerMap}>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: -22.920,
-            longitude: -43.190,
-            latitudeDelta: 0.1022,
-            longitudeDelta: 0.0421,
-          }}
-        />
-      </View>
-    )
-  }
+  renderMaps = () => (
+    <View style={styles.containerMap}>
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: -22.920,
+          longitude: -43.190,
+          latitudeDelta: 0.1022,
+          longitudeDelta: 0.0421,
+        }}
+      />
+    </View>
+  )
 
-  renderToolbar() {
-    return (
-      <View style={styles.toolbar}>
-        <TouchableNativeFeedback
-          delayPressIn={0}
-          delayPressOut={0}
-          background={RippleColor('#d1d1d1', true)}
-          onPress={::this.handleOpenDrawer}>
-          <View style={styles.buttonIcon}>
-            <Icon name="md-menu" size={20} />
-          </View>
-        </TouchableNativeFeedback>
-        <View style={styles.toolbarInput}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Try restaurants, coffee"
-            placeholderTextColor="#c2c2c2"
-            underlineColorAndroid="transparent" />
+  renderToolbar = () => (
+    <View style={styles.toolbar}>
+      <TouchableNativeFeedback
+        delayPressIn={0}
+        delayPressOut={0}
+        background={RippleColor('#d1d1d1', true)}
+        onPress={this.handleOpenDrawer}>
+        <View style={styles.buttonIcon}>
+          <Icon name="md-menu" size={20} />
         </View>
-        <TouchableNativeFeedback
-          delayPressIn={0}
-          delayPressOut={0}
-          background={RippleColor('#d1d1d1', true)}>
-          <View style={styles.buttonIcon}>
-            <Icon name="md-mic" size={20} />
-          </View>
-        </TouchableNativeFeedback>
+      </TouchableNativeFeedback>
+      <View style={styles.toolbarInput}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Try restaurants, coffee"
+          placeholderTextColor="#c2c2c2"
+          underlineColorAndroid="transparent" />
       </View>
-    )
-  }
+      <TouchableNativeFeedback
+        delayPressIn={0}
+        delayPressOut={0}
+        background={RippleColor('#d1d1d1', true)}>
+        <View style={styles.buttonIcon}>
+          <Icon name="md-mic" size={20} />
+        </View>
+      </TouchableNativeFeedback>
+    </View>
+  )
 
   render() {
     return (

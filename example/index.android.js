@@ -39,29 +39,27 @@ class BSBExample extends Component {
     }
   };
 
-  getChildContext() {
-    return {
-      openDrawer:  ::this.handleOpenDrawer,
-      closeDrawer: ::this.handleCloseDrawer,
-    }
+  getChildContext = () => ({
+    openDrawer: this.handleOpenDrawer,
+    closeDrawer: this.handleCloseDrawer,
+  })
+
+  handleOpenDrawer = () => {
+    this.drawer.openDrawer()
   }
 
-  handleOpenDrawer() {
-    this.refs.drawer.openDrawer()
+  handleCloseDrawer = () => {
+    this.drawer.closeDrawer()
   }
 
-  handleCloseDrawer() {
-    this.refs.drawer.closeDrawer()
-  }
-
-  handlePush(route) {
+  handlePush = (route) => {
     const { navigationState } = this.state
     this.setState({
       navigationState: NavigationStateUtils.jumpTo(navigationState, route)
     })
   }
 
-  renderScene(props) {
+  renderScene = (props) => {
     const { key } = props.scene.route
     return (
       <View style={styles.container}>
@@ -75,12 +73,12 @@ class BSBExample extends Component {
   render() {
     return (
       <DrawerLayoutAndroid
-        ref="drawer"
+        ref={(drawer) => { this.drawer = drawer }}
         drawerWidth={width - 56}
-        renderNavigationView={() => <DrawerMenu push={::this.handlePush} />}
+        renderNavigationView={() => <DrawerMenu push={this.handlePush} />}
         >
         <NavigationCardStack
-          renderScene={::this.renderScene}
+          renderScene={this.renderScene}
           navigationState={this.state.navigationState}
         />
       </DrawerLayoutAndroid>

@@ -31,11 +31,11 @@ class SimpleView extends Component {
     state: 4,
   };
 
-  handleState(state) {
+  handleState = (state) => {
     this.setState({ state })
   }
 
-  handleSlide(e) {
+  handleSlide = (e) => {
     const offset = e.nativeEvent.offset
     this.setState({ offset })
   }
@@ -43,11 +43,11 @@ class SimpleView extends Component {
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
-        <StatusBar translucent backgroundColor={"rgba(0, 0, 0, 0.25)"} />
+        <StatusBar translucent backgroundColor={'rgba(0, 0, 0, 0.25)'} />
         <View style={styles.content}>
           <View style={styles.toolbarWrapper}>
             <Icon.ToolbarAndroid
-              navIconName={"md-menu"}
+              navIconName={'md-menu'}
               style={styles.toolbar}
               titleColor="#fff"
               title="ListView"
@@ -69,7 +69,7 @@ class SimpleView extends Component {
           peekHeight={70}
           hideable={false}
           state={this.state.state}
-          onSlide={::this.handleSlide}>
+          onSlide={this.handleSlide}>
           <View style={styles.bottomSheet}>
             <View style={styles.bottomSheetHeader}>
               <Text style={styles.label}>BottomSheetBehavior !</Text>
