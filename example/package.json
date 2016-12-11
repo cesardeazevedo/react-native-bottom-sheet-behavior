@@ -1,20 +1,28 @@
 {
   "name": "example",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "android": "trash node_modules/react-native-bottom-sheet-behavior && npm install && react-native run-android"
+    "android": "trash node_modules/react-native-bottom-sheet-behavior && npm install && react-native run-android",
+    "lint": "eslint -c .eslintrc.js views index.android.js",
+    "lint:fix": "eslint -c .eslintrc.js views index.android.js --fix"
   },
   "dependencies": {
     "react": "^15.4.1",
     "react-native": "^0.39.0",
-    "react-native-bottom-sheet-behavior": "../"
+    "react-native-maps": "^0.10.0",
+    "react-native-vector-icons": "^2.0.3",
+    "react-native-bottom-sheet-behavior": "file:../"
   },
   "devDependencies": {
-    "babel-preset-react-native-stage-0": "^1.0.1",
-    "eslint-plugin-react-native": "^2.0.0",
-    "react-native-maps": "^0.10.0",
-    "react-native-vector-icons": "^2.0.3"
+    "babel-preset-react-native": "^1.9.0",
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb": "13.0.0",
+    "eslint-plugin-babel": "^3.3.0",
+    "eslint-plugin-import": "^2.1.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.6.0",
+    "eslint-plugin-react-native": "2.1.0"
   }
 }
