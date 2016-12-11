@@ -29,44 +29,38 @@ class DrawerMenu extends Component {
     closeDrawer: PropTypes.func,
   };
 
-  handleAction(route) {
+  handleAction = (route) => {
     this.context.closeDrawer()
     this.props.push(route.name)
   }
 
-  renderMenuItem(route) {
-    return (
-      <View key={route.name}>
-        <TouchableNativeFeedback
-          delayPressIn={0}
-          delayPressOut={0}
-          background={RippleColor}
-          onPress={() => ::this.handleAction(route)}>
-          <View style={styles.menuItem}>
-            <Icon name={route.icon} style={styles.icon} size={22} />
-            <View pointerEvents="none">
-              <Text style={styles.menuLabel}>{route.name}</Text>
-            </View>
+  renderMenuItem = route => (
+    <View key={route.name}>
+      <TouchableNativeFeedback
+        delayPressIn={0}
+        delayPressOut={0}
+        background={RippleColor}
+        onPress={() => this.handleAction(route)}>
+        <View style={styles.menuItem}>
+          <Icon name={route.icon} style={styles.icon} size={22} />
+          <View pointerEvents="none">
+            <Text style={styles.menuLabel}>{route.name}</Text>
           </View>
-        </TouchableNativeFeedback>
-      </View>
-    )
-  }
+        </View>
+      </TouchableNativeFeedback>
+    </View>
+  )
 
-  renderMenu() {
-    return (
-      <View>{MENU.map(::this.renderMenuItem)}</View>
-    )
-  }
+  renderMenu = () =>  (
+    <View>{MENU.map(this.renderMenuItem)}</View>
+  )
 
-  renderHeader() {
-    return (
-      <View style={styles.header}>
-        <Text style={styles.title}>{npm.name}</Text>
-        <Text style={styles.title}>v{npm.version}</Text>
-      </View>
-    )
-  }
+  renderHeader = () => (
+    <View style={styles.header}>
+      <Text style={styles.title}>{npm.name}</Text>
+      <Text style={styles.title}>v{npm.version}</Text>
+    </View>
+  )
 
   render() {
     return (

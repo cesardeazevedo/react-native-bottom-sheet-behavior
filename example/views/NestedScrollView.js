@@ -8,7 +8,6 @@ import {
   View,
   StatusBar,
   Dimensions,
-  ScrollView,
   StyleSheet,
   TouchableNativeFeedback,
 } from 'react-native'
@@ -33,7 +32,7 @@ class NestedScroll extends Component {
     buttons: [0],
   };
 
-  handleAddButton() {
+  handleAddButton = () => {
     /* eslint-disable object-curly-spacing */
     const { buttons } = this.state
     const length = buttons.length || 0
@@ -43,7 +42,7 @@ class NestedScroll extends Component {
     ]})
   }
 
-  handleRemoveButton(index) {
+  handleRemoveButton = (index) => {
     const { buttons } = this.state
     this.setState({ buttons: [
       ...buttons.slice(0, index),
@@ -51,35 +50,33 @@ class NestedScroll extends Component {
     ]})
   }
 
-  handleState(state) {
+  handleState = (state) => {
     this.setState({ state })
   }
 
-  renderButton(key, index) {
-    return (
-      <TouchableNativeFeedback key={index} onPress={() => this.handleRemoveButton(index)}>
-        <View style={styles.button}>
-          <Text style={styles.buttonLabel}>{key}</Text>
-        </View>
-      </TouchableNativeFeedback>
-    )
-  }
+  renderButton = (key, index) => (
+    <TouchableNativeFeedback key={index} onPress={() => this.handleRemoveButton(index)}>
+      <View style={styles.button}>
+        <Text style={styles.buttonLabel}>{key}</Text>
+      </View>
+    </TouchableNativeFeedback>
+  )
 
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
-        <StatusBar translucent backgroundColor={"rgba(0, 0, 0, 0.25)"} />
+        <StatusBar translucent backgroundColor={'rgba(0, 0, 0, 0.25)'} />
         <View style={styles.content}>
           <View style={styles.toolbarWrapper}>
             <Icon.ToolbarAndroid
-              navIconName={"md-menu"}
+              navIconName={'md-menu'}
               style={styles.toolbar}
               titleColor="white"
               title="NestedScrollView"
               onIconClicked={() => this.context.openDrawer()}
             />
           </View>
-          <TouchableNativeFeedback onPress={::this.handleAddButton}>
+          <TouchableNativeFeedback onPress={this.handleAddButton}>
             <View style={styles.button}>
               <Text style={styles.buttonLabel}>Add Button</Text>
             </View>
@@ -106,7 +103,7 @@ class NestedScroll extends Component {
             </View>
             <View style={styles.bottomSheetContent} >
               <NestedScrollView style={styles.scroll}>
-                {this.state.buttons.map(::this.renderButton)}
+                {this.state.buttons.map(this.renderButton)}
               </NestedScrollView>
             </View>
           </View>
