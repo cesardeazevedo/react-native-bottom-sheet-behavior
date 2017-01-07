@@ -2,12 +2,13 @@ package com.bottomsheetbehavior;
 
 import android.view.View;
 import android.view.ViewGroup;
-import com.facebook.csslayout.CSSMeasureMode;
-import com.facebook.csslayout.CSSNodeAPI;
-import com.facebook.csslayout.MeasureOutput;
+import com.facebook.yoga.YogaMeasureMode;
+import com.facebook.yoga.YogaNodeAPI;
+import com.facebook.yoga.YogaMeasureOutput;
+import com.facebook.yoga.YogaMeasureFunction;
 import com.facebook.react.uimanager.LayoutShadowNode;
 
-public class FloatingActionButtonShadowNode extends LayoutShadowNode implements CSSNodeAPI.MeasureFunction {
+public class FloatingActionButtonShadowNode extends LayoutShadowNode implements YogaMeasureFunction {
     private int mWidth;
     private int mHeight;
     private boolean mMeasured;
@@ -17,18 +18,18 @@ public class FloatingActionButtonShadowNode extends LayoutShadowNode implements 
     }
 
     @Override
-    public long measure(CSSNodeAPI node, float width, CSSMeasureMode widthMode, float height, CSSMeasureMode heightMode) {
+    public long measure(YogaNodeAPI node, float width, YogaMeasureMode widthMode, float height, YogaMeasureMode heightMode) {
         if(!mMeasured) {
             FloatingActionButtonView nodeView = new FloatingActionButtonView(getThemedContext());
             final int spec = View.MeasureSpec.makeMeasureSpec(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                View.MeasureSpec.UNSPECIFIED);
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    View.MeasureSpec.UNSPECIFIED);
             nodeView.measure(spec, spec);
             mWidth = nodeView.getMeasuredWidth();
             mHeight = nodeView.getMeasuredHeight();
             mMeasured = true;
         }
 
-        return MeasureOutput.make(mWidth, mHeight);
+        return YogaMeasureOutput.make(mWidth, mHeight);
     }
 }

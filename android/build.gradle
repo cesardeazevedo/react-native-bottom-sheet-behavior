@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -26,8 +26,9 @@ allprojects {
         mavenLocal()
         jcenter()
         maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url "$rootDir/../example/node_modules/react-native/android"
+            // For developing the library outside the context of the example app, expect `react-native`
+            // to be installed at `./node_modules`.
+            url "$projectDir/../node_modules/react-native/android"
         }
     }
 }
