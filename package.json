@@ -16,8 +16,8 @@
     "type": "git",
     "url": "https://github.com/cesardeazevedo/react-native-bottom-sheet-behavior.git"
   },
-  "peerDependencies": {
-    "react": ">=15.3.0",
-    "react-native": ">=0.31.0"
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-native": "^0.40.0"
   }
 }
