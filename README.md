@@ -22,7 +22,7 @@ The following components are included in this package:
 
 ### Install with RNPM
 
-`$ rnpm link react-native-bottom-sheet-behavior`
+`$ react-native link react-native-bottom-sheet-behavior`
 
 ### Install Manually
 
@@ -80,14 +80,19 @@ You will need to wrap your view into a `CoordinatorLayout` to make it work.
 
     render() {
       return (
-          <CoordinatorLayout style={styles.container}>
+          <CoordinatorLayout style={{flex: 1}}>
             <View style={{ flex: 1, backgroundColor: 'transparent' }}></View>
             <BottomSheetBehavior
-                ref="bottomSheet"
-                peekHeight={50}
-                hideable={true}
-                state={BottomSheetBehavior.STATE_COLLAPSED}>
-                <View></View>
+              ref='bottomSheet'
+              peekHeight={70}
+              hideable={false}
+              state={BottomSheetBehavior.STATE_COLLAPSED}>
+              <View style={{backgroundColor: '#4389f2'}}>
+                <View style={{padding: 26}}>
+                  <Text>BottomSheetBehavior!</Text>
+                </View>
+                <View style={{height: 200, backgroundColor: '#fff'}} />
+              </View>
             </BottomSheetBehavior>
             <FloatingActionButton ref="fab" />
           </CoordinatorLayout>
