@@ -1,6 +1,6 @@
 {
   "name": "react-native-bottom-sheet-behavior",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "React Native wrapper for android BottomSheetBehavior",
   "author": "Cesar Augusto <cesardeazevedo@outlook.com>",
   "scripts": {
