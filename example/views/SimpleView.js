@@ -17,9 +17,17 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import {
   CoordinatorLayout,
   BottomSheetBehavior,
+  FloatingActionButton,
 } from 'react-native-bottom-sheet-behavior'
 
 const { width } = Dimensions.get('window')
+
+const {
+  STATE_DRAGGING,
+  STATE_EXPANDED,
+  STATE_SETTLING,
+  STATE_COLLAPSED,
+} = BottomSheetBehavior
 
 class SimpleView extends Component {
   static contextTypes = {
@@ -28,15 +36,38 @@ class SimpleView extends Component {
 
   state = {
     offset: 0,
-    state: 4,
+    bottomSheetState: 0,
   };
 
   handleState = (state) => {
-    this.setState({ state })
+    this.bottomSheet.setBottomSheetState(state)
+  }
+
+  handleBottomSheetChange = (e) => {
+    const newState = e.nativeEvent.state
+
+    if (this.state.offset > 0.1 && (newState === STATE_DRAGGING || newState === STATE_EXPANDED)) {
+      this.setState({ bottomSheetState: 1 })
+    }
+
+    if (newState === STATE_SETTLING && !this.settlingExpanded) {
+      this.setState({ bottomSheetState: 0 })
+    }
+
+    this.lastState = newState
   }
 
   handleSlide = (e) => {
-    const offset = e.nativeEvent.offset
+    const offset = parseFloat(e.nativeEvent.offset.toFixed(2))
+
+    this.settlingExpanded = offset >= this.state.offset
+
+    if (offset === 0) {
+      this.setState({ bottomSheetState: 0 })
+    } else if (this.state.bottomSheetState !== 1 && this.lastState === STATE_DRAGGING) {
+      this.setState({ bottomSheetState: 1 })
+    }
+
     this.setState({ offset })
   }
 
@@ -54,12 +85,12 @@ class SimpleView extends Component {
               onIconClicked={() => this.context.openDrawer()}
             />
           </View>
-          <TouchableNativeFeedback onPress={() => this.handleState(BottomSheetBehavior.STATE_EXPANDED)}>
+          <TouchableNativeFeedback onPress={() => this.handleState(STATE_EXPANDED)}>
             <View style={styles.button}>
               <Text style={styles.buttonLabel}>Expanded</Text>
             </View>
           </TouchableNativeFeedback>
-          <TouchableNativeFeedback onPress={() => this.handleState(BottomSheetBehavior.STATE_COLLAPSED)}>
+          <TouchableNativeFeedback onPress={() => this.handleState(STATE_COLLAPSED)}>
             <View style={styles.button}>
               <Text style={styles.buttonLabel}>Collapsed</Text>
             </View>
@@ -68,8 +99,8 @@ class SimpleView extends Component {
         <BottomSheetBehavior
           peekHeight={70}
           hideable={false}
-          state={this.state.state}
-          onSlide={this.handleSlide}>
+          onSlide={this.handleSlide}
+          onStateChange={this.handleBottomSheetChange}>
           <View style={styles.bottomSheet}>
             <View style={styles.bottomSheetHeader}>
               <Text style={styles.label}>BottomSheetBehavior !</Text>
@@ -78,6 +109,13 @@ class SimpleView extends Component {
             <View style={styles.bottomSheetContent} />
           </View>
         </BottomSheetBehavior>
+        <FloatingActionButton
+          autoAnchor
+          elevation={18}
+          backgroundColor={'#333333'}
+          rippleColor="red"
+          hidden={this.state.bottomSheetState === 0}
+        />
       </CoordinatorLayout>
     )
   }
