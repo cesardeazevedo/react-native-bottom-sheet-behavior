@@ -165,20 +165,35 @@ BottomSheetBehavior States
 | 4     | STATE_COLLAPSED |
 | 5     | STATE_HIDDEN    |
 
+BottomSheetBehavior actions
+
+| Method              | Description                 |
+| --------------------|-----------------------------|
+| setBottomSheetState | Sets the bottom sheet state |
 
 FloatingActionButton properties
 
 | Prop                | Description                                        | Default Value |
-| ------------------- | ---------------------------------------------------|---------------|
+| --------------------|----------------------------------------------------|---------------|
 | src                 | Drawable file under the drawable android folder    |               |
+| autoAnchor          | Attachs the button on bottom sheet automatically   | false         |
 | icon                | react-native-vector-icons name                     |               |
 | iconProvider        | Icon package provided by react-native-vector-icons |               |
-| iconColor           | Icon color (API >= 21)                             |               |
+| iconColor           | Icon color                                         |               |
 | backgroundColor     | Background color                                   |               |
 | hidden              | Hides FloatingActionButton                         | false         |
 | rippleEffect        | Enable rippleEffect                                | true          |
-| elevation       	  | Elevation shadow                                   | 18            |
+| rippleColor         | Ripple color                                       |               |
+| elevation           | Elevation shadow                                   | 18            |
 | onPress             | Callback called when touch is released             |               |
+
+FloatingActionButton actions
+
+| Method        | Description  |
+| --------------|--------------------------------------------------------------------------------|
+| [show](https://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html#show) | This method will animate the button show if the view has already been laid out |
+| [hide](https://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html#hide()) | This method will animate the button hide if the view has already been laid out |
+| setAnchorId | Attachs the button on bottom sheet by passing it as a argument (no needed if autoAnchor is set true) |
 
 ## Roadmap
 
