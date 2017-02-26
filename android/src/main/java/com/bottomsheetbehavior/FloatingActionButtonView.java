@@ -17,7 +17,7 @@ import java.net.URL;
 
 public class FloatingActionButtonView extends FloatingActionButton {
 
-    Drawable icon;
+    private boolean autoAnchor;
 
     public FloatingActionButtonView(Context context) {
         super(context);
@@ -35,7 +35,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
     }
 
     public void setSrc(String src) {
-        icon = ResourceDrawableIdHelper.getInstance().getResourceDrawable(this.getContext(), src);
+        Drawable icon = ResourceDrawableIdHelper.getInstance().getResourceDrawable(this.getContext(), src);
         this.setImageDrawable(icon);
     }
 
@@ -43,19 +43,10 @@ public class FloatingActionButtonView extends FloatingActionButton {
         try {
             URL url = new URL(path);
             Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
-            icon = new BitmapDrawable(this.getResources(), bitmap);
+            Drawable icon = new BitmapDrawable(this.getResources(), bitmap);
             this.setImageDrawable(icon);
             this.requestLayout();
         } catch (Exception e) {
-        }
-    }
-
-    public void setIconColor(String color) {
-        try {
-            if (icon != null && android.os.Build.VERSION.SDK_INT >= 21) {
-                icon.mutate().setTint(Color.parseColor(color));
-            }
-        } catch (Exception ex) {
         }
     }
 
@@ -67,17 +58,41 @@ public class FloatingActionButtonView extends FloatingActionButton {
     }
 
     public void setHidden(boolean hidden) {
-        this.setHidden(hidden);
+        if (hidden) {
+            this.hideFab();
+        } else {
+            this.showFab();
+        }
     }
 
     public void setRippleEffect(boolean rippleEffect) {
         this.setClickable(rippleEffect);
     }
 
+    public void setRippleColor(String rippleColor) {
+        this.setRippleColor(Color.parseColor(rippleColor));
+    }
+
     public void setFabElevation(float elevation) {
         if (android.os.Build.VERSION.SDK_INT >= 21) {
             this.setElevation(elevation);
         }
+    }
+
+    public void showFab() {
+        this.show();
+    }
+
+    public void hideFab() {
+        this.hide();
+    }
+
+    public boolean getAutoAnchor() {
+        return autoAnchor;
+    }
+
+    public void setAutoAnchor(boolean anchor) {
+       autoAnchor = anchor;
     }
 
     public void setAnchor(int id) {

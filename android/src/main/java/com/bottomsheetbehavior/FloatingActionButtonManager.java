@@ -22,6 +22,8 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     private final static String REACT_CLASS = "RCTFloatingActionButtonAndroid";
 
     private final static int COMMAND_SET_ANCHOR_ID = 1;
+    private final static int COMMAND_SHOW = 2;
+    private final static int COMMAND_HIDE = 3;
 
     @Override
     public String getName() {
@@ -55,11 +57,6 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         view.setIcon(uri);
     }
 
-    @ReactProp(name = "iconColor")
-    public void setIconColor(FloatingActionButtonView view, String color) {
-        view.setIconColor(color);
-    }
-
     @ReactProp(name = "backgroundColor")
     public void setBackground(FloatingActionButtonView view, String background) {
         view.setBackground(background);
@@ -75,21 +72,43 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         view.setRippleEffect(rippleEffect);
     }
 
+    @ReactProp(name = "rippleColor")
+    public void setRippleColor(FloatingActionButtonView view, String rippleColor) {
+        view.setRippleColor(rippleColor);
+    }
+
     @ReactProp(name = "elevation", defaultFloat = 18)
     public void setElevation(FloatingActionButtonView view, float elevation) {
         view.setFabElevation(elevation);
     }
 
+    @ReactProp(name = "autoAnchor")
+    public void setAutoAnchor(FloatingActionButtonView view, boolean autoAnchor) {
+        view.setAutoAnchor(autoAnchor);
+    }
+
     @Override
     public Map<String,Integer> getCommandsMap() {
-        return MapBuilder.of("setAnchorId", COMMAND_SET_ANCHOR_ID);
+        return MapBuilder.of(
+                "setAnchorId", COMMAND_SET_ANCHOR_ID,
+                "show", COMMAND_SHOW,
+                "hide", COMMAND_HIDE
+        );
     }
 
     @Override
     public void receiveCommand(FloatingActionButtonView view, int commandType, @Nullable ReadableArray args) {
-        if (commandType == COMMAND_SET_ANCHOR_ID) {
-            int bottomSheetId = args.getInt(0);
-            view.setAnchor(bottomSheetId);
+        switch (commandType) {
+            case COMMAND_SET_ANCHOR_ID:
+                int bottomSheetId = args.getInt(0);
+                view.setAnchor(bottomSheetId);
+                break;
+            case COMMAND_SHOW:
+                view.showFab();
+                break;
+            case COMMAND_HIDE:
+                view.hideFab();
+                break;
         }
     }
 
