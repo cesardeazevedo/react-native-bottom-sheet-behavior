@@ -14,7 +14,6 @@ import {
 } from 'react-native'
 
 import MapView from 'react-native-maps'
-// import DismissKeyboard from 'dismissKeyboard'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconMDI from 'react-native-vector-icons/MaterialIcons'
 
@@ -29,15 +28,23 @@ const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 const { width, height } = Dimensions.get('window')
 
 const duration = 120
-const RippleColor = (...args) =>
+const RippleColor = (...args) => (
   Platform.Version >= 21
     ? TouchableNativeFeedback.Ripple(...args)
     : null
+)
 
 const WHITE = '#FFFFFF'
 const PRIMARY_COLOR = '#4589f2'
 const TEXT_BASE_COLOR = '#333'
 const STAR_COLOR = '#FF5722'
+
+const {
+  STATE_DRAGGING,
+  STATE_EXPANDED,
+  STATE_SETTLING,
+  STATE_COLLAPSED,
+} = BottomSheetBehavior
 
 class GoogleMapsView extends Component {
   static contextTypes = {
@@ -49,10 +56,7 @@ class GoogleMapsView extends Component {
     bottomSheetColorAnimated: new Animated.Value(0),
   };
 
-  componentDidMount() {
-    this.lastState = BottomSheetBehavior.STATE_COLLAPSED
-    this.floating.setAnchorId(this.bottomSheet)
-  }
+  lastState = STATE_COLLAPSED
 
   handleOpenDrawer = () => {
     Keyboard.dismiss()
@@ -64,26 +68,22 @@ class GoogleMapsView extends Component {
   }
 
   handleBottomSheetOnPress = () => {
-    const { bottomSheet } = this
-
-    if (this.lastState === BottomSheetBehavior.STATE_COLLAPSED) {
+    if (this.lastState === STATE_COLLAPSED) {
       this.setState({ bottomSheetColor: 1 })
-      bottomSheet.setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
-    } else if (this.lastState === BottomSheetBehavior.STATE_EXPANDED) {
+      this.bottomSheet.setBottomSheetState(STATE_EXPANDED)
+    } else if (this.lastState === STATE_EXPANDED) {
       this.setState({ bottomSheetColor: 0 })
-      bottomSheet.setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
+      this.bottomSheet.setBottomSheetState(STATE_COLLAPSED)
     }
   }
 
   handleBottomSheetChange = (e) => {
     const newState = e.nativeEvent.state
 
-    if (this.offset > 0.1 &&
-        newState === BottomSheetBehavior.STATE_DRAGGING ||
-        newState === BottomSheetBehavior.STATE_EXPANDED) {
+    if (this.offset > 0.1 && (newState === STATE_DRAGGING || newState === STATE_EXPANDED)) {
       this.setState({ bottomSheetColor: 1 })
     }
-    if (newState === BottomSheetBehavior.STATE_SETTLING && !this.settlingExpanded) {
+    if (newState === STATE_SETTLING && !this.settlingExpanded) {
       this.setState({ bottomSheetColor: 0 })
     }
 
@@ -99,7 +99,7 @@ class GoogleMapsView extends Component {
 
     if (offset === 0) {
       this.setState({ bottomSheetColor: 0 })
-    } else if (bottomSheetColor !== 1 && this.lastState === BottomSheetBehavior.STATE_DRAGGING) {
+    } else if (bottomSheetColor !== 1 && this.lastState === STATE_DRAGGING) {
       this.setState({ bottomSheetColor: 1 })
     }
   }
@@ -120,10 +120,11 @@ class GoogleMapsView extends Component {
     const isExpanded = bottomSheetColor === 1
     return (
       <FloatingActionButton
-        ref={(floating) => { this.floating = floating }}
+        autoAnchor
         elevation={18}
         rippleEffect={true}
-        icon={'directions'}
+        rippleColor="grey"
+        icon="directions"
         iconProvider={IconMDI}
         iconColor={!isExpanded ? WHITE : PRIMARY_COLOR}
         onPress={this.handleFabPress}
@@ -170,7 +171,6 @@ class GoogleMapsView extends Component {
 
     return (
       <BottomSheetBehavior
-        // ref="bottomSheet"
         ref={(bottomSheet) => { this.bottomSheet = bottomSheet }}
         elevation={16}
         peekHeight={90}
@@ -309,7 +309,6 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   toolbar: {
-    flex: 1,
     flexDirection: 'row',
     elevation: 2,
     marginTop: 32,
@@ -329,8 +328,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    fontSize: 16,
-    marginTop: 8,
+    fontSize: 18,
     marginHorizontal: 8,
   },
   bottomSheet: {
