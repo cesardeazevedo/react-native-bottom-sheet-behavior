@@ -99,6 +99,7 @@ class SimpleView extends Component {
         <BottomSheetBehavior
           peekHeight={70}
           hideable={false}
+          ref={ref => { this.bottomSheet = ref }}
           onSlide={this.handleSlide}
           onStateChange={this.handleBottomSheetChange}>
           <View style={styles.bottomSheet}>
