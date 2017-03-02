@@ -12,6 +12,7 @@ package com.bottomsheetbehavior;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import android.os.SystemClock;
 import com.facebook.react.views.scroll.ScrollEvent;
 import com.facebook.react.views.scroll.ScrollEventType;
@@ -21,11 +22,14 @@ import com.facebook.react.uimanager.UIManagerModule;
 /**
  * Helper class that deals with emitting Scroll Events.
  *
- * Forked from https://github.com/facebook/react-native/blob/v0.35.0/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewHelper.java
+ * Forked from https://github.com/facebook/react-native/blob/v0.42.0/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewHelper.java
  */
 public class ReactNestedScrollViewHelper {
 
     public static final long MOMENTUM_DELAY = 20;
+    public static final String OVER_SCROLL_ALWAYS = "always";
+    public static final String AUTO = "auto";
+    public static final String OVER_SCROLL_NEVER = "never";
 
     /**
      * Shared by {@link ReactScrollView} and {@link ReactHorizontalScrollView}.
@@ -68,5 +72,17 @@ public class ReactNestedScrollViewHelper {
                 contentView.getHeight(),
                 scrollView.getWidth(),
                 scrollView.getHeight()));
+    }
+
+    public static int parseOverScrollMode(String jsOverScrollMode) {
+        if (jsOverScrollMode == null || jsOverScrollMode.equals(AUTO)) {
+            return View.OVER_SCROLL_IF_CONTENT_SCROLLS;
+        } else if (jsOverScrollMode.equals(OVER_SCROLL_ALWAYS)) {
+            return View.OVER_SCROLL_ALWAYS;
+        } else if (jsOverScrollMode.equals(OVER_SCROLL_NEVER)) {
+            return View.OVER_SCROLL_NEVER;
+        } else {
+            throw new JSApplicationIllegalArgumentException("wrong overScrollMode: " + jsOverScrollMode);
+        }
     }
 }

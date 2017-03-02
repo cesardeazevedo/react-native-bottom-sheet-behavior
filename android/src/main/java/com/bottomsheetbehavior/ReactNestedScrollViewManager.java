@@ -23,10 +23,11 @@ import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.views.scroll.ScrollEventType;
 import com.facebook.react.uimanager.ReactClippingViewGroupHelper;
+import com.facebook.react.views.scroll.ReactScrollViewHelper;
 import com.facebook.react.views.scroll.ReactScrollViewCommandHelper;
 
 /**
- * Forked from https://github.com/facebook/react-native/blob/v0.35.0/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewManager.java
+ * Forked from https://github.com/facebook/react-native/blob/v0.42.0/ReactAndroid/src/main/java/com/facebook/react/views/scroll/ReactScrollViewManager.java
  *
  * View manager for {@link ReactScrollView} components.
  *
@@ -107,6 +108,14 @@ public class ReactNestedScrollViewManager
     @ReactProp(name = "endFillColor", defaultInt = Color.TRANSPARENT, customType = "Color")
     public void setBottomFillColor(ReactNestedScrollView view, int color) {
         view.setEndFillColor(color);
+    }
+
+    /**
+     * Controls overScroll behaviour
+     */
+    @ReactProp(name = "overScrollMode")
+    public void setOverScrollMode(ReactNestedScrollView view, String value) {
+        view.setOverScrollMode(ReactScrollViewHelper.parseOverScrollMode(value));
     }
 
     @Override
