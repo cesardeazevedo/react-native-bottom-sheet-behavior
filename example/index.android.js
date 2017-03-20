@@ -32,8 +32,8 @@ class BSBExample extends Component {
     navigationState: {
       index: 0,
       routes: [
-        { key: 'GoogleMaps' },
         { key: 'Simple' },
+        { key: 'GoogleMaps' },
         { key: 'NestedScroll' }
       ]
     }

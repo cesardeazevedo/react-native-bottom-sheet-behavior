@@ -6,6 +6,8 @@ import React, { Component, PropTypes } from 'react'
 import {
   Text,
   View,
+  Image,
+  Platform,
   StatusBar,
   Dimensions,
   StyleSheet,
@@ -15,19 +17,22 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import {
+  AppBarLayout,
   CoordinatorLayout,
-  BottomSheetBehavior,
+  BackdropBottomSheet,
+  AnchorSheetBehavior,
   FloatingActionButton,
 } from 'react-native-bottom-sheet-behavior'
 
-const { width } = Dimensions.get('window')
+const { height, width } = Dimensions.get('window')
 
 const {
   STATE_DRAGGING,
+  STATE_ANCHOR_POINT,
   STATE_EXPANDED,
   STATE_SETTLING,
   STATE_COLLAPSED,
-} = BottomSheetBehavior
+} = AnchorSheetBehavior
 
 class SimpleView extends Component {
   static contextTypes = {
@@ -67,16 +72,13 @@ class SimpleView extends Component {
     } else if (this.state.bottomSheetState !== 1 && this.lastState === STATE_DRAGGING) {
       this.setState({ bottomSheetState: 1 })
     }
-
-    this.setState({ offset })
   }
 
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
         <StatusBar translucent backgroundColor={'rgba(0, 0, 0, 0.25)'} />
-        <View style={styles.content}>
-          <View style={styles.toolbarWrapper}>
+        <AppBarLayout style={styles.appBar}>
             <Icon.ToolbarAndroid
               navIconName={'md-menu'}
               style={styles.toolbar}
@@ -84,7 +86,13 @@ class SimpleView extends Component {
               title="ListView"
               onIconClicked={() => this.context.openDrawer()}
             />
-          </View>
+        </AppBarLayout>
+        <View style={styles.content}>
+          <TouchableNativeFeedback onPress={() => this.handleState(STATE_ANCHOR_POINT)}>
+            <View style={styles.button}>
+              <Text style={styles.buttonLabel}>Anchor</Text>
+            </View>
+          </TouchableNativeFeedback>
           <TouchableNativeFeedback onPress={() => this.handleState(STATE_EXPANDED)}>
             <View style={styles.button}>
               <Text style={styles.buttonLabel}>Expanded</Text>
@@ -96,27 +104,46 @@ class SimpleView extends Component {
             </View>
           </TouchableNativeFeedback>
         </View>
-        <BottomSheetBehavior
+        <BackdropBottomSheet height={600}>
+          <View style={{flex: 1, backgroundColor: 'grey'}}>
+            <Image
+              resizeMode='cover'
+              style={{width, height: 300}}
+              source={require('../ReactNativelogo.jpg')}
+            />
+          </View>
+        </BackdropBottomSheet>
+        <AnchorSheetBehavior
           peekHeight={70}
           hideable={false}
           ref={ref => { this.bottomSheet = ref }}
           onSlide={this.handleSlide}
+          collapsed
           onStateChange={this.handleBottomSheetChange}>
           <View style={styles.bottomSheet}>
             <View style={styles.bottomSheetHeader}>
               <Text style={styles.label}>BottomSheetBehavior !</Text>
               <Text>{this.state.offset}</Text>
             </View>
-            <View style={styles.bottomSheetContent} />
+            <View style={styles.bottomSheetContent}>
+              <TouchableNativeFeedback onPress={() => this.handleState(STATE_ANCHOR_POINT)}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonLabel}>Anchor</Text>
+                </View>
+              </TouchableNativeFeedback>
+              <TouchableNativeFeedback onPress={() => this.handleState(STATE_EXPANDED)}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonLabel}>Expanded</Text>
+                </View>
+              </TouchableNativeFeedback>
+              <TouchableNativeFeedback onPress={() => this.handleState(STATE_COLLAPSED)}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonLabel}>Collapsed</Text>
+                </View>
+              </TouchableNativeFeedback>
+            </View>
           </View>
-        </BottomSheetBehavior>
-        <FloatingActionButton
-          autoAnchor
-          elevation={18}
-          backgroundColor={'#333333'}
-          rippleColor="red"
-          hidden={this.state.bottomSheetState === 0}
-        />
+        </AnchorSheetBehavior>
       </CoordinatorLayout>
     )
   }
@@ -129,20 +156,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   content: {
+    paddingTop: 80,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  toolbarWrapper: {
-    paddingTop: 24,
-    marginBottom: 24,
+  appBar: {
+    height: 80,
     backgroundColor: '#4389f2',
   },
   toolbar: {
     width,
     height: 56,
+    backgroundColor: '#4389f2',
   },
   bottomSheet: {
+    height,
     backgroundColor: '#4389f2',
   },
   bottomSheetHeader: {
@@ -152,7 +181,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   bottomSheetContent: {
-    padding: 82,
+    flex: 1,
+    padding: 2,
     alignItems: 'center',
     backgroundColor: '#fff',
   },
