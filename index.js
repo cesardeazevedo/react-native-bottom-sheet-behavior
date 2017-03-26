@@ -1,4 +1,5 @@
-import AppBarLayout  from './lib/AppBarLayout'
+import MergedAppBarLayout  from './lib/MergedAppBarLayout'
+import ScrollingAppBarLayout  from './lib/ScrollingAppBarLayout'
 import CoordinatorLayout  from './lib/CoordinatorLayout'
 import AnchorSheetBehavior  from './lib/AnchorSheetBehavior'
 import BottomSheetBehavior  from './lib/BottomSheetBehavior'
@@ -7,7 +8,8 @@ import BackdropBottomSheet from './lib/BackdropBottomSheet'
 import NestedScrollView from './lib/NestedScrollView'
 
 export {
-  AppBarLayout,
+  MergedAppBarLayout,
+  ScrollingAppBarLayout,
   NestedScrollView,
   CoordinatorLayout,
   AnchorSheetBehavior,
