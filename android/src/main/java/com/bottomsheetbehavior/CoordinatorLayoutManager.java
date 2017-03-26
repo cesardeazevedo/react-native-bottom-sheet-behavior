@@ -4,7 +4,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 
 import com.facebook.react.uimanager.ViewGroupManager;
-import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.ThemedReactContext;
 
 public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayoutView> {
@@ -33,6 +32,12 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
                     if (childView instanceof BottomSheetBehaviorView) {
                         int bottomSheetId = childView.getId();
                         ((CoordinatorLayout.LayoutParams) child.getLayoutParams()).setAnchorId(bottomSheetId);
+                    } else if (childView instanceof AnchorSheetBehaviorView) {
+                        int bottomSheetId = childView.getId();
+                        CoordinatorLayout.LayoutParams params =
+                                (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+                        params.setBehavior(new ScrollAwareFABBehavior(parent.getContext(), null));
+                        params.setAnchorId(bottomSheetId);
                     }
                 }
             }

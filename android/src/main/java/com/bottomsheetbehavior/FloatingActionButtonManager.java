@@ -1,7 +1,6 @@
 package com.bottomsheetbehavior;
 
 import android.view.View;
-import android.support.design.widget.FloatingActionButton;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
