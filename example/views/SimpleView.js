@@ -1,13 +1,8 @@
-/**
- * @flow
- */
-
 import React, { Component, PropTypes } from 'react'
 import {
   Text,
   View,
   Image,
-  Platform,
   StatusBar,
   Dimensions,
   StyleSheet,
@@ -17,7 +12,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import {
-  AppBarLayout,
+  MergedAppBarLayout,
+  ScrollingAppBarLayout,
   CoordinatorLayout,
   BackdropBottomSheet,
   AnchorSheetBehavior,
@@ -77,16 +73,16 @@ class SimpleView extends Component {
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
-        <StatusBar translucent backgroundColor={'rgba(0, 0, 0, 0.25)'} />
-        <AppBarLayout style={styles.appBar}>
-            <Icon.ToolbarAndroid
-              navIconName={'md-menu'}
-              style={styles.toolbar}
-              titleColor="#fff"
-              title="ListView"
-              onIconClicked={() => this.context.openDrawer()}
-            />
-        </AppBarLayout>
+        <StatusBar translucent backgroundColor='#3369c1' />
+        <ScrollingAppBarLayout statusBarColor='#3369c1'>
+          <Icon.ToolbarAndroid
+            navIconName={'md-menu'}
+            style={styles.toolbar}
+            titleColor="#fff"
+            title="ListView"
+            onIconClicked={() => this.context.openDrawer()}
+          />
+        </ScrollingAppBarLayout>
         <View style={styles.content}>
           <TouchableNativeFeedback onPress={() => this.handleState(STATE_ANCHOR_POINT)}>
             <View style={styles.button}>
@@ -104,7 +100,7 @@ class SimpleView extends Component {
             </View>
           </TouchableNativeFeedback>
         </View>
-        <BackdropBottomSheet height={600}>
+        <BackdropBottomSheet height={300}>
           <View style={{flex: 1, backgroundColor: 'grey'}}>
             <Image
               resizeMode='cover'
@@ -118,7 +114,6 @@ class SimpleView extends Component {
           hideable={false}
           ref={ref => { this.bottomSheet = ref }}
           onSlide={this.handleSlide}
-          collapsed
           onStateChange={this.handleBottomSheetChange}>
           <View style={styles.bottomSheet}>
             <View style={styles.bottomSheetHeader}>
@@ -144,6 +139,24 @@ class SimpleView extends Component {
             </View>
           </View>
         </AnchorSheetBehavior>
+        <MergedAppBarLayout
+          mergedColor="yellow"
+          toolbarColor="yellow"
+          statusBarColor="#FFA500"
+          style={styles.appBarMerged}>
+          <Icon.ToolbarAndroid
+            navIconName="md-arrow-back"
+            titleColor="#000"
+            title="LLL"
+            onIconClicked={() => this.handleState(STATE_COLLAPSED)}
+          />
+        </MergedAppBarLayout>
+        <FloatingActionButton
+          autoAnchor
+          elevation={18}
+          backgroundColor={'#ffffff'}
+          rippleColor="grey"
+        />
       </CoordinatorLayout>
     )
   }
@@ -157,18 +170,15 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingTop: 80,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#F5FCFF',
   },
-  appBar: {
-    height: 80,
+  toolbar: {
     backgroundColor: '#4389f2',
   },
-  toolbar: {
-    width,
-    height: 56,
-    backgroundColor: '#4389f2',
+  appBarMerged: {
+    backgroundColor: 'transparent',
   },
   bottomSheet: {
     height,
