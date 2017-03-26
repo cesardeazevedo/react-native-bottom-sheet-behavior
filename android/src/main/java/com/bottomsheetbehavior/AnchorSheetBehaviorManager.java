@@ -32,8 +32,7 @@ public class AnchorSheetBehaviorManager extends ViewGroupManager<AnchorSheetBeha
   @Override
   public AnchorSheetBehaviorView createViewInstance(ThemedReactContext context) {
     AnchorSheetBehaviorView anchorSheet = new AnchorSheetBehaviorView(context);
-     anchorSheet.bottomSheetBehavior.addBottomSheetCallback(new AnchorSheetBehaviorListener());
-     anchorSheet.setFitsSystemWindows(true);
+    anchorSheet.bottomSheetBehavior.addBottomSheetCallback(new AnchorSheetBehaviorListener());
     return anchorSheet;
   }
 

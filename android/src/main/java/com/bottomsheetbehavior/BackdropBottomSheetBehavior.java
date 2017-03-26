@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
@@ -64,7 +63,6 @@ public class BackdropBottomSheetBehavior<V extends View> extends CoordinatorLayo
       catch (IllegalArgumentException e){}
     }
 
-    Log.d("Backdrop", "Depends FALSE");
     return false;
   }
 
