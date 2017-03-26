@@ -1,11 +1,8 @@
 package com.bottomsheetbehavior;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
@@ -14,7 +11,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
