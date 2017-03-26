@@ -1,26 +1,16 @@
-/**
- * @flow
- */
-
 import React, { Component, PropTypes } from 'react'
 import {
-  View,
   Dimensions,
-  StyleSheet,
   AppRegistry,
   DrawerLayoutAndroid,
-  NavigationExperimental,
 } from 'react-native'
+
+import { StackNavigator } from 'react-navigation'
 
 import DrawerMenu from './DrawerMenu'
 import { SimpleView, NestedScrollView, GoogleMapsView } from './views'
 
 const { width } = Dimensions.get('window')
-
-const {
- CardStack: NavigationCardStack,
- StateUtils: NavigationStateUtils
-} = NavigationExperimental
 
 class BSBExample extends Component {
   static childContextTypes = {
@@ -29,14 +19,7 @@ class BSBExample extends Component {
   };
 
   state = {
-    navigationState: {
-      index: 0,
-      routes: [
-        { key: 'Simple' },
-        { key: 'GoogleMaps' },
-        { key: 'NestedScroll' }
-      ]
-    }
+    currentRoute: 'Simple'
   };
 
   getChildContext = () => ({
@@ -52,21 +35,20 @@ class BSBExample extends Component {
     this.drawer.closeDrawer()
   }
 
-  handlePush = (route) => {
-    const { navigationState } = this.state
-    this.setState({
-      navigationState: NavigationStateUtils.jumpTo(navigationState, route)
-    })
+  handlePush = (routeName) => {
+    this.navigation.dispatch({ type: 'Navigate', routeName })
   }
 
-  renderScene = (props) => {
-    const { key } = props.scene.route
+  handleCurrentSceneState = (prev, current) => {
+    this.setState({ currentRoute: current.routes[current.index].routeName })
+  }
+
+  renderDrawerMenu = () => {
     return (
-      <View style={styles.container}>
-        {key === 'Simple'       && <SimpleView />}
-        {key === 'NestedScroll' && <NestedScrollView />}
-        {key === 'GoogleMaps'   && <GoogleMapsView />}
-      </View>
+      <DrawerMenu
+        push={this.handlePush}
+        currentRoute={this.state.currentRoute}
+      />
     )
   }
 
@@ -75,22 +57,20 @@ class BSBExample extends Component {
       <DrawerLayoutAndroid
         ref={(drawer) => { this.drawer = drawer }}
         drawerWidth={width - 56}
-        renderNavigationView={() => <DrawerMenu push={this.handlePush} />}
-        >
-        <NavigationCardStack
-          renderScene={this.renderScene}
-          navigationState={this.state.navigationState}
+        renderNavigationView={this.renderDrawerMenu}>
+        <NavigatorStack
+          ref={ref => {this.navigation = ref}}
+          onNavigationStateChange={this.handleCurrentSceneState}
         />
       </DrawerLayoutAndroid>
     )
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
+const NavigatorStack = StackNavigator({
+  Simple: { screen: SimpleView },
+  NestedScroll: { screen: NestedScrollView },
+  GoogleMaps: { screen: GoogleMapsView },
 })
 
 AppRegistry.registerComponent('BSBExample', () => BSBExample)

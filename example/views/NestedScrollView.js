@@ -1,7 +1,3 @@
-/**
- * @flow
- */
-
 import React, { Component, PropTypes } from 'react'
 import {
   Text,
@@ -25,6 +21,12 @@ const { width, height } = Dimensions.get('window')
 class NestedScroll extends Component {
   static contextTypes = {
     openDrawer: PropTypes.any,
+  };
+
+  static navigationOptions = {
+    header: {
+      visible: false
+    }
   };
 
   state = {

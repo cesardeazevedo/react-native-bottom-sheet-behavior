@@ -51,6 +51,12 @@ class GoogleMapsView extends Component {
     openDrawer: PropTypes.func,
   };
 
+  static navigationOptions = {
+    header: {
+      visible: false
+    }
+  };
+
   state = {
     bottomSheetColor: 0,
     bottomSheetColorAnimated: new Animated.Value(0),

@@ -22,7 +22,8 @@ const RippleColor = Platform.Version >= 21
 
 class DrawerMenu extends Component {
   static propTypes = {
-    push: PropTypes.func.isRequired
+    push: PropTypes.func.isRequired,
+    currentRoute: PropTypes.string.isRequired,
   };
 
   static contextTypes = {
@@ -34,24 +35,33 @@ class DrawerMenu extends Component {
     this.props.push(route.name)
   }
 
-  renderMenuItem = route => (
-    <View key={route.name}>
-      <TouchableNativeFeedback
-        delayPressIn={0}
-        delayPressOut={0}
-        background={RippleColor}
-        onPress={() => this.handleAction(route)}>
-        <View style={styles.menuItem}>
-          <Icon name={route.icon} style={styles.icon} size={22} />
-          <View pointerEvents="none">
-            <Text style={styles.menuLabel}>{route.name}</Text>
+  renderMenuItem = (route) => {
+    const isActive = this.props.currentRoute === route.name
+    return (
+      <View key={route.name}>
+        <TouchableNativeFeedback
+          delayPressIn={0}
+          delayPressOut={0}
+          background={RippleColor}
+          onPress={() => this.handleAction(route)}>
+          <View style={[styles.menuItem, isActive && styles.menuActive]}>
+            <Icon
+              size={22}
+              name={route.icon}
+              style={[styles.icon, isActive && styles.iconActive]}
+            />
+            <View pointerEvents="none">
+              <Text style={[styles.menuLabel, isActive && styles.menuLabelActive]}>
+                {route.name}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableNativeFeedback>
-    </View>
-  )
+        </TouchableNativeFeedback>
+      </View>
+    )
+  }
 
-  renderMenu = () =>  (
+  renderMenu = () => (
     <View>{MENU.map(this.renderMenuItem)}</View>
   )
 
@@ -85,7 +95,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 18,
     fontFamily: 'sans-serif-medium',
   },
   menuItem: {
@@ -94,14 +104,23 @@ const styles = StyleSheet.create({
     height: 46,
     paddingLeft: 32,
   },
+  menuActive: {
+    backgroundColor: 'rgba(0, 0, 0, 0.1)'
+  },
   menuLabel: {
     color: '#333',
     fontSize: 15,
     fontFamily: 'sans-serif-medium',
     marginLeft: 22,
   },
+  menuLabelActive: {
+    color: '#4589f2'
+  },
   icon: {
     color: 'rgba(51, 51, 51, 0.24)'
+  },
+  iconActive: {
+    color: '#4589f2'
   },
 })
 

@@ -35,6 +35,12 @@ class SimpleView extends Component {
     openDrawer: PropTypes.func,
   };
 
+  static navigationOptions = {
+    header: {
+      visible: false
+    }
+  };
+
   state = {
     offset: 0,
     bottomSheetState: 0,
@@ -73,8 +79,8 @@ class SimpleView extends Component {
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
-        <StatusBar translucent backgroundColor='#3369c1' />
-        <ScrollingAppBarLayout statusBarColor='#3369c1'>
+        <StatusBar translucent backgroundColor='rgba(0, 0, 0, 0.2)' />
+        <ScrollingAppBarLayout>
           <Icon.ToolbarAndroid
             navIconName={'md-menu'}
             style={styles.toolbar}
