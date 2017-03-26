@@ -13,7 +13,7 @@
     "react-native": "^0.42.0",
     "react-native-bottom-sheet-behavior": "file:../",
     "react-native-maps": "^0.10.0",
-    "react-native-vector-icons": "^2.0.3",
+    "react-native-vector-icons": "^4.0.0",
     "react-navigation": "^1.0.0-beta.7"
   },
   "devDependencies": {
