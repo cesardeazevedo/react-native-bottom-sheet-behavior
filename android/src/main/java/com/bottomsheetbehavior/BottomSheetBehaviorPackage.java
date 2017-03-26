@@ -25,7 +25,8 @@ public class BottomSheetBehaviorPackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
         return Arrays.<ViewManager>asList(
-                new AppBarLayoutManager(),
+                new MergedAppBarLayoutManager(),
+                new ScrollingAppBarLayoutManager(),
                 new BottomSheetBehaviorManager(),
                 new AnchorSheetBehaviorManager(),
                 new BackdropBottomSheetManager(),
