@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Gravity;
+import android.view.MotionEvent;
 
 import com.facebook.react.uimanager.PixelUtil;
 
@@ -97,5 +98,21 @@ public class FloatingActionButtonView extends FloatingActionButton {
 
     public void setAnchor(int id) {
         ((CoordinatorLayout.LayoutParams) this.getLayoutParams()).setAnchorId(id);
+    }
+
+    /**
+     * Fixes FAB remains pressed when pointer leaves the view bounds
+     * https://code.google.com/p/android/issues/detail?id=218956
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        boolean result = super.onTouchEvent(ev);
+        if (!result) {
+            if (ev.getAction() == MotionEvent.ACTION_UP) {
+                cancelLongPress();
+            }
+            setPressed(false);
+        }
+        return result;
     }
 }
