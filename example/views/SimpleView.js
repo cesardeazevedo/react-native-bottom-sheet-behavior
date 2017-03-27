@@ -33,11 +33,15 @@ class SimpleView extends Component {
     }
   };
 
+  handleState = (state) => {
+    this.bottomSheet.setBottomSheetState(state)
+  }
+
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
         <StatusBar translucent backgroundColor='#205cb2' />
-        <ScrollingAppBarLayout statusBarColor='#205cb2'>
+        <ScrollingAppBarLayout style={styles.scrollAppBar} statusBarColor='#205cb2'>
           <Icon.ToolbarAndroid
             navIconName={'md-menu'}
             style={styles.toolbar}
@@ -51,27 +55,34 @@ class SimpleView extends Component {
         <BackdropBottomSheet height={300}>
           <View style={{flex: 1, backgroundColor: 'white'}}>
             <ViewPagerAndroid style={{flex: 1}}>
-              <Image
-                resizeMode="cover"
-                style={{width, height: 300}}
-                source={require('../images/beer1.jpg')}
-              />
-              <Image
-                resizeMode="cover"
-                style={{width, height: 300}}
-                source={require('../images/beer2.jpg')}
-              />
-              <Image
-                resizeMode="cover"
-                style={{width, height: 300}}
-                source={require('../images/beer3.jpg')}
-              />
+              <View>
+                <Image
+                  resizeMode="cover"
+                  style={{width, height: 300}}
+                  source={require('../images/beer1.jpg')}
+                />
+              </View>
+              <View>
+                <Image
+                  resizeMode="cover"
+                  style={{width, height: 300}}
+                  source={require('../images/beer2.jpg')}
+                />
+              </View>
+              <View>
+                <Image
+                  resizeMode="cover"
+                  style={{width, height: 300}}
+                  source={require('../images/beer3.jpg')}
+                />
+              </View>
             </ViewPagerAndroid>
           </View>
         </BackdropBottomSheet>
         <AnchorSheetBehavior
           peekHeight={70}
           hideable={false}
+          ref={ref => {this.bottomSheet = ref}}
           onSlide={this.handleSlide}
           onStateChange={this.handleBottomSheetChange}>
           <View style={styles.bottomSheet}>
@@ -97,7 +108,7 @@ class SimpleView extends Component {
               {title: 'Search', show: 'always', iconName: 'md-search' },
               {title: 'More'}
             ]}
-            onIconClicked={() => this.handleState(STATE_COLLAPSED)}
+            onIconClicked={() => this.handleState(AnchorSheetBehavior.STATE_COLLAPSED)}
           />
         </MergedAppBarLayout>
         <FloatingActionButton
@@ -117,10 +128,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   content: {
-    paddingTop: 80,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  scrollAppBar: {
+    zIndex: 1,
   },
   toolbar: {
     backgroundColor: '#4389f2',
