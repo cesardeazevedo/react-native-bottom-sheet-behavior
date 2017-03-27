@@ -98,6 +98,18 @@ public class FloatingActionButtonView extends FloatingActionButton {
 
     public void setAnchor(int id) {
         ((CoordinatorLayout.LayoutParams) this.getLayoutParams()).setAnchorId(id);
+        post(new Runnable() {
+            @Override
+            public void run() {
+                requestLayout();
+            }
+        });
+    }
+
+    public void setScrollBehavior() {
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) this.getLayoutParams();
+        params.setBehavior(new ScrollAwareFABBehavior(this.getContext(), null));
     }
 
     /**

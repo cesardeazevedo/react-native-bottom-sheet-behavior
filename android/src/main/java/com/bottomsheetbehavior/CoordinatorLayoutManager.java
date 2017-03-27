@@ -26,18 +26,17 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
 
         // Sets FloatingActionButton anchor automatically
         if (child instanceof FloatingActionButtonView) {
-            if (((FloatingActionButtonView) child).getAutoAnchor()) {
+            FloatingActionButtonView fab = (FloatingActionButtonView) child;
+            if (fab.getAutoAnchor()) {
                 for (int i = 0; i < parent.getChildCount(); i++) {
                     View childView = parent.getChildAt(i);
                     if (childView instanceof BottomSheetBehaviorView) {
                         int bottomSheetId = childView.getId();
-                        ((CoordinatorLayout.LayoutParams) child.getLayoutParams()).setAnchorId(bottomSheetId);
+                        fab.setAnchor(bottomSheetId);
                     } else if (childView instanceof AnchorSheetBehaviorView) {
                         int bottomSheetId = childView.getId();
-                        CoordinatorLayout.LayoutParams params =
-                                (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-                        params.setBehavior(new ScrollAwareFABBehavior(parent.getContext(), null));
-                        params.setAnchorId(bottomSheetId);
+                        fab.setScrollBehavior();
+                        fab.setAnchor(bottomSheetId);
                     }
                 }
             }
