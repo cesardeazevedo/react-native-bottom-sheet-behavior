@@ -326,15 +326,6 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         return true;
     }
 
-    public int getStatusBarBackground() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mStatusBarColor != 0) {
-            Window window = ((ThemedReactContext) mContext).getCurrentActivity().getWindow();
-            return window.getStatusBarColor();
-        }
-
-        return 0;
-    }
-
     public void setStatusBarBackgroundVisible(boolean visible){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mStatusBarColor != 0){
             if(visible){

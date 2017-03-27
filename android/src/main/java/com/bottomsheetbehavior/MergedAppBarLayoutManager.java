@@ -77,7 +77,7 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
         mStatusBarColor = statusBarColor;
         if (mergedBehavior != null) {
             mergedBehavior.setStatusBarColor(Color.parseColor(mStatusBarColor));
-            if (mergedBehavior.getStatusBarBackground() != 0) {
+            if (mergedBehavior.getFullbackGroundColor() != android.R.color.transparent) {
                 mergedBehavior.setStatusBarBackgroundVisible(true);
             }
         }
