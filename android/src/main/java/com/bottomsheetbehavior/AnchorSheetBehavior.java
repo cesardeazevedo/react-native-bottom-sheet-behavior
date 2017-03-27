@@ -1,7 +1,6 @@
 package com.bottomsheetbehavior;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
@@ -142,22 +141,10 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    */
   public AnchorSheetBehavior( Context context, AttributeSet attrs ) {
     super( context, attrs );
-    TypedArray a = context.obtainStyledAttributes(attrs,
-        android.support.design.R.styleable.BottomSheetBehavior_Layout);
-    setPeekHeight(a.getDimensionPixelSize(
-        android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, 0));
-    setHideable(a.getBoolean(android.support.design.R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
-    a.recycle();
-
     /**
      * Getting the anchorPoint...
      */
     mAnchorPoint = DEFAULT_ANCHOR_POINT;
-    a = context.obtainStyledAttributes(attrs, R.styleable.CustomBottomSheetBehavior);
-    if (attrs != null)
-      mAnchorPoint = (int) a.getDimension( R.styleable.CustomBottomSheetBehavior_anchorPoint, 0);
-    a.recycle();
-
     ViewConfiguration configuration = ViewConfiguration.get(context);
     mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
   }
