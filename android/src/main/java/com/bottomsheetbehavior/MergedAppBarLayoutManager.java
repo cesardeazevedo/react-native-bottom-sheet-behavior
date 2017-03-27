@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,6 +23,8 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
     private String mMergedColor;
     private String mToolbarColor;
     private String mStatusBarColor;
+
+    private View mergedView;
 
     @Override
     public String getName() {
@@ -52,16 +55,32 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
     @ReactProp(name = "mergedColor")
     public void setMergedColor(AppBarLayout view, String mergedColor) {
         mMergedColor = mergedColor;
+        if (mergedView != null) {
+            setMergedBackgroundColor();
+        }
     }
 
     @ReactProp(name = "toolbarColor")
     public void setToolbarColor(AppBarLayout view, String toolbarColor) {
         mToolbarColor = toolbarColor;
+        if (mergedBehavior != null) {
+            int color = Color.parseColor(mToolbarColor);
+            mergedBehavior.setBackgroundColor(color);
+            if (mergedBehavior.getFullbackGroundColor() != android.R.color.transparent) {
+                mergedBehavior.setFullBackGroundColor(color);
+            }
+        }
     }
 
     @ReactProp(name = "statusBarColor")
     public void setStatusBarColor(AppBarLayout view, String statusBarColor) {
         mStatusBarColor = statusBarColor;
+        if (mergedBehavior != null) {
+            mergedBehavior.setStatusBarColor(Color.parseColor(mStatusBarColor));
+            if (mergedBehavior.getStatusBarBackground() != 0) {
+                mergedBehavior.setStatusBarBackgroundVisible(true);
+            }
+        }
     }
 
     @ReactProp(name = "height")
@@ -82,29 +101,30 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
             FrameLayout frame = new FrameLayout(parent.getContext());
             frame.setLayoutParams(params);
 
-            // The backgroundView is used to merge the colors
-            View backgroundView = new View((parent.getContext()));
+            mergedView = new View((parent.getContext()));
             FrameLayout.LayoutParams backgroundParams = new FrameLayout.LayoutParams(width, 0);
             backgroundParams.gravity = Gravity.BOTTOM;
-            backgroundView.setLayoutParams(backgroundParams);
-            setMergedBackgroundColor(backgroundView);
+            mergedView.setLayoutParams(backgroundParams);
+            setMergedBackgroundColor();
 
-            frame.addView(backgroundView);
+            frame.addView(mergedView);
             parent.addView(frame);
             Toolbar toolbar = (Toolbar) child;
             frame.addView(toolbar);
             mergedBehavior = MergedAppBarLayoutBehavior.from(parent);
             mergedBehavior.setToolbar(toolbar);
-            mergedBehavior.setBackground(backgroundView);
-            mergedBehavior.setToolbarTitle(toolbar.getTitle().toString());
+            mergedBehavior.setMergedView(mergedView);
+            if (!TextUtils.isEmpty(toolbar.getTitle())) {
+                mergedBehavior.setToolbarTitle(toolbar.getTitle().toString());
+            }
             setFullBackGroundColor();
             setStatusBarColorBehavior();
         }
     }
 
-    private void setMergedBackgroundColor(View view) {
+    private void setMergedBackgroundColor() {
         if (mMergedColor != null) {
-            view.setBackgroundColor(Color.parseColor(mMergedColor));
+            mergedView.setBackgroundColor(Color.parseColor(mMergedColor));
         }
     }
 

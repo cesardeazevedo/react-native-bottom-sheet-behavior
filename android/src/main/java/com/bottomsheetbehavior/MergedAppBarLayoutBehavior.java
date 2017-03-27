@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -223,7 +224,11 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         }
     }
 
-    private void setFullBackGroundColor(int colorRes){
+    public int getFullbackGroundColor() {
+        return ((ColorDrawable) mToolbar.getBackground()).getColor();
+    }
+
+    public void setFullBackGroundColor(int colorRes){
         if (mToolbar != null) {
             mToolbar.setBackgroundColor(colorRes);
         }
@@ -321,7 +326,16 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         return true;
     }
 
-    private void setStatusBarBackgroundVisible(boolean visible){
+    public int getStatusBarBackground() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mStatusBarColor != 0) {
+            Window window = ((ThemedReactContext) mContext).getCurrentActivity().getWindow();
+            return window.getStatusBarColor();
+        }
+
+        return 0;
+    }
+
+    public void setStatusBarBackgroundVisible(boolean visible){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mStatusBarColor != 0){
             if(visible){
                 Window window = ((ThemedReactContext) mContext).getCurrentActivity().getWindow();
@@ -341,7 +355,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         mToolbar = toolbar;
     }
 
-    public void setBackground(View view) {
+    public void setMergedView(View view) {
         mBackground = view;
     }
 
