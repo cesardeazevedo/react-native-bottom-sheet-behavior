@@ -2,6 +2,7 @@ package com.bottomsheetbehavior;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 
@@ -27,8 +28,12 @@ public class ScrollingAppBarLayoutManager extends ViewGroupManager<AppBarLayout>
         int height = CoordinatorLayout.LayoutParams.WRAP_CONTENT;
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
         params.setBehavior(new ScrollingAppBarLayoutBehavior(context, null));
-        int statusBarHeight = getStatusBarHeight(context);
-        params.setMargins(0, statusBarHeight, 0, 0);
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            int statusBarHeight = getStatusBarHeight(context);
+            params.setMargins(0, statusBarHeight, 0, 0);
+        }
+
         view.setLayoutParams(params);
         scrollingBehavior = ScrollingAppBarLayoutBehavior.from(view);
         return view;

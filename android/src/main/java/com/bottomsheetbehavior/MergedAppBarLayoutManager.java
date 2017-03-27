@@ -2,6 +2,7 @@ package com.bottomsheetbehavior;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
@@ -37,10 +38,12 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
         params.setBehavior(new MergedAppBarLayoutBehavior(context, null));
 
-        int statusBarHeight = getStatusBarHeight(context);
-        params.setMargins(0, statusBarHeight, 0, 0);
-        view.setLayoutParams(params);
+        if (Build.VERSION.SDK_INT >= 21) {
+            int statusBarHeight = getStatusBarHeight(context);
+            params.setMargins(0, statusBarHeight, 0, 0);
+        }
 
+        view.setLayoutParams(params);
         // Set tag to match on ScrollAwareFABBehavior.
         view.setTag("modal-appbar");
         return view;
