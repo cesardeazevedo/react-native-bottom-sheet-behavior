@@ -21,6 +21,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
     private boolean autoAnchor;
 
     private Drawable icon;
+    private BottomSheetHeaderView headerView;
 
     private int mIconColorDefault;
     private int mIconColorExpanded;
@@ -143,6 +144,14 @@ public class FloatingActionButtonView extends FloatingActionButton {
 
     public void setAutoAnchor(boolean anchor) {
        autoAnchor = anchor;
+    }
+
+    public BottomSheetHeaderView getHeader() {
+        return headerView;
+    }
+
+    public void setHeader(BottomSheetHeaderView header) {
+        headerView = header;
     }
 
     public void setAnchor(int id) {

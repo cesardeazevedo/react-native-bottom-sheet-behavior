@@ -32,16 +32,19 @@ public class BottomSheetHeaderManager extends ViewGroupManager<BottomSheetHeader
     @ReactProp(name = "backgroundColor")
     public void setBackgroundColor(BottomSheetHeaderView view, String color) {
         view.setBackgroundColorDefault(Color.parseColor(color));
+        view.toggleBackground(view.getToggled());
     }
 
     @ReactProp(name = "backgroundColorExpanded")
     public void setBackgroundColorExpanded(BottomSheetHeaderView view, String color) {
         view.setBackgroundColorExpanded(Color.parseColor(color));
+        view.toggleBackground(view.getToggled());
     }
 
     @ReactProp(name = "textColorExpanded")
     public void setTextColorExpanded(BottomSheetHeaderView view, String color) {
         view.setTextColorExpanded(Color.parseColor(color));
+        view.toggleTextViews(view.getToggled());
     }
 
     private class BottomSheetHeaderListener implements View.OnClickListener {

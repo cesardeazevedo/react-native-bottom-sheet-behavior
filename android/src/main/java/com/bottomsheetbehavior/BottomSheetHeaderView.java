@@ -1,7 +1,6 @@
 package com.bottomsheetbehavior;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -25,7 +24,7 @@ public class BottomSheetHeaderView extends RelativeLayout {
     private FloatingActionButtonView mFabView;
     private AnchorSheetBehaviorView mAnchorSheetView;
 
-    private boolean mActivated;
+    private boolean mToggled;
 
     public BottomSheetHeaderView(Context context) {
         super(context);
@@ -36,8 +35,8 @@ public class BottomSheetHeaderView extends RelativeLayout {
     public void setAnchorSheetView(AnchorSheetBehaviorView anchorSheetView) {
         mAnchorSheetView = anchorSheetView;
         mAnchorSheetView.bottomSheetBehavior.setHeader(this);
+        mToggled = mAnchorSheetView.bottomSheetBehavior.getState() == AnchorSheetBehavior.STATE_COLLAPSED;
         registerChilds(this);
-        mActivated = mAnchorSheetView.bottomSheetBehavior.getState() == AnchorSheetBehavior.STATE_COLLAPSED;
         toggle(false);
     }
 
@@ -56,6 +55,10 @@ public class BottomSheetHeaderView extends RelativeLayout {
 
     public void setTextColorExpanded(int color) {
         mTextColorExpanded = color;
+    }
+
+    public boolean getToggled() {
+        return mToggled;
     }
 
     /**
@@ -95,22 +98,22 @@ public class BottomSheetHeaderView extends RelativeLayout {
         return result;
     }
 
-    public void toggle(boolean activate) {
-        if (mActivated != activate) {
-            mActivated = activate;
-            toggleFab(activate);
-            toggleTextViews(activate);
-            toggleBackground(activate);
+    public void toggle(boolean toggle) {
+        if (mToggled != toggle) {
+            mToggled = toggle;
+            toggleFab(toggle);
+            toggleTextViews(toggle);
+            toggleBackground(toggle);
         }
     }
 
-    private void toggleBackground(boolean activate) {
-        setBackgroundColor(activate ? mBackgroundColorExpanded : mBackgroundColorDefault);
+    public void toggleBackground(boolean toggle) {
+        setBackgroundColor(toggle ? mBackgroundColorExpanded : mBackgroundColorDefault);
     }
 
-    private void toggleFab(boolean activate) {
+    public void toggleFab(boolean toggle) {
         if (mFabView != null) {
-            if (activate) {
+            if (toggle) {
                 mFabView.setIconColor(mFabView.getIconColorExpanded());
                 mFabView.setBackground(mFabView.getBackgroundExpanded());
             } else {
@@ -120,10 +123,10 @@ public class BottomSheetHeaderView extends RelativeLayout {
         }
     }
 
-    private void toggleTextViews(boolean activate) {
+    public void toggleTextViews(boolean toggle) {
         for (int i = 0; i < mTextViews.size(); i++) {
             ReactTextView textView = mTextViews.get(i);
-            textView.setTextColor(activate ? mTextColorExpanded : textView.getHighlightColor());
+            textView.setTextColor(toggle ? mTextColorExpanded : textView.getHighlightColor());
         }
     }
 }

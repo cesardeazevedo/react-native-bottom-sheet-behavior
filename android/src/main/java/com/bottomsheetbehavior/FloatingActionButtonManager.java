@@ -60,11 +60,13 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "iconColor")
     public void setIconColor(FloatingActionButtonView view, String color) {
         view.setIconColorDefault(Color.parseColor(color));
+        toggleFab(view);
     }
 
     @ReactProp(name = "iconColorExpanded")
     public void setIconColorExpanded(FloatingActionButtonView view, String color) {
         view.setIconColorExpanded(Color.parseColor(color));
+        toggleFab(view);
     }
 
     @ReactProp(name = "backgroundColor")
@@ -72,11 +74,13 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         int color = Color.parseColor(background);
         view.setBackgroundDefault(color);
         view.setBackground(color);
+        toggleFab(view);
     }
 
     @ReactProp(name = "backgroundColorExpanded")
     public void setBackgroundExpanded(FloatingActionButtonView view, String background) {
         view.setBackgroundExpanded(Color.parseColor(background));
+        toggleFab(view);
     }
 
     @ReactProp(name = "hidden", defaultBoolean = false)
@@ -102,6 +106,13 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "autoAnchor")
     public void setAutoAnchor(FloatingActionButtonView view, boolean autoAnchor) {
         view.setAutoAnchor(autoAnchor);
+    }
+
+    private void toggleFab(FloatingActionButtonView view) {
+        BottomSheetHeaderView header = view.getHeader();
+        if (header != null) {
+            header.toggleFab(header.getToggled());
+        }
     }
 
     @Override
