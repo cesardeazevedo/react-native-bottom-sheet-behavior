@@ -5,6 +5,7 @@ import AnchorSheetBehavior  from './lib/AnchorSheetBehavior'
 import BottomSheetBehavior  from './lib/BottomSheetBehavior'
 import FloatingActionButton  from './lib/FloatingActionButton'
 import BackdropBottomSheet from './lib/BackdropBottomSheet'
+import BottomSheetHeader from './lib/BottomSheetHeader'
 import NestedScrollView from './lib/NestedScrollView'
 
 export {
@@ -13,6 +14,7 @@ export {
   NestedScrollView,
   CoordinatorLayout,
   AnchorSheetBehavior,
+  BottomSheetHeader,
   BottomSheetBehavior,
   BackdropBottomSheet,
   FloatingActionButton,

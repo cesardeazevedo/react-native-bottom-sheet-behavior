@@ -21,19 +21,17 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import IconMDI from 'react-native-vector-icons/MaterialIcons'
 
 import {
-  ScrollingAppBarLayout,
+  CoordinatorLayout,
+  BottomSheetHeader,
   MergedAppBarLayout,
   BackdropBottomSheet,
   AnchorSheetBehavior,
-  CoordinatorLayout,
   FloatingActionButton,
+  ScrollingAppBarLayout,
 } from 'react-native-bottom-sheet-behavior'
-
-const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 
 const { width, height } = Dimensions.get('window')
 
-const duration = 120
 const anchorPoint = 230
 const RippleColor = (...args) => (
   Platform.Version >= 21
@@ -44,16 +42,9 @@ const RippleColor = (...args) => (
 const WHITE = '#FFFFFF'
 const PRIMARY_COLOR = '#4589f2'
 const STATUS_BAR_COLOR = '#205cb2'
-const TEXT_BASE_COLOR = '#333'
 const STAR_COLOR = '#FF5722'
 
-const {
-  STATE_DRAGGING,
-  STATE_EXPANDED,
-  STATE_SETTLING,
-  STATE_COLLAPSED,
-  STATE_ANCHOR_POINT,
-} = AnchorSheetBehavior
+const { STATE_ANCHOR_POINT, STATE_COLLAPSED } = AnchorSheetBehavior
 
 class GoogleMapsView extends Component {
   static contextTypes = {
@@ -66,13 +57,6 @@ class GoogleMapsView extends Component {
     }
   };
 
-  state = {
-    bottomSheetColor: 0,
-    bottomSheetColorAnimated: new Animated.Value(0),
-  };
-
-  lastState = STATE_COLLAPSED
-
   handleOpenDrawer = () => {
     Keyboard.dismiss()
     this.context.openDrawer()
@@ -82,41 +66,12 @@ class GoogleMapsView extends Component {
     ToastAndroid.show('Pressed', ToastAndroid.SHORT)
   }
 
-  handleBottomSheetOnPress = () => {
-    if (this.lastState === STATE_COLLAPSED) {
-      this.setState({ bottomSheetColor: 1 })
-      this.bottomSheet.setBottomSheetState(STATE_ANCHOR_POINT)
-    } else if (this.lastState === STATE_EXPANDED) {
-      this.setState({ bottomSheetColor: 0 })
-      this.bottomSheet.setBottomSheetState(STATE_COLLAPSED)
-    }
+  handleState = (state) => {
+    this.bottomSheet.setBottomSheetState(state)
   }
 
-  handleBottomSheetChange = (e) => {
-    const newState = e.nativeEvent.state
-
-    if (this.offset > 0.1 && (newState === STATE_DRAGGING || newState === STATE_ANCHOR_POINT)) {
-      this.setState({ bottomSheetColor: 1 })
-    }
-    if (newState === STATE_SETTLING && !this.settlingExpanded) {
-      this.setState({ bottomSheetColor: 0 })
-    }
-
-    this.lastState = newState
-  }
-
-  handleSlide = (e) => {
-    const { bottomSheetColor } = this.state
-    const offset = parseFloat(e.nativeEvent.offset.toFixed(2))
-
-    this.settlingExpanded = offset >= this.offset
-    this.offset = offset
-
-    if (offset === 0) {
-      this.setState({ bottomSheetColor: 0 })
-    } else if (bottomSheetColor !== 1 && this.lastState === STATE_DRAGGING) {
-      this.setState({ bottomSheetColor: 1 })
-    }
+  handleHeaderPress = () => {
+    this.handleState(STATE_ANCHOR_POINT)
   }
 
   renderDetailItem = (icon, text) => (
@@ -131,8 +86,6 @@ class GoogleMapsView extends Component {
   );
 
   renderFloatingActionButton = () => {
-    const { bottomSheetColor } = this.state
-    const isExpanded = bottomSheetColor === 1
     return (
       <FloatingActionButton
         autoAnchor
@@ -141,9 +94,11 @@ class GoogleMapsView extends Component {
         rippleColor="grey"
         icon="directions"
         iconProvider={IconMDI}
-        iconColor={!isExpanded ? WHITE : PRIMARY_COLOR}
+        iconColor={WHITE}
+        iconColorExpanded={PRIMARY_COLOR}
         onPress={this.handleFabPress}
-        backgroundColor={isExpanded ? WHITE : PRIMARY_COLOR}
+        backgroundColor={PRIMARY_COLOR}
+        backgroundColorExpanded={WHITE}
       />
     )
   }
@@ -197,76 +152,47 @@ class GoogleMapsView extends Component {
             {title: 'Search', show: 'always', iconName: 'md-search' },
             {title: 'More'}
             ]}
-            onIconClicked={() => this.handleState(AnchorSheetBehavior.STATE_COLLAPSED)}>
+            onIconClicked={() => this.handleState(STATE_COLLAPSED)}>
         </Icon.ToolbarAndroid>
       </MergedAppBarLayout>
     )
   }
 
   renderBottomSheet = () => {
-    const {
-      bottomSheetColor,
-      bottomSheetColorAnimated
-    } = this.state
-
-    Animated.timing(bottomSheetColorAnimated, {
-      duration,
-      toValue: bottomSheetColor,
-    }).start()
-
-    const headerAnimated = {
-      backgroundColor: bottomSheetColorAnimated.interpolate({
-        inputRange:  [0, 1],
-        outputRange: [WHITE, PRIMARY_COLOR],
-      })
-    }
-    const textAnimated = {
-      color: bottomSheetColorAnimated.interpolate({
-        inputRange:  [0, 1],
-        outputRange: [TEXT_BASE_COLOR, WHITE],
-      })
-    }
-    const starsAnimated = {
-      color: bottomSheetColorAnimated.interpolate({
-        inputRange:  [0, 1],
-        outputRange: [STAR_COLOR, WHITE],
-      })
-    }
-    const routeTextAnimated = {
-      color: bottomSheetColorAnimated.interpolate({
-        inputRange:  [0, 1],
-        outputRange: [PRIMARY_COLOR, WHITE],
-      })
-    }
-
     return (
       <AnchorSheetBehavior
         ref={(bottomSheet) => { this.bottomSheet = bottomSheet }}
-        peekHeight={90}
+        peekHeight={80}
         anchorPoint={230}
         onSlide={this.handleSlide}
         onStateChange={this.handleBottomSheetChange}>
         <View style={styles.bottomSheet}>
-          <TouchableWithoutFeedback onPress={this.handleBottomSheetOnPress}>
-            <Animated.View style={[styles.bottomSheetHeader, headerAnimated]}>
+          <BottomSheetHeader
+            onPress={this.handleHeaderPress}
+            textColorExpanded={WHITE}
+            fabBackground={PRIMARY_COLOR}
+            fabBackgroundExpanded={WHITE}
+            backgroundColor={WHITE}
+            backgroundColorExpanded={PRIMARY_COLOR}>
+            <View pointerEvents='none' style={styles.bottomSheetHeader}>
               <View style={styles.bottomSheetLeft}>
-                <Animated.Text style={[styles.bottomSheetTitle, textAnimated]}>
+                <Text selectionColor={'#000'} style={[styles.bottomSheetTitle]}>
                   React Native Bar!
-                </Animated.Text>
+                </Text>
                 <View style={styles.starsContainer}>
-                  <Animated.Text style={[starsAnimated, { marginRight: 8 }]}>5.0</Animated.Text>
-                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
-                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
-                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
-                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
-                  <AnimatedIcon name="md-star" size={16} style={[styles.star, starsAnimated]} />
+                  <Text style={{marginRight: 8}} selectionColor={STAR_COLOR}>5.0</Text>
+                  <Icon name="md-star" size={16} selectionColor={STAR_COLOR} style={styles.star} />
+                  <Icon name="md-star" size={16} selectionColor={STAR_COLOR} style={styles.star} />
+                  <Icon name="md-star" size={16} selectionColor={STAR_COLOR} style={styles.star} />
+                  <Icon name="md-star" size={16} selectionColor={STAR_COLOR} style={styles.star} />
+                  <Icon name="md-star" size={16} selectionColor={STAR_COLOR} style={styles.star} />
                 </View>
               </View>
               <View style={styles.bottomSheetRight}>
-                <Animated.Text style={[styles.routeLabel, routeTextAnimated]}>Route</Animated.Text>
+                <Text style={styles.routeLabel} selectionColor={PRIMARY_COLOR}>Route</Text>
               </View>
-            </Animated.View>
-          </TouchableWithoutFeedback>
+            </View>
+          </BottomSheetHeader>
           <View style={styles.bottomSheetContent}>
             <View style={styles.sectionIcons}>
               <View style={styles.iconBox}>
@@ -392,11 +318,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   bottomSheetHeader: {
+    // height: 100,
     padding: 16,
     paddingLeft: 28,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    // Don't forget this
+    backgroundColor: 'transparent'
   },
   bottomSheetLeft: {
     flexDirection: 'column'
@@ -423,7 +352,6 @@ const styles = StyleSheet.create({
   routeLabel: {
     marginTop: 32,
     fontSize: 12,
-    color: PRIMARY_COLOR,
   },
   sectionIcons: {
     flexDirection: 'row',

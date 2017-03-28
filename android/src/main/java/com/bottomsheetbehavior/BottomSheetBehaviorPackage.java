@@ -27,6 +27,7 @@ public class BottomSheetBehaviorPackage implements ReactPackage {
         return Arrays.<ViewManager>asList(
                 new MergedAppBarLayoutManager(),
                 new ScrollingAppBarLayoutManager(),
+                new BottomSheetHeaderManager(),
                 new BottomSheetBehaviorManager(),
                 new AnchorSheetBehaviorManager(),
                 new BackdropBottomSheetManager(),

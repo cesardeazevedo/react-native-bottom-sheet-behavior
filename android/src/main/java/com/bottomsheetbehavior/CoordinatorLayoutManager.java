@@ -1,6 +1,5 @@
 package com.bottomsheetbehavior;
 
-import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -9,6 +8,8 @@ import com.facebook.react.uimanager.ThemedReactContext;
 public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayoutView> {
 
     private final static String REACT_CLASS = "RCTCoordinatorLayoutAndroid";
+
+    private BottomSheetHeaderView headerView;
 
     @Override
     public String getName() {
@@ -23,6 +24,14 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
     @Override
     public void addView(CoordinatorLayoutView parent, View child, int index) {
         super.addView(parent, child, index);
+
+        if (child instanceof AnchorSheetBehaviorView) {
+            View view = child.findViewWithTag(BottomSheetHeaderView.TAG);
+            if (view != null && view instanceof BottomSheetHeaderView) {
+                headerView = (BottomSheetHeaderView) view;
+                headerView.setAnchorSheetView((AnchorSheetBehaviorView) child);
+            }
+        }
 
         // Sets FloatingActionButton anchor automatically
         if (child instanceof FloatingActionButtonView) {
@@ -39,6 +48,10 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
                         fab.setAnchor(bottomSheetId);
                     }
                 }
+            }
+
+            if (headerView != null) {
+                headerView.setFabView(fab);
             }
         }
     }

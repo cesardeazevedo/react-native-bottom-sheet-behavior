@@ -1,5 +1,6 @@
 package com.bottomsheetbehavior;
 
+import android.graphics.Color;
 import android.view.View;
 
 import com.facebook.react.bridge.Arguments;
@@ -56,9 +57,26 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         view.setIcon(uri);
     }
 
+    @ReactProp(name = "iconColor")
+    public void setIconColor(FloatingActionButtonView view, String color) {
+        view.setIconColorDefault(Color.parseColor(color));
+    }
+
+    @ReactProp(name = "iconColorExpanded")
+    public void setIconColorExpanded(FloatingActionButtonView view, String color) {
+        view.setIconColorExpanded(Color.parseColor(color));
+    }
+
     @ReactProp(name = "backgroundColor")
     public void setBackground(FloatingActionButtonView view, String background) {
-        view.setBackground(background);
+        int color = Color.parseColor(background);
+        view.setBackgroundDefault(color);
+        view.setBackground(color);
+    }
+
+    @ReactProp(name = "backgroundColorExpanded")
+    public void setBackgroundExpanded(FloatingActionButtonView view, String background) {
+        view.setBackgroundExpanded(Color.parseColor(background));
     }
 
     @ReactProp(name = "hidden", defaultBoolean = false)

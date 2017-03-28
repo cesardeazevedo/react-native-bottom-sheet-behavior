@@ -128,6 +128,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean mTouchingScrollingChild;
 
+  private BottomSheetHeaderView mHeader;
+
   /**
    * Default constructor for instantiating BottomSheetBehaviors.
    */
@@ -187,12 +189,15 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * New behavior
      */
     if (mState == STATE_ANCHOR_POINT) {
+      toggleHeaderColor(true);
       ViewCompat.offsetTopAndBottom(child, mAnchorPoint);
     } else if (mState == STATE_EXPANDED) {
+      toggleHeaderColor(true);
       ViewCompat.offsetTopAndBottom(child, mMinOffset);
     } else if (mHideable && mState == STATE_HIDDEN) {
       ViewCompat.offsetTopAndBottom(child, mParentHeight);
     } else if (mState == STATE_COLLAPSED) {
+      toggleHeaderColor(false);
       ViewCompat.offsetTopAndBottom(child, mMaxOffset);
     }
     if ( mViewDragHelper == null ) {
@@ -272,6 +277,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     int action = MotionEventCompat.getActionMasked( event );
     if ( mState == STATE_DRAGGING  &&  action == MotionEvent.ACTION_DOWN ) {
+      toggleHeaderColor(true);
       return true;
     }
 
@@ -356,6 +362,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         consumed[1] = dy;
         ViewCompat.offsetTopAndBottom( child, -dy );
         setStateInternal( STATE_DRAGGING );
+        toggleHeaderColor(true);
       }
     }
     else
@@ -369,6 +376,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           consumed[1] = currentTop - mMaxOffset;
           ViewCompat.offsetTopAndBottom(child, -consumed[1]);
           setStateInternal(STATE_COLLAPSED);
+          toggleHeaderColor(false);
         }
       }
     }
@@ -422,11 +430,13 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           // Fling from anchor to collapsed
           top = mMaxOffset;
           targetState = STATE_COLLAPSED;
+          toggleHeaderColor(false);
         }
         else {
           // We are already collapsed
           top = mMaxOffset;
           targetState = STATE_COLLAPSED;
+          toggleHeaderColor(false);
         }
       }
       // Not flinging, just settle to the nearest state
@@ -436,6 +446,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         if ( currentTop > mAnchorPoint * 1.25 ) { // Multiply by 1.25 to account for parallax. The currentTop needs to be pulled down 50% of the anchor point before collapsing.
           top = mMaxOffset;
           targetState = STATE_COLLAPSED;
+          toggleHeaderColor(false);
         }
         // Expand?
         else
@@ -529,6 +540,10 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     mCallback.add(callback);
   }
 
+  public void setHeader(BottomSheetHeaderView header) {
+    mHeader = header;
+  }
+
   /**
    * Sets the state of the bottom sheet. The bottom sheet will transition to that state with
    * animation.
@@ -557,15 +572,18 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
     int top;
+    boolean toggleColor = false;
     if (state == STATE_COLLAPSED) {
       top = mMaxOffset;
     }
     else
     if (state == STATE_ANCHOR_POINT) {
+      toggleColor = true;
       top = mAnchorPoint;
     }
     else
     if (state == STATE_EXPANDED) {
+      toggleColor = true;
       top = mMinOffset;
     }
     else
@@ -574,6 +592,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else {
       throw new IllegalArgumentException("Illegal state argument: " + state);
     }
+    toggleHeaderColor(toggleColor);
     setStateInternal(STATE_SETTLING);
     if (mViewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
       ViewCompat.postOnAnimation(child, new SettleRunnable(child, state));
@@ -617,6 +636,12 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private void reset() {
     mActivePointerId = ViewDragHelper.INVALID_POINTER;
+  }
+
+  private void toggleHeaderColor(boolean activate) {
+    if (mHeader != null) {
+      mHeader.toggle(activate);
+    }
   }
 
   private boolean shouldHide(View child, float yvel) {
@@ -698,10 +723,12 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         } else {
           top = mMaxOffset;
           targetState = STATE_COLLAPSED;
+          toggleHeaderColor(false);
         }
       } else {
         top = mMaxOffset;
         targetState = STATE_COLLAPSED;
+        toggleHeaderColor(false);
       }
       if ( mViewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top) ) {
         setStateInternal(STATE_SETTLING);
