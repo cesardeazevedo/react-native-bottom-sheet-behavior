@@ -13,6 +13,7 @@ import npm from './node_modules/react-native-bottom-sheet-behavior/package.json'
 const MENU = [
   { name: 'Simple', icon: 'ios-navigate-outline' },
   { name: 'NestedScroll', icon: 'ios-list' },
+  { name: 'AnchorSheet', icon: 'md-more' },
   { name: 'GoogleMaps', icon: 'md-map' }
 ]
 
@@ -117,7 +118,9 @@ const styles = StyleSheet.create({
     color: '#4589f2'
   },
   icon: {
-    color: 'rgba(51, 51, 51, 0.24)'
+    color: 'rgba(51, 51, 51, 0.24)',
+    textAlign: 'center',
+    width: 30,
   },
   iconActive: {
     color: '#4589f2'

@@ -2,14 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import {
   View,
   Text,
+  Image,
+  Keyboard,
   Animated,
   Platform,
+  StatusBar,
   TextInput,
   StyleSheet,
   Dimensions,
   ToastAndroid,
+  ViewPagerAndroid,
   TouchableNativeFeedback,
-  Keyboard,
   TouchableWithoutFeedback
 } from 'react-native'
 
@@ -18,8 +21,11 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import IconMDI from 'react-native-vector-icons/MaterialIcons'
 
 import {
+  ScrollingAppBarLayout,
+  MergedAppBarLayout,
+  BackdropBottomSheet,
+  AnchorSheetBehavior,
   CoordinatorLayout,
-  BottomSheetBehavior,
   FloatingActionButton,
 } from 'react-native-bottom-sheet-behavior'
 
@@ -28,6 +34,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(Icon)
 const { width, height } = Dimensions.get('window')
 
 const duration = 120
+const anchorPoint = 230
 const RippleColor = (...args) => (
   Platform.Version >= 21
     ? TouchableNativeFeedback.Ripple(...args)
@@ -36,6 +43,7 @@ const RippleColor = (...args) => (
 
 const WHITE = '#FFFFFF'
 const PRIMARY_COLOR = '#4589f2'
+const STATUS_BAR_COLOR = '#205cb2'
 const TEXT_BASE_COLOR = '#333'
 const STAR_COLOR = '#FF5722'
 
@@ -44,7 +52,8 @@ const {
   STATE_EXPANDED,
   STATE_SETTLING,
   STATE_COLLAPSED,
-} = BottomSheetBehavior
+  STATE_ANCHOR_POINT,
+} = AnchorSheetBehavior
 
 class GoogleMapsView extends Component {
   static contextTypes = {
@@ -76,7 +85,7 @@ class GoogleMapsView extends Component {
   handleBottomSheetOnPress = () => {
     if (this.lastState === STATE_COLLAPSED) {
       this.setState({ bottomSheetColor: 1 })
-      this.bottomSheet.setBottomSheetState(STATE_EXPANDED)
+      this.bottomSheet.setBottomSheetState(STATE_ANCHOR_POINT)
     } else if (this.lastState === STATE_EXPANDED) {
       this.setState({ bottomSheetColor: 0 })
       this.bottomSheet.setBottomSheetState(STATE_COLLAPSED)
@@ -86,7 +95,7 @@ class GoogleMapsView extends Component {
   handleBottomSheetChange = (e) => {
     const newState = e.nativeEvent.state
 
-    if (this.offset > 0.1 && (newState === STATE_DRAGGING || newState === STATE_EXPANDED)) {
+    if (this.offset > 0.1 && (newState === STATE_DRAGGING || newState === STATE_ANCHOR_POINT)) {
       this.setState({ bottomSheetColor: 1 })
     }
     if (newState === STATE_SETTLING && !this.settlingExpanded) {
@@ -139,6 +148,61 @@ class GoogleMapsView extends Component {
     )
   }
 
+  renderBackdrop = () => {
+    return (
+      <BackdropBottomSheet height={anchorPoint}>
+        <View style={{flex: 1, backgroundColor: 'white'}}>
+          <ViewPagerAndroid style={{flex: 1}}>
+            <View>
+              <Image
+                resizeMode="cover"
+                style={{width, height: anchorPoint}}
+                source={require('../images/beer1.jpg')}
+              />
+            </View>
+            <View>
+              <Image
+                resizeMode="cover"
+                style={{width, height: anchorPoint}}
+                source={require('../images/beer2.jpg')}
+              />
+            </View>
+            <View>
+              <Image
+                resizeMode="cover"
+                style={{width, height: anchorPoint}}
+                source={require('../images/beer3.jpg')}
+              />
+            </View>
+          </ViewPagerAndroid>
+        </View>
+      </BackdropBottomSheet>
+    )
+  }
+
+  renderMergedAppBarLayout = () => {
+    return (
+      <MergedAppBarLayout
+        mergedColor={PRIMARY_COLOR}
+        toolbarColor={PRIMARY_COLOR}
+        statusBarColor={STATUS_BAR_COLOR}
+        style={styles.appBarMerged}>
+        <Icon.ToolbarAndroid
+          navIconName="md-arrow-back"
+          overflowIconName='md-more'
+          title='AnchorSheet'
+          titleColor="#fff"
+          style={{elevation: 6}}
+          actions={[
+            {title: 'Search', show: 'always', iconName: 'md-search' },
+            {title: 'More'}
+            ]}
+            onIconClicked={() => this.handleState(AnchorSheetBehavior.STATE_COLLAPSED)}>
+        </Icon.ToolbarAndroid>
+      </MergedAppBarLayout>
+    )
+  }
+
   renderBottomSheet = () => {
     const {
       bottomSheetColor,
@@ -176,10 +240,10 @@ class GoogleMapsView extends Component {
     }
 
     return (
-      <BottomSheetBehavior
+      <AnchorSheetBehavior
         ref={(bottomSheet) => { this.bottomSheet = bottomSheet }}
-        elevation={16}
         peekHeight={90}
+        anchorPoint={230}
         onSlide={this.handleSlide}
         onStateChange={this.handleBottomSheetChange}>
         <View style={styles.bottomSheet}>
@@ -227,7 +291,7 @@ class GoogleMapsView extends Component {
             </View>
           </View>
         </View>
-      </BottomSheetBehavior>
+      </AnchorSheetBehavior>
     )
   }
 
@@ -246,42 +310,29 @@ class GoogleMapsView extends Component {
   )
 
   renderToolbar = () => (
-    <View style={styles.toolbar}>
-      <TouchableNativeFeedback
-        delayPressIn={0}
-        delayPressOut={0}
-        background={RippleColor('#d1d1d1', true)}
-        onPress={this.handleOpenDrawer}>
-        <View style={styles.buttonIcon}>
-          <Icon name="md-menu" size={20} />
-        </View>
-      </TouchableNativeFeedback>
-      <View style={styles.toolbarInput}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Try restaurants, coffee"
-          placeholderTextColor="#c2c2c2"
-          underlineColorAndroid="transparent" />
-      </View>
-      <TouchableNativeFeedback
-        delayPressIn={0}
-        delayPressOut={0}
-        background={RippleColor('#d1d1d1', true)}>
-        <View style={styles.buttonIcon}>
-          <Icon name="md-mic" size={20} />
-        </View>
-      </TouchableNativeFeedback>
-    </View>
+    <ScrollingAppBarLayout
+      style={styles.scrollAppBar}
+      statusBarColor={STATUS_BAR_COLOR}>
+      <Icon.ToolbarAndroid
+        navIconName={'md-menu'}
+        style={styles.toolbar}
+        titleColor="#fff"
+        title="AnchorSheet"
+        onIconClicked={() => this.context.openDrawer()} />
+    </ScrollingAppBarLayout>
   )
 
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
+        <StatusBar translucent backgroundColor='#205cb2' />
+        {this.renderToolbar()}
         <View style={styles.content}>
           {this.renderMaps()}
-          {this.renderToolbar()}
         </View>
+        {this.renderBackdrop()}
         {this.renderBottomSheet()}
+        {this.renderMergedAppBarLayout()}
         {this.renderFloatingActionButton()}
       </CoordinatorLayout>
     )
@@ -294,6 +345,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   content: {
+    backgroundColor: 'transparent',
+  },
+  scrollAppBar: {
+    zIndex: 1,
+  },
+  toolbar: {
+    backgroundColor: PRIMARY_COLOR,
+  },
+  appBarMerged: {
     backgroundColor: 'transparent',
   },
   containerMap: {
@@ -314,17 +374,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  toolbar: {
-    flexDirection: 'row',
-    elevation: 2,
-    marginTop: 32,
-    height: 54,
-    marginHorizontal: 12,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderRadius: 4,
-    backgroundColor: WHITE,
-  },
   buttonIcon: {
     padding: 16,
     borderRadius: 50,
@@ -338,11 +387,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   bottomSheet: {
+    height,
     zIndex: 5,
     backgroundColor: 'transparent'
   },
   bottomSheetHeader: {
-    padding: 24,
+    padding: 16,
+    paddingLeft: 28,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -358,6 +409,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   bottomSheetContent: {
+    flex: 1,
     alignItems: 'center',
     backgroundColor: WHITE,
   },

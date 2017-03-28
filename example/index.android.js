@@ -8,7 +8,12 @@ import {
 import { StackNavigator } from 'react-navigation'
 
 import DrawerMenu from './DrawerMenu'
-import { SimpleView, NestedScrollView, GoogleMapsView } from './views'
+import {
+  SimpleView,
+  NestedScrollView,
+  AnchorSheetView,
+  GoogleMapsView
+} from './views'
 
 const { width } = Dimensions.get('window')
 
@@ -36,7 +41,10 @@ class BSBExample extends Component {
   }
 
   handlePush = (routeName) => {
-    this.navigation.dispatch({ type: 'Navigate', routeName })
+    this.navigation.dispatch({
+      type: 'Navigation/NAVIGATE',
+      routeName
+    })
   }
 
   handleCurrentSceneState = (prev, current) => {
@@ -70,6 +78,7 @@ class BSBExample extends Component {
 const NavigatorStack = StackNavigator({
   Simple: { screen: SimpleView },
   NestedScroll: { screen: NestedScrollView },
+  AnchorSheet: { screen: AnchorSheetView },
   GoogleMaps: { screen: GoogleMapsView },
 })
 
