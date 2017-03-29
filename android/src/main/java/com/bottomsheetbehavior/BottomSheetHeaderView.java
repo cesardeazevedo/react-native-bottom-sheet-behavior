@@ -42,6 +42,7 @@ public class BottomSheetHeaderView extends RelativeLayout {
 
     public void setFabView(FloatingActionButtonView fabView) {
         mFabView = fabView;
+        mFabView.setHeader(this);
     }
 
     public void setBackgroundColorDefault(int color) {
