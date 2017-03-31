@@ -555,6 +555,9 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if ( state == mState ) {
       return;
     }
+
+    mLastStableState = state;
+
     if ( mViewRef == null ) {
       // The view is not laid out yet; modify mState and let onLayoutChild handle it later
       /**
@@ -563,7 +566,6 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       if ( state == STATE_COLLAPSED || state == STATE_EXPANDED || state == STATE_ANCHOR_POINT ||
           (mHideable && state == STATE_HIDDEN)) {
         mState = state;
-        mLastStableState = state;
       }
       return;
     }
