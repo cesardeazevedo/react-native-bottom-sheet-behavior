@@ -22,7 +22,6 @@ public class BottomSheetHeaderView extends RelativeLayout {
     private List<ReactTextView> mTextViews;
 
     private FloatingActionButtonView mFabView;
-    private AnchorSheetBehaviorView mAnchorSheetView;
 
     private boolean mToggled;
 
@@ -32,10 +31,7 @@ public class BottomSheetHeaderView extends RelativeLayout {
         mTextViews = new ArrayList<ReactTextView>();
     }
 
-    public void setAnchorSheetView(AnchorSheetBehaviorView anchorSheetView) {
-        mAnchorSheetView = anchorSheetView;
-        mAnchorSheetView.bottomSheetBehavior.setHeader(this);
-        mToggled = mAnchorSheetView.bottomSheetBehavior.getState() == AnchorSheetBehavior.STATE_COLLAPSED;
+    public void registerFields() {
         registerChilds(this);
         toggle(false);
     }
@@ -60,6 +56,10 @@ public class BottomSheetHeaderView extends RelativeLayout {
 
     public boolean getToggled() {
         return mToggled;
+    }
+
+    public void setToggled(boolean toggled) {
+        mToggled = toggled;
     }
 
     /**

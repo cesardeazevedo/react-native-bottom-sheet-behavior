@@ -3,6 +3,7 @@ package com.bottomsheetbehavior;
 import android.content.Context;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -10,11 +11,12 @@ import android.widget.RelativeLayout;
 
 import com.facebook.react.uimanager.PixelUtil;
 
-public class BottomSheetBehaviorView extends RelativeLayout {
+public class BottomSheetBehaviorView extends NestedScrollView {
+
+    public AnchorSheetBehavior behavior;
 
     private final static int DEFAULT_PEEK_HEIGHT = 50;
-
-    public BottomSheetBehavior<BottomSheetBehaviorView> bottomSheetBehavior;
+    private final static int DEFAULT_ANCHOR_POINT = 300;
 
     public BottomSheetBehaviorView(Context context) {
         super(context);
@@ -23,25 +25,36 @@ public class BottomSheetBehaviorView extends RelativeLayout {
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
-        params.setBehavior(new BottomSheetBehavior());
+        params.setBehavior(new AnchorSheetBehavior());
 
         this.setLayoutParams(params);
 
-        bottomSheetBehavior = BottomSheetBehavior.from(this);
-        bottomSheetBehavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(DEFAULT_PEEK_HEIGHT));
+        behavior = AnchorSheetBehavior.from(this);
+        behavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(DEFAULT_PEEK_HEIGHT));
+        behavior.setAnchorPoint((int) PixelUtil.toPixelFromDIP(DEFAULT_ANCHOR_POINT));
+        behavior.setAnchorEnabled(false);
     }
 
     public void setState(int state) {
-        bottomSheetBehavior.setState(state);
+        behavior.setState(state);
     }
 
     public void setPeekHeight(int peekHeight) {
         int peekHeightPixel = (int) PixelUtil.toPixelFromDIP(peekHeight);
-        bottomSheetBehavior.setPeekHeight(peekHeightPixel);
+        behavior.setPeekHeight(peekHeightPixel);
     }
 
     public void setHideable(boolean hideable) {
-        bottomSheetBehavior.setHideable(hideable);
+        behavior.setHideable(hideable);
+    }
+
+    public void setAnchorEnabled(boolean anchorEnabled) {
+        behavior.setAnchorEnabled(anchorEnabled);
+    }
+
+    public void setAnchorPoint(int anchorPoint) {
+        int anchorPointPixel = (int) PixelUtil.toPixelFromDIP(anchorPoint);
+        behavior.setAnchorPoint(anchorPointPixel);
     }
 
     public void setBottomSheetElevation(float elevation) {
@@ -53,11 +66,13 @@ public class BottomSheetBehaviorView extends RelativeLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        View child = this.getChildAt(0);
-
-        if (child != null) {
-            setMeasuredDimension(widthMeasureSpec, child.getHeight());
+        if (!behavior.getAnchorEnabled()) {
+            View child = this.getChildAt(0);
+            if (child != null) {
+                setMeasuredDimension(widthMeasureSpec, child.getHeight());
+            }
+        } else {
+            setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
         }
     }
 

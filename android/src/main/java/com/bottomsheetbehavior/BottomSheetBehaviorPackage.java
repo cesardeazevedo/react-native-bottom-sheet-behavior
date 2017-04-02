@@ -29,7 +29,6 @@ public class BottomSheetBehaviorPackage implements ReactPackage {
                 new ScrollingAppBarLayoutManager(),
                 new BottomSheetHeaderManager(),
                 new BottomSheetBehaviorManager(),
-                new AnchorSheetBehaviorManager(),
                 new BackdropBottomSheetManager(),
                 new CoordinatorLayoutManager(),
                 new FloatingActionButtonManager(),
