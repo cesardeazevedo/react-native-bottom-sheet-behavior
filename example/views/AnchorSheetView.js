@@ -3,11 +3,11 @@ import {
   Text,
   View,
   Image,
+  Button,
   StatusBar,
   ViewPagerAndroid,
   Dimensions,
   StyleSheet,
-  TouchableWithoutFeedback,
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -17,11 +17,17 @@ import {
   ScrollingAppBarLayout,
   CoordinatorLayout,
   BackdropBottomSheet,
-  AnchorSheetBehavior,
+  BottomSheetBehavior,
   FloatingActionButton,
 } from 'react-native-bottom-sheet-behavior'
 
 const { height, width } = Dimensions.get('window')
+
+const images = [
+  require('../images/beer1.jpg'),
+  require('../images/beer2.jpg'),
+  require('../images/beer3.jpg'),
+]
 
 class AnchorSheetView extends Component {
   static contextTypes = {
@@ -48,6 +54,18 @@ class AnchorSheetView extends Component {
     })
   }
 
+  renderImage(source) {
+    return (
+      <View>
+        <Image
+          resizeMode="cover"
+          style={{width, height: 300}}
+          source={source}
+        />
+      </View>
+    )
+  }
+
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
@@ -61,36 +79,18 @@ class AnchorSheetView extends Component {
             onIconClicked={() => this.context.openDrawer()}
         />
         </ScrollingAppBarLayout>
-        <View style={styles.content}>
-        </View>
+        <View style={styles.content} />
         <BackdropBottomSheet height={300}>
           <View style={{flex: 1, backgroundColor: 'white'}}>
             <ViewPagerAndroid style={{flex: 1}}>
-              <View>
-                <Image
-                  resizeMode="cover"
-                  style={{width, height: 300}}
-                  source={require('../images/beer1.jpg')}
-                />
-              </View>
-              <View>
-                <Image
-                  resizeMode="cover"
-                  style={{width, height: 300}}
-                  source={require('../images/beer2.jpg')}
-                />
-              </View>
-              <View>
-                <Image
-                  resizeMode="cover"
-                  style={{width, height: 300}}
-                  source={require('../images/beer3.jpg')}
-                />
-              </View>
+              {this.renderImage(images[0])}
+              {this.renderImage(images[1])}
+              {this.renderImage(images[2])}
             </ViewPagerAndroid>
           </View>
         </BackdropBottomSheet>
-        <AnchorSheetBehavior
+        <BottomSheetBehavior
+          anchorEnabled
           peekHeight={80}
           hideable={false}
           ref={ref => {this.bottomSheet = ref}}
@@ -101,29 +101,17 @@ class AnchorSheetView extends Component {
               <Text style={styles.label}>AnchorSheetBehavior !</Text>
             </View>
             <View style={styles.bottomSheetContent}>
-              <TouchableWithoutFeedback
-                onPress={this.handleColor}>
-                <View style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width,
-                  height: 33,
-                  padding: 12,
-                  backgroundColor: '#333'
-                }}>
-                  <Text style={{color: 'white'}}>Color</Text>
-                </View>
-              </TouchableWithoutFeedback>
+              <Button title='Change Color' onPress={this.handleColor} />
             </View>
           </View>
-        </AnchorSheetBehavior>
+        </BottomSheetBehavior>
         <MergedAppBarLayout
           mergedColor={this.state.color}
           toolbarColor={this.state.color}
           statusBarColor={this.state.color}
           style={styles.appBarMerged}>
           <Icon.ToolbarAndroid
-            navIconName="md-arrow-back"
+            navIconName='md-arrow-back'
             overflowIconName='md-more'
             title='AnchorSheet'
             titleColor="#fff"
@@ -132,7 +120,7 @@ class AnchorSheetView extends Component {
               {title: 'Search', show: 'always', iconName: 'md-search' },
               {title: 'More'}
             ]}
-            onIconClicked={() => this.handleState(AnchorSheetBehavior.STATE_COLLAPSED)}>
+            onIconClicked={() => this.handleState(BottomSheetBehavior.STATE_COLLAPSED)}>
           </Icon.ToolbarAndroid>
         </MergedAppBarLayout>
         <FloatingActionButton
@@ -149,12 +137,12 @@ class AnchorSheetView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   content: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   scrollAppBar: {
     zIndex: 1,
@@ -177,7 +165,7 @@ const styles = StyleSheet.create({
   },
   bottomSheetContent: {
     flex: 1,
-    padding: 2,
+    padding: 12,
     alignItems: 'center',
     backgroundColor: '#fff',
   },

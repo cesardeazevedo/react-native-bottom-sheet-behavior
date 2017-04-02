@@ -4,16 +4,13 @@ import {
   Text,
   Image,
   Keyboard,
-  Animated,
   Platform,
   StatusBar,
-  TextInput,
   StyleSheet,
   Dimensions,
   ToastAndroid,
   ViewPagerAndroid,
   TouchableNativeFeedback,
-  TouchableWithoutFeedback
 } from 'react-native'
 
 import MapView from 'react-native-maps'
@@ -25,14 +22,14 @@ import {
   BottomSheetHeader,
   MergedAppBarLayout,
   BackdropBottomSheet,
-  AnchorSheetBehavior,
+  BottomSheetBehavior,
   FloatingActionButton,
   ScrollingAppBarLayout,
 } from 'react-native-bottom-sheet-behavior'
 
 const { width, height } = Dimensions.get('window')
 
-const anchorPoint = 230
+const anchorPoint = 235
 const RippleColor = (...args) => (
   Platform.Version >= 21
     ? TouchableNativeFeedback.Ripple(...args)
@@ -44,7 +41,7 @@ const PRIMARY_COLOR = '#4589f2'
 const STATUS_BAR_COLOR = '#205cb2'
 const STAR_COLOR = '#FF5722'
 
-const { STATE_ANCHOR_POINT, STATE_COLLAPSED } = AnchorSheetBehavior
+const { STATE_ANCHOR_POINT, STATE_COLLAPSED } = BottomSheetBehavior
 
 class GoogleMapsView extends Component {
   static contextTypes = {
@@ -83,7 +80,7 @@ class GoogleMapsView extends Component {
         </View>
       </View>
     </TouchableNativeFeedback>
-  );
+  )
 
   renderFloatingActionButton = () => {
     return (
@@ -145,7 +142,7 @@ class GoogleMapsView extends Component {
         <Icon.ToolbarAndroid
           navIconName="md-arrow-back"
           overflowIconName='md-more'
-          title='AnchorSheet'
+          title='Google Maps'
           titleColor="#fff"
           style={{elevation: 6}}
           actions={[
@@ -160,18 +157,17 @@ class GoogleMapsView extends Component {
 
   renderBottomSheet = () => {
     return (
-      <AnchorSheetBehavior
-        ref={(bottomSheet) => { this.bottomSheet = bottomSheet }}
+      <BottomSheetBehavior
+        anchorEnabled
+        anchorPoint={anchorPoint}
         peekHeight={80}
-        anchorPoint={230}
+        ref={(bottomSheet) => { this.bottomSheet = bottomSheet }}
         onSlide={this.handleSlide}
         onStateChange={this.handleBottomSheetChange}>
         <View style={styles.bottomSheet}>
           <BottomSheetHeader
             onPress={this.handleHeaderPress}
             textColorExpanded={WHITE}
-            fabBackground={PRIMARY_COLOR}
-            fabBackgroundExpanded={WHITE}
             backgroundColor={WHITE}
             backgroundColorExpanded={PRIMARY_COLOR}>
             <View pointerEvents='none' style={styles.bottomSheetHeader}>
@@ -217,7 +213,7 @@ class GoogleMapsView extends Component {
             </View>
           </View>
         </View>
-      </AnchorSheetBehavior>
+      </BottomSheetBehavior>
     )
   }
 
@@ -240,10 +236,10 @@ class GoogleMapsView extends Component {
       style={styles.scrollAppBar}
       statusBarColor={STATUS_BAR_COLOR}>
       <Icon.ToolbarAndroid
+        titleColor="#fff"
+        title="Google Maps"
         navIconName={'md-menu'}
         style={styles.toolbar}
-        titleColor="#fff"
-        title="AnchorSheet"
         onIconClicked={() => this.context.openDrawer()} />
     </ScrollingAppBarLayout>
   )
@@ -315,16 +311,15 @@ const styles = StyleSheet.create({
   bottomSheet: {
     height,
     zIndex: 5,
-    backgroundColor: 'transparent'
+    backgroundColor: 'white'
   },
   bottomSheetHeader: {
-    // height: 100,
     padding: 16,
     paddingLeft: 28,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // Don't forget this
+    // Don't forget this if you are using BottomSheetHeader
     backgroundColor: 'transparent'
   },
   bottomSheetLeft: {

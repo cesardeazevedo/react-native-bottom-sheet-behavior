@@ -17,6 +17,8 @@ import {
 
 const { width } = Dimensions.get('window')
 
+const initialRouteName = 'GoogleMaps'
+
 class BSBExample extends Component {
   static childContextTypes = {
     openDrawer: PropTypes.func,
@@ -24,7 +26,7 @@ class BSBExample extends Component {
   };
 
   state = {
-    currentRoute: 'Simple'
+    currentRoute: initialRouteName,
   };
 
   getChildContext = () => ({
@@ -80,6 +82,6 @@ const NavigatorStack = StackNavigator({
   NestedScroll: { screen: NestedScrollView },
   AnchorSheet: { screen: AnchorSheetView },
   GoogleMaps: { screen: GoogleMapsView },
-})
+}, { initialRouteName })
 
 AppRegistry.registerComponent('BSBExample', () => BSBExample)

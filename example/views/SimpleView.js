@@ -59,6 +59,9 @@ class SimpleView extends Component {
         <FloatingActionButton
           autoAnchor
           elevation={18}
+          icon='md-navigate'
+          iconColor='#4589f2'
+          iconProvider={Icon}
           backgroundColor={'#ffffff'}
           rippleColor="grey"
         />
@@ -70,12 +73,12 @@ class SimpleView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   content: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   toolbarWrapper: {
     paddingTop: 24,
