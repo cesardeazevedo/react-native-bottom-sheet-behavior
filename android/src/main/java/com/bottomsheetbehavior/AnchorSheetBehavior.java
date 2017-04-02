@@ -103,6 +103,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean mHideable;
 
+  private boolean mAnchorEnabled;
+
   @State
   private int mState = STATE_COLLAPSED;
   @State
@@ -188,7 +190,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     /**
      * New behavior
      */
-    if (mState == STATE_ANCHOR_POINT) {
+    if (mAnchorEnabled && mState == STATE_ANCHOR_POINT) {
       toggleHeaderColor(true);
       ViewCompat.offsetTopAndBottom(child, mAnchorPoint);
     } else if (mState == STATE_EXPANDED) {
@@ -233,7 +235,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       case MotionEvent.ACTION_DOWN:
         int initialX = (int) event.getX();
         mInitialY = (int) event.getY();
-        if(mState == STATE_ANCHOR_POINT){
+        if(mAnchorEnabled && mState == STATE_ANCHOR_POINT){
           mActivePointerId = event.getPointerId(event.getActionIndex());
           mTouchingScrollingChild = true;
         }else {
@@ -342,10 +344,10 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     int newTop     = currentTop - dy;
 
     // Force stop at the anchor - do not go from collapsed to expanded in one scroll
-    if (
+    if (mAnchorEnabled && (
         ( mLastStableState == STATE_COLLAPSED  &&  newTop < mAnchorPoint )  ||
             ( mLastStableState == STATE_EXPANDED   &&  newTop > mAnchorPoint )
-        ) {
+        )) {
       consumed[1] = dy;
       ViewCompat.offsetTopAndBottom( child, mAnchorPoint - currentTop );
       dispatchOnSlide( child.getTop() );
@@ -400,13 +402,13 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // Are we flinging up?
     float scrollVelocity = mScrollVelocityTracker.getScrollVelocity();
     if ( scrollVelocity > mMinimumVelocity) {
-      if ( mLastStableState == STATE_COLLAPSED ) {
+      if (mAnchorEnabled && mLastStableState == STATE_COLLAPSED ) {
         // Fling from collapsed to anchor
         top = mAnchorPoint;
         targetState = STATE_ANCHOR_POINT;
       }
       else
-      if ( mLastStableState == STATE_ANCHOR_POINT ) {
+      if (mAnchorEnabled && mLastStableState == STATE_ANCHOR_POINT ) {
         // Fling from anchor to expanded
         top = mMinOffset;
         targetState = STATE_EXPANDED;
@@ -420,13 +422,13 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     else
       // Are we flinging down?
       if ( scrollVelocity < -mMinimumVelocity ) {
-        if ( mLastStableState == STATE_EXPANDED ) {
+        if (mAnchorEnabled && mLastStableState == STATE_EXPANDED ) {
           // Fling to from expanded to anchor
           top = mAnchorPoint;
           targetState = STATE_ANCHOR_POINT;
         }
         else
-        if ( mLastStableState == STATE_ANCHOR_POINT ) {
+        if (mAnchorEnabled && mLastStableState == STATE_ANCHOR_POINT ) {
           // Fling from anchor to collapsed
           top = mMaxOffset;
           targetState = STATE_COLLAPSED;
@@ -455,9 +457,12 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           targetState = STATE_EXPANDED;
         }
         // Snap back to the anchor
-        else {
+        else if (mAnchorEnabled) {
           top = mAnchorPoint;
           targetState = STATE_ANCHOR_POINT;
+        } else {
+          top = mMaxOffset;
+          targetState = STATE_COLLAPSED;
         }
       }
 
@@ -518,6 +523,18 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     mHideable = hideable;
   }
 
+  public boolean getAnchorEnabled() {
+    return mAnchorEnabled;
+  }
+
+  /**
+   * Sets whether this bottom sheet can have an anchor point.
+   * @param anchorEnabled
+   */
+  public void setAnchorEnabled(boolean anchorEnabled) {
+    mAnchorEnabled = anchorEnabled;
+  }
+
   /**
    * Gets whether this bottom sheet can hide when it is swiped down.
    *
@@ -563,7 +580,8 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       /**
        * New behavior (added: state == STATE_ANCHOR_POINT ||)
        */
-      if ( state == STATE_COLLAPSED || state == STATE_EXPANDED || state == STATE_ANCHOR_POINT ||
+      if ( state == STATE_COLLAPSED || state == STATE_EXPANDED ||
+          (mAnchorEnabled && state == STATE_ANCHOR_POINT) ||
           (mHideable && state == STATE_HIDDEN)) {
         mState = state;
       }
@@ -579,7 +597,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       top = mMaxOffset;
     }
     else
-    if (state == STATE_ANCHOR_POINT) {
+    if (mAnchorEnabled && state == STATE_ANCHOR_POINT) {
       toggleColor = true;
       top = mAnchorPoint;
     }
