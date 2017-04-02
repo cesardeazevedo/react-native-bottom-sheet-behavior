@@ -155,7 +155,7 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
         }
     }
 
-    public class BottomSheetBehaviorListener extends AnchorSheetBehavior.BottomSheetCallback {
+    public class BottomSheetBehaviorListener extends RNBottomSheetBehavior.BottomSheetCallback {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
             WritableMap event = Arguments.createMap();

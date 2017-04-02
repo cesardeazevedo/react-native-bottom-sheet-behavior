@@ -39,12 +39,12 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
      */
     private float offset;
     /**
-     * The FAB should be hidden when it reach {@link #offset} or when {@link AnchorSheetBehavior}
-     * is visually lower than {@link AnchorSheetBehavior#getPeekHeight()}.
+     * The FAB should be hidden when it reach {@link #offset} or when {@link RNBottomSheetBehavior}
+     * is visually lower than {@link RNBottomSheetBehavior#getPeekHeight()}.
      * We got a reference to the object to allow change dynamically PeekHeight in BottomSheet and
      * got updated here.
      */
-    private WeakReference<AnchorSheetBehavior> mBottomSheetBehaviorRef;
+    private WeakReference<RNBottomSheetBehavior> mBottomSheetBehaviorRef;
 
     public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
         super();
@@ -63,7 +63,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
     public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
         if (dependency instanceof NestedScrollView) {
             try {
-                AnchorSheetBehavior.from(dependency);
+                RNBottomSheetBehavior.from(dependency);
                 return true;
             }
             catch (IllegalArgumentException e){}
@@ -146,8 +146,8 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
     }
 
     /**
-     * Look into the CoordiantorLayout for the {@link AnchorSheetBehavior}
-     * @param coordinatorLayout with app:layout_behavior= {@link AnchorSheetBehavior}
+     * Look into the CoordiantorLayout for the {@link RNBottomSheetBehavior}
+     * @param coordinatorLayout with app:layout_behavior= {@link RNBottomSheetBehavior}
      */
     private void getBottomSheetBehavior(@NonNull CoordinatorLayout coordinatorLayout) {
 
@@ -157,7 +157,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
             if (child instanceof NestedScrollView) {
 
                 try {
-                    AnchorSheetBehavior temp = AnchorSheetBehavior.from(child);
+                    RNBottomSheetBehavior temp = RNBottomSheetBehavior.from(child);
                     mBottomSheetBehaviorRef = new WeakReference<>(temp);
                     break;
                 }

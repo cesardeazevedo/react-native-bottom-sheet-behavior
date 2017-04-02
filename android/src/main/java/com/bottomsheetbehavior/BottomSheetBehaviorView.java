@@ -1,19 +1,17 @@
 package com.bottomsheetbehavior;
 
 import android.content.Context;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-import android.widget.RelativeLayout;
 
 import com.facebook.react.uimanager.PixelUtil;
 
 public class BottomSheetBehaviorView extends NestedScrollView {
 
-    public AnchorSheetBehavior behavior;
+    public RNBottomSheetBehavior behavior;
 
     private final static int DEFAULT_PEEK_HEIGHT = 50;
     private final static int DEFAULT_ANCHOR_POINT = 300;
@@ -25,11 +23,11 @@ public class BottomSheetBehaviorView extends NestedScrollView {
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
-        params.setBehavior(new AnchorSheetBehavior());
+        params.setBehavior(new RNBottomSheetBehavior());
 
         this.setLayoutParams(params);
 
-        behavior = AnchorSheetBehavior.from(this);
+        behavior = RNBottomSheetBehavior.from(this);
         behavior.setPeekHeight((int) PixelUtil.toPixelFromDIP(DEFAULT_PEEK_HEIGHT));
         behavior.setAnchorPoint((int) PixelUtil.toPixelFromDIP(DEFAULT_ANCHOR_POINT));
         behavior.setAnchorEnabled(false);

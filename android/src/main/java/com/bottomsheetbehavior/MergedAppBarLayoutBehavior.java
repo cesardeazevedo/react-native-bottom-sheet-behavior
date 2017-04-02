@@ -60,11 +60,11 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
 
     private Context mContext;
     /**
-     * To avoid using multiple "peekheight=" in XML and looking flexibility allowing {@link AnchorSheetBehavior#mPeekHeight}
+     * To avoid using multiple "peekheight=" in XML and looking flexibility allowing {@link RNBottomSheetBehavior#mPeekHeight}
      * get changed dynamically we get the {@link NestedScrollView} that has
-     * "app:layout_behavior=" {@link AnchorSheetBehavior} inside the {@link CoordinatorLayout}
+     * "app:layout_behavior=" {@link RNBottomSheetBehavior} inside the {@link CoordinatorLayout}
      */
-    private WeakReference<AnchorSheetBehavior> mBottomSheetBehaviorRef;
+    private WeakReference<RNBottomSheetBehavior> mBottomSheetBehaviorRef;
     private float mInitialY;
     private boolean mVisible = false;
 
@@ -88,7 +88,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
         if (dependency instanceof NestedScrollView) {
             try {
-                AnchorSheetBehavior.from(dependency);
+                RNBottomSheetBehavior.from(dependency);
                 return true;
             }
             catch (IllegalArgumentException e){}
@@ -173,8 +173,8 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     }
 
     /**
-     * Look into the CoordiantorLayout for the {@link AnchorSheetBehavior}
-     * @param coordinatorLayout with app:layout_behavior= {@link AnchorSheetBehavior}
+     * Look into the CoordiantorLayout for the {@link RNBottomSheetBehavior}
+     * @param coordinatorLayout with app:layout_behavior= {@link RNBottomSheetBehavior}
      */
     private void getBottomSheetBehavior(@NonNull CoordinatorLayout coordinatorLayout) {
 
@@ -184,7 +184,7 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
             if (child instanceof NestedScrollView) {
 
                 try {
-                    AnchorSheetBehavior temp = AnchorSheetBehavior.from(child);
+                    RNBottomSheetBehavior temp = RNBottomSheetBehavior.from(child);
                     mBottomSheetBehaviorRef = new WeakReference<>(temp);
                     break;
                 }

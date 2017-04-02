@@ -25,7 +25,7 @@ import java.util.Vector;
  * Original from BottomSheetBehaviorGoogleMapsLike.java
  * https://github.com/miguelhincapie/CustomBottomSheetBehavior/blob/master/app/src/main/java/co/com/parsoniisolutions/custombottomsheetbehavior/lib/BottomSheetBehaviorGoogleMapsLike.java
  */
-public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
+public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
   /**
    * Callback for monitoring events about bottom sheets.
@@ -135,7 +135,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /**
    * Default constructor for instantiating BottomSheetBehaviors.
    */
-  public AnchorSheetBehavior() { }
+  public RNBottomSheetBehavior() { }
 
   /**
    * Default constructor for inflating BottomSheetBehaviors from layout.
@@ -143,7 +143,7 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @param context The {@link Context}.
    * @param attrs   The {@link AttributeSet}.
    */
-  public AnchorSheetBehavior( Context context, AttributeSet attrs ) {
+  public RNBottomSheetBehavior(Context context, AttributeSet attrs ) {
     super( context, attrs );
     /**
      * Getting the anchorPoint...
@@ -852,24 +852,24 @@ public class AnchorSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
-   * A utility function to get the {@link AnchorSheetBehavior} associated with the {@code view}.
+   * A utility function to get the {@link RNBottomSheetBehavior} associated with the {@code view}.
    *
-   * @param view The {@link View} with {@link AnchorSheetBehavior}.
-   * @return The {@link AnchorSheetBehavior} associated with the {@code view}.
+   * @param view The {@link View} with {@link RNBottomSheetBehavior}.
+   * @return The {@link RNBottomSheetBehavior} associated with the {@code view}.
    */
   @SuppressWarnings("unchecked")
-  public static <V extends View> AnchorSheetBehavior<V> from(V view) {
+  public static <V extends View> RNBottomSheetBehavior<V> from(V view) {
     ViewGroup.LayoutParams params = view.getLayoutParams();
     if (!(params instanceof CoordinatorLayout.LayoutParams)) {
       throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");
     }
     CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) params)
         .getBehavior();
-    if (!(behavior instanceof AnchorSheetBehavior)) {
+    if (!(behavior instanceof RNBottomSheetBehavior)) {
       throw new IllegalArgumentException(
-          "The view is not associated with AnchorSheetBehavior");
+          "The view is not associated with RNBottomSheetBehavior");
     }
-    return (AnchorSheetBehavior<V>) behavior;
+    return (RNBottomSheetBehavior<V>) behavior;
   }
 
 }

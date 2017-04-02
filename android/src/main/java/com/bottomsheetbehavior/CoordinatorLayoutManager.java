@@ -31,10 +31,10 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
             View view = child.findViewWithTag(BottomSheetHeaderView.TAG);
             if (view != null && view instanceof BottomSheetHeaderView) {
                 BottomSheetBehaviorView b = (BottomSheetBehaviorView) child;
-                AnchorSheetBehavior behavior = b.behavior;
+                RNBottomSheetBehavior behavior = b.behavior;
                 headerView = (BottomSheetHeaderView) view;
                 headerView.registerFields();
-                headerView.setToggled(behavior.getState() == AnchorSheetBehavior.STATE_COLLAPSED);
+                headerView.setToggled(behavior.getState() == RNBottomSheetBehavior.STATE_COLLAPSED);
                 behavior.setHeader(headerView);
             }
         }
