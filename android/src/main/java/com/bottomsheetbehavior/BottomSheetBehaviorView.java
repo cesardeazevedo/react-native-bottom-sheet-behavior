@@ -35,6 +35,10 @@ public class BottomSheetBehaviorView extends NestedScrollView {
 
     public void setState(int state) {
         behavior.setState(state);
+        if (state == RNBottomSheetBehavior.STATE_COLLAPSED ||
+            state == RNBottomSheetBehavior.STATE_ANCHOR_POINT) {
+            resetScroll();
+        }
     }
 
     public void setPeekHeight(int peekHeight) {
@@ -60,6 +64,10 @@ public class BottomSheetBehaviorView extends NestedScrollView {
             this.setElevation(elevation);
             this.setOutlineProvider(ViewOutlineProvider.BOUNDS);
         }
+    }
+
+    private void resetScroll() {
+        fullScroll(FOCUS_UP);
     }
 
     @Override
