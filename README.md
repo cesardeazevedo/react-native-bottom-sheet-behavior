@@ -5,7 +5,7 @@ react-native wrapper for android [BottomSheetBehavior](https://developer.android
 
 ## Demo
 
-![react-native-bottom-sheet-behavior](http://i.imgur.com/LL3gBVM.gif)
+![react-native-bottom-sheet-behavior](http://i.imgur.com/1A5SrWq.gif)
 
 ## Components
 
