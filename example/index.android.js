@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import {
-  Dimensions,
   AppRegistry,
-  DrawerLayoutAndroid,
 } from 'react-native'
 
 import { StackNavigator } from 'react-navigation'
@@ -15,7 +13,6 @@ import {
   GoogleMapsView
 } from './views'
 
-const { width } = Dimensions.get('window')
 
 const initialRouteName = 'GoogleMaps'
 
@@ -29,19 +26,6 @@ class BSBExample extends Component {
     currentRoute: initialRouteName,
   };
 
-  getChildContext = () => ({
-    openDrawer: this.handleOpenDrawer,
-    closeDrawer: this.handleCloseDrawer,
-  })
-
-  handleOpenDrawer = () => {
-    this.drawer.openDrawer()
-  }
-
-  handleCloseDrawer = () => {
-    this.drawer.closeDrawer()
-  }
-
   handlePush = (routeName) => {
     this.navigation.dispatch({
       type: 'Navigation/NAVIGATE',
@@ -53,26 +37,16 @@ class BSBExample extends Component {
     this.setState({ currentRoute: current.routes[current.index].routeName })
   }
 
-  renderDrawerMenu = () => {
+  render() {
     return (
       <DrawerMenu
         push={this.handlePush}
-        currentRoute={this.state.currentRoute}
-      />
-    )
-  }
-
-  render() {
-    return (
-      <DrawerLayoutAndroid
-        ref={(drawer) => { this.drawer = drawer }}
-        drawerWidth={width - 56}
-        renderNavigationView={this.renderDrawerMenu}>
+        currentRoute={this.state.currentRoute}>
         <NavigatorStack
           ref={ref => {this.navigation = ref}}
           onNavigationStateChange={this.handleCurrentSceneState}
         />
-      </DrawerLayoutAndroid>
+      </DrawerMenu>
     )
   }
 }

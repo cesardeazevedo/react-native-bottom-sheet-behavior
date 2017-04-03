@@ -58,7 +58,7 @@ class NestedScroll extends Component {
   }
 
   renderButton = (key, index) => (
-    <View style={{marginTop: 8, marginHorizontal: 12}}>
+    <View key={key} style={{marginTop: 8, marginHorizontal: 12}}>
       <Button
         color='#333'
         title={key.toString()}

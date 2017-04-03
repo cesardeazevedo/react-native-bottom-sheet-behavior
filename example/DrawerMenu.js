@@ -4,6 +4,8 @@ import {
   Text,
   Platform,
   StyleSheet,
+  Dimensions,
+  DrawerLayoutAndroid,
   TouchableNativeFeedback,
 } from 'react-native'
 
@@ -17,6 +19,10 @@ const MENU = [
   { name: 'GoogleMaps', icon: 'md-map' }
 ]
 
+let toRoute
+
+const { width } = Dimensions.get('window')
+
 const RippleColor = Platform.Version >= 21
   ? TouchableNativeFeedback.Ripple('#d1d1d1')
   : null
@@ -27,13 +33,34 @@ class DrawerMenu extends Component {
     currentRoute: PropTypes.string.isRequired,
   };
 
-  static contextTypes = {
+  static childContextTypes = {
+    openDrawer: PropTypes.any,
     closeDrawer: PropTypes.func,
   };
 
+  getChildContext = () => ({
+    openDrawer: this.handleOpenDrawer,
+    closeDrawer: this.handleCloseDrawer,
+  })
+
   handleAction = (route) => {
-    this.context.closeDrawer()
-    this.props.push(route.name)
+    toRoute = route.name
+    this.handleCloseDrawer()
+  }
+
+  handleOnDrawerChanged = (state) => {
+    if (state === 'Settling' && toRoute) {
+      this.props.push(toRoute)
+      toRoute = null
+    }
+  }
+
+  handleOpenDrawer = () => {
+    this.drawer.openDrawer()
+  }
+
+  handleCloseDrawer = () => {
+    this.drawer.closeDrawer()
   }
 
   renderMenuItem = (route) => {
@@ -73,12 +100,22 @@ class DrawerMenu extends Component {
     </View>
   )
 
+  renderDrawer = () => (
+    <View style={styles.container}>
+      {this.renderHeader()}
+      {this.renderMenu()}
+    </View>
+  )
+
   render() {
     return (
-      <View style={styles.container}>
-        {this.renderHeader()}
-        {this.renderMenu()}
-      </View>
+      <DrawerLayoutAndroid
+        drawerWidth={width - 56}
+        onDrawerStateChanged={this.handleOnDrawerChanged}
+        ref={(drawer) => { this.drawer = drawer }}
+        renderNavigationView={this.renderDrawer}>
+        {this.props.children}
+      </DrawerLayoutAndroid>
     )
   }
 }
