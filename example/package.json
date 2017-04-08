@@ -9,8 +9,8 @@
     "lint:fix": "eslint -c .eslintrc.js views index.android.js --fix"
   },
   "dependencies": {
-    "react": "^15.4.2",
-    "react-native": "^0.42.0",
+    "react": "16.0.0-alpha.6",
+    "react-native": "^0.43.2",
     "react-native-maps": "^0.10.0",
     "react-native-vector-icons": "^2.0.3",
     "react-native-bottom-sheet-behavior": "file:../"
