@@ -18,4 +18,20 @@ public class CoordinatorLayoutView extends CoordinatorLayout {
         this.setLayoutParams(params);
         this.setFitsSystemWindows(false);
     }
+
+    private final Runnable measureAndLayout = new Runnable() {
+      @Override
+      public void run() {
+        measure(
+            MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
+        layout(getLeft(), getTop(), getRight(), getBottom());
+      }
+    };
+
+    @Override
+    public void requestLayout() {
+      super.requestLayout();
+      post(measureAndLayout);
+    }
 }
