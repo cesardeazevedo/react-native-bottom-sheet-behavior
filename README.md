@@ -144,7 +144,7 @@ This behavior hides and sets the StatusBar background to transparent when you st
 and reappears when the BottomSheet backs to the collapsed state, setting back the StatusBar background color
 with `statusBarColor` prop.
 
-![scrollingappbar](https://cloud.githubusercontent.com/assets/5366959/24858699/c68fce0c-1dc3-11e7-8dfa-ae3c526bc035.gif)
+![scrollingappbar](https://cloud.githubusercontent.com/assets/5366959/24859715/2360e3f6-1dc8-11e7-9bb4-090d7dfb25f4.gif)
 
 #### MergedAppBarLayout
 
