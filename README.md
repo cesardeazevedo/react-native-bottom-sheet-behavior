@@ -144,11 +144,15 @@ This behavior hides and sets the StatusBar background to transparent when you st
 and reappears when the BottomSheet backs to the collapsed state, setting back the StatusBar background color
 with `statusBarColor` prop.
 
+![scrollingappbar](https://cloud.githubusercontent.com/assets/5366959/24858699/c68fce0c-1dc3-11e7-8dfa-ae3c526bc035.gif)
+
 #### MergedAppBarLayout
 
 The MergedAppBarLayout behavior appears when the BottomSheet reaches the anchor state (or expanded state if you're not using anchorEnabled).
 When the BottomSheet is getting over the MergedAppBar, it will partially sets the height of ToolbarAndroid revealing the
 `mergedColor` prop, and when the BottomSheet is fully expanded, it sets the ToolbarAndroid with the `toolbarColor` prop.
+
+![mergedappbar](https://cloud.githubusercontent.com/assets/5366959/24858662/9dad8eac-1dc3-11e7-92c9-c36ce673d6f8.gif)
 
 ## FloatingActionButton
 
