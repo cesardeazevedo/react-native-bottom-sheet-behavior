@@ -103,7 +103,7 @@ include ':app'
 
 You will need to wrap your view into a `CoordinatorLayout` to make it work.
 
-```js
+```jsx
 
     render() {
       return (
@@ -152,14 +152,31 @@ The MergedAppBarLayout behavior appears when the BottomSheet reaches the anchor 
 When the BottomSheet is getting over the MergedAppBar, it will partially sets the height of ToolbarAndroid revealing the
 `mergedColor` prop, and when the BottomSheet is fully expanded, it sets the ToolbarAndroid with the `toolbarColor` prop.
 
+```jsx
+<MergedAppBarLayout
+  mergedColor='#1abc9c'
+  toolbarColor='#34495e'
+  statusBarColor='#2c3e50'>
+  <ToolbarAndroid
+    navIconName="md-arrow-back"
+    overflowIconName='md-more'
+    title='React Native Bar!'
+    titleColor='#fff'
+  />
+</MergedAppBarLayout>
+```
+
 ![mergedappbar](https://cloud.githubusercontent.com/assets/5366959/24858662/9dad8eac-1dc3-11e7-92c9-c36ce673d6f8.gif)
+
+![merged_color](https://cloud.githubusercontent.com/assets/5366959/24860941/41381750-1dcd-11e7-8128-a6dd422e9a19.jpg)
+
 
 ## FloatingActionButton
 
 If you are using FloatingActionButton, the `autoAnchor` prop will automatically connect to BottomSheetBehavior,
 in order to follow when it's dragging.
 
-```js
+```jsx
 <FloatingActionButton autoAnchor />
 ```
 
@@ -178,7 +195,7 @@ FloatingActionButton's has a custom behavior that hides when closely reaches Mer
 You can also use [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
 on FloatingActionButton, which will automatically load the icon for you.
 
-```js
+```jsx
   import Icon from 'react-native-vector-icons/Ionicons'
 
   ...
