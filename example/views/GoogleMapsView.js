@@ -333,6 +333,7 @@ class GoogleMapsView extends Component {
         anchorEnabled
         anchorPoint={anchorPoint}
         peekHeight={80}
+        elevation={8}
         ref={(bottomSheet) => { this.bottomSheet = bottomSheet }}
         onSlide={this.handleSlide}
         onStateChange={this.handleBottomSheetChange}>
