@@ -1,15 +1,11 @@
-/**
- * @flow
- */
-
 import React, { Component, PropTypes } from 'react'
 import {
   Text,
   View,
+  Button,
   StatusBar,
   Dimensions,
   StyleSheet,
-  TouchableNativeFeedback,
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -20,6 +16,8 @@ import {
   BottomSheetBehavior,
 } from 'react-native-bottom-sheet-behavior'
 
+const { STATE_COLLAPSED, STATE_EXPANDED } = BottomSheetBehavior
+
 const { width, height } = Dimensions.get('window')
 
 class NestedScroll extends Component {
@@ -27,9 +25,14 @@ class NestedScroll extends Component {
     openDrawer: PropTypes.any,
   };
 
+  static navigationOptions = {
+    header: {
+      visible: false
+    }
+  };
+
   state = {
-    state: 4,
-    buttons: [0],
+    buttons: [0, 1, 2],
   };
 
   handleAddButton = () => {
@@ -51,15 +54,17 @@ class NestedScroll extends Component {
   }
 
   handleState = (state) => {
-    this.setState({ state })
+    this.bottomSheet.setBottomSheetState(state)
   }
 
   renderButton = (key, index) => (
-    <TouchableNativeFeedback key={index} onPress={() => this.handleRemoveButton(index)}>
-      <View style={styles.button}>
-        <Text style={styles.buttonLabel}>{key}</Text>
-      </View>
-    </TouchableNativeFeedback>
+    <View key={key} style={{marginTop: 8, marginHorizontal: 12}}>
+      <Button
+        color='#333'
+        title={key.toString()}
+        onPress={() => this.handleRemoveButton(index)}
+      />
+    </View>
   )
 
   render() {
@@ -71,32 +76,25 @@ class NestedScroll extends Component {
             <Icon.ToolbarAndroid
               navIconName={'md-menu'}
               style={styles.toolbar}
-              titleColor="white"
+              titleColor="#fff"
               title="NestedScrollView"
               onIconClicked={() => this.context.openDrawer()}
             />
           </View>
-          <TouchableNativeFeedback onPress={this.handleAddButton}>
-            <View style={styles.button}>
-              <Text style={styles.buttonLabel}>Add Button</Text>
-            </View>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback onPress={() => this.handleState(BottomSheetBehavior.STATE_EXPANDED)}>
-            <View style={styles.button}>
-              <Text style={styles.buttonLabel}>Expanded</Text>
-            </View>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback onPress={() => this.handleState(BottomSheetBehavior.STATE_COLLAPSED)}>
-            <View style={styles.button}>
-              <Text style={styles.buttonLabel}>Collapsed</Text>
-            </View>
-          </TouchableNativeFeedback>
+          <View style={{flex: 1, width, paddingHorizontal: 24}}>
+            <Button title='Add Button' color='#4389f2' onPress={this.handleAddButton} />
+            <View style={{margin: 8}} />
+            <Button title='Expand' color='#4389f2' onPress={() => this.handleState(STATE_EXPANDED)} />
+            <View style={{margin: 8}} />
+            <Button title='Collapse' color='#4389f2' onPress={() => this.handleState(STATE_COLLAPSED)} />
+          </View>
           <View style={{flex: 1}} />
         </View>
         <BottomSheetBehavior
           peekHeight={70}
           hideable={false}
-          state={this.state.state}>
+          anchorEnabled={false}
+          ref={ref => { this.bottomSheet = ref }}>
           <View style={styles.bottomSheet}>
             <View style={styles.bottomSheetHeader}>
               <Text style={styles.label}>NestedScrollView !</Text>
@@ -113,19 +111,19 @@ class NestedScroll extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   content: {
     height,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   toolbarWrapper: {
+    elevation: 4,
     paddingTop: 24,
     marginBottom: 24,
     backgroundColor: '#4389f2',
@@ -136,6 +134,7 @@ const styles = StyleSheet.create({
   },
   scroll: {
     width,
+    height: 200,
   },
   bottomSheet: {
     backgroundColor: '#4389f2',
@@ -145,9 +144,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    backgroundColor: 'transparent'
   },
   bottomSheetContent: {
-    height: 200,
     alignItems: 'center',
     backgroundColor: 'white',
   },

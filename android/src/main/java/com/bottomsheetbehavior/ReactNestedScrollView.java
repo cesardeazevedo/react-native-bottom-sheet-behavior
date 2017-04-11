@@ -46,6 +46,8 @@ import com.facebook.infer.annotation.Assertions;
  */
 public class ReactNestedScrollView extends NestedScrollView implements ReactClippingViewGroup {
 
+    public static final String TAG = "ReactNestedScrollView";
+
     private static Field sScrollerField;
     private static boolean sTriedToGetScrollerField = false;
 
@@ -70,6 +72,7 @@ public class ReactNestedScrollView extends NestedScrollView implements ReactClip
 
     public ReactNestedScrollView(ReactContext context, @Nullable FpsListener fpsListener) {
         super(context);
+        this.setTag(TAG);
         mFpsListener = fpsListener;
 
         if (!sTriedToGetScrollerField) {

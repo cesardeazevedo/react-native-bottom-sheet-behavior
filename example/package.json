@@ -11,9 +11,10 @@
   "dependencies": {
     "react": "16.0.0-alpha.6",
     "react-native": "^0.43.2",
+    "react-native-bottom-sheet-behavior": "file:../",
     "react-native-maps": "^0.10.0",
-    "react-native-vector-icons": "^2.0.3",
-    "react-native-bottom-sheet-behavior": "file:../"
+    "react-native-vector-icons": "^4.0.0",
+    "react-navigation": "git@github.com:react-community/react-navigation.git#7edd9a79aab07a5da969be2d4e254f7524faad03"
   },
   "devDependencies": {
     "babel-preset-react-native": "^1.9.0",

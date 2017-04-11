@@ -1,7 +1,7 @@
 package com.bottomsheetbehavior;
 
+import android.graphics.Color;
 import android.view.View;
-import android.support.design.widget.FloatingActionButton;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
@@ -57,9 +57,30 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
         view.setIcon(uri);
     }
 
+    @ReactProp(name = "iconColor")
+    public void setIconColor(FloatingActionButtonView view, String color) {
+        view.setIconColorDefault(Color.parseColor(color));
+        toggleFab(view);
+    }
+
+    @ReactProp(name = "iconColorExpanded")
+    public void setIconColorExpanded(FloatingActionButtonView view, String color) {
+        view.setIconColorExpanded(Color.parseColor(color));
+        toggleFab(view);
+    }
+
     @ReactProp(name = "backgroundColor")
     public void setBackground(FloatingActionButtonView view, String background) {
-        view.setBackground(background);
+        int color = Color.parseColor(background);
+        view.setBackgroundDefault(color);
+        view.setBackground(color);
+        toggleFab(view);
+    }
+
+    @ReactProp(name = "backgroundColorExpanded")
+    public void setBackgroundExpanded(FloatingActionButtonView view, String background) {
+        view.setBackgroundExpanded(Color.parseColor(background));
+        toggleFab(view);
     }
 
     @ReactProp(name = "hidden", defaultBoolean = false)
@@ -85,6 +106,13 @@ public class FloatingActionButtonManager extends SimpleViewManager<FloatingActio
     @ReactProp(name = "autoAnchor")
     public void setAutoAnchor(FloatingActionButtonView view, boolean autoAnchor) {
         view.setAutoAnchor(autoAnchor);
+    }
+
+    private void toggleFab(FloatingActionButtonView view) {
+        BottomSheetHeaderView header = view.getHeader();
+        if (header != null) {
+            header.toggleFab(header.getToggled());
+        }
     }
 
     @Override

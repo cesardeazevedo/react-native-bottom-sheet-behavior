@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Gravity;
+import android.view.MotionEvent;
 
 import com.facebook.react.uimanager.PixelUtil;
 
@@ -18,6 +19,15 @@ import java.net.URL;
 public class FloatingActionButtonView extends FloatingActionButton {
 
     private boolean autoAnchor;
+
+    private Drawable icon;
+    private BottomSheetHeaderView headerView;
+
+    private int mIconColorDefault;
+    private int mIconColorExpanded;
+
+    private int mBackgroundDefault;
+    private int mBackgroundExpanded;
 
     public FloatingActionButtonView(Context context) {
         super(context);
@@ -35,7 +45,7 @@ public class FloatingActionButtonView extends FloatingActionButton {
     }
 
     public void setSrc(String src) {
-        Drawable icon = ResourceDrawableIdHelper.getInstance().getResourceDrawable(this.getContext(), src);
+        icon = ResourceDrawableIdHelper.getInstance().getResourceDrawable(this.getContext(), src);
         this.setImageDrawable(icon);
     }
 
@@ -43,18 +53,59 @@ public class FloatingActionButtonView extends FloatingActionButton {
         try {
             URL url = new URL(path);
             Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
-            Drawable icon = new BitmapDrawable(this.getResources(), bitmap);
+            icon = new BitmapDrawable(this.getResources(), bitmap);
             this.setImageDrawable(icon);
             this.requestLayout();
         } catch (Exception e) {
         }
     }
 
-    public void setBackground(String color) {
+    public int getIconColorDefault() {
+        return mIconColorDefault;
+    }
+
+    public void setIconColorDefault(int color) {
+        mIconColorDefault = color;
+    }
+
+    public int getIconColorExpanded() {
+        return mIconColorExpanded;
+    }
+
+    public void setIconColorExpanded(int color) {
+        mIconColorExpanded = color;
+    }
+
+    public void setIconColor(int color) {
         try {
-            this.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
+            if (icon != null && android.os.Build.VERSION.SDK_INT >= 21) {
+                icon.mutate().setTint(color);
+            }
+        } catch (Exception ex) {
+        }
+    }
+
+    public int getBackgroundDefault() {
+        return mBackgroundDefault;
+    }
+
+    public void setBackgroundDefault(int color) {
+        mBackgroundDefault = color;
+    }
+
+    public void setBackground(int color) {
+        try {
+            this.setBackgroundTintList(ColorStateList.valueOf(color));
         } catch (Exception e) {
         }
+    }
+
+    public int getBackgroundExpanded() {
+        return mBackgroundExpanded;
+    }
+
+    public void setBackgroundExpanded(int color) {
+        mBackgroundExpanded = color;
     }
 
     public void setHidden(boolean hidden) {
@@ -95,7 +146,43 @@ public class FloatingActionButtonView extends FloatingActionButton {
        autoAnchor = anchor;
     }
 
+    public BottomSheetHeaderView getHeader() {
+        return headerView;
+    }
+
+    public void setHeader(BottomSheetHeaderView header) {
+        headerView = header;
+    }
+
     public void setAnchor(int id) {
         ((CoordinatorLayout.LayoutParams) this.getLayoutParams()).setAnchorId(id);
+        post(new Runnable() {
+            @Override
+            public void run() {
+                requestLayout();
+            }
+        });
+    }
+
+    public void setScrollBehavior() {
+        CoordinatorLayout.LayoutParams params =
+                (CoordinatorLayout.LayoutParams) this.getLayoutParams();
+        params.setBehavior(new ScrollAwareFABBehavior(this.getContext(), null));
+    }
+
+    /**
+     * Fixes FAB remains pressed when pointer leaves the view bounds
+     * https://code.google.com/p/android/issues/detail?id=218956
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        boolean result = super.onTouchEvent(ev);
+        if (!result) {
+            if (ev.getAction() == MotionEvent.ACTION_UP) {
+                cancelLongPress();
+            }
+            setPressed(false);
+        }
+        return result;
     }
 }

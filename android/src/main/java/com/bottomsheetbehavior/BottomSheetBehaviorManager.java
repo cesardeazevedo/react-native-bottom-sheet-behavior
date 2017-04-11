@@ -1,11 +1,9 @@
 package com.bottomsheetbehavior;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
-import android.util.Log;
+import android.support.v4.view.ViewCompat;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
@@ -14,7 +12,6 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
@@ -37,7 +34,7 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
     @Override
     public BottomSheetBehaviorView createViewInstance(ThemedReactContext context) {
         BottomSheetBehaviorView bottomSheet = new BottomSheetBehaviorView(context);
-        bottomSheet.bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehaviorListener());
+        bottomSheet.behavior.addBottomSheetCallback(new BottomSheetBehaviorListener());
         return bottomSheet;
     }
 
@@ -59,9 +56,52 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
         view.setPeekHeight(peekHeight);
     }
 
+    @ReactProp(name = "anchorEnabled")
+    public void setAnchorEnabled(BottomSheetBehaviorView view, boolean anchorEnabled) {
+        view.setAnchorEnabled(anchorEnabled);
+    }
+
+    @ReactProp(name = "anchorPoint", defaultInt = 300)
+    public void setAnchorPoint(BottomSheetBehaviorView view, int anchorPoint) {
+        view.setAnchorPoint(anchorPoint);
+    }
+
     @ReactProp(name = "elevation", defaultFloat = 0)
     public void setElevation(BottomSheetBehaviorView view, float elevation) {
         view.setBottomSheetElevation(elevation);
+    }
+
+    /**
+     * BottomSheetBehaviorView inherits a NestedScrollView in order to work
+     * with the anchor point, but it breaks any ReactNestedScrollView child,
+     * so we are changing the behavior of ReactNestedScrollView to disable
+     * the nested scroll of the bottom sheet, and enable when the child scroll
+     * reaches the top offset.
+     */
+    @Override
+    public void addView(final BottomSheetBehaviorView parent, View child, int index) {
+        super.addView(parent, child, index);
+
+        final ReactNestedScrollView nestedScroll =
+                (ReactNestedScrollView) parent.findViewWithTag(ReactNestedScrollView.TAG);
+
+        if (nestedScroll != null) {
+            nestedScroll.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int action = event.getAction();
+                    if (action == MotionEvent.ACTION_MOVE) {
+                        if (nestedScroll.computeVerticalScrollOffset() == 0) {
+                            parent.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
+                        } else {
+                            parent.stopNestedScroll();
+                        }
+                    }
+
+                    return nestedScroll.onTouchEvent(event);
+                }
+            });
+        }
     }
 
     @Override
@@ -115,7 +155,7 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
         }
     }
 
-    public class BottomSheetBehaviorListener extends BottomSheetBehavior.BottomSheetCallback {
+    public class BottomSheetBehaviorListener extends RNBottomSheetBehavior.BottomSheetCallback {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
             WritableMap event = Arguments.createMap();
