@@ -29,11 +29,11 @@ class SimpleView extends Component {
   };
 
   handleSlide(e) {
-    console.log('Offset', e.nativeEvent.offset)
+    this.offset = e.nativeEvent.offset
   }
 
   handleBottomSheetChange(e) {
-    console.log('State', e.nativeEvent.state)
+    this.lastState = e.nativeEvent.state
   }
 
   render() {
