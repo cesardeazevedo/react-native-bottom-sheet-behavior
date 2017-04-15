@@ -34,7 +34,7 @@ public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayout
                 RNBottomSheetBehavior behavior = b.behavior;
                 headerView = (BottomSheetHeaderView) view;
                 headerView.registerFields();
-                headerView.setToggled(behavior.getState() == RNBottomSheetBehavior.STATE_COLLAPSED);
+                headerView.toggle(behavior.getState() == RNBottomSheetBehavior.STATE_COLLAPSED);
                 behavior.setHeader(headerView);
             }
         }

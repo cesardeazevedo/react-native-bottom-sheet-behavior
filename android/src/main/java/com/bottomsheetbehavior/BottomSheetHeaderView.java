@@ -33,12 +33,12 @@ public class BottomSheetHeaderView extends RelativeLayout {
 
     public void registerFields() {
         registerChilds(this);
-        toggle(false);
     }
 
     public void setFabView(FloatingActionButtonView fabView) {
         mFabView = fabView;
         mFabView.setHeader(this);
+        toggleFab(mToggled);
     }
 
     public void setBackgroundColorDefault(int color) {
@@ -56,10 +56,6 @@ public class BottomSheetHeaderView extends RelativeLayout {
 
     public boolean getToggled() {
         return mToggled;
-    }
-
-    public void setToggled(boolean toggled) {
-        mToggled = toggled;
     }
 
     /**
