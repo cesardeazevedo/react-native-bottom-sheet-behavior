@@ -131,6 +131,31 @@ You will need to wrap your view into a `CoordinatorLayout` to make it work.
 > *NOTE*
 > Make sure that your view has a `backgroundColor` style to prevent some "bugs" when rendering the container.
 
+### Components Order
+
+You should follow this component order.
+
+```jsx
+
+render() {
+  return (
+    <CoordinatorLayout>
+      <ScrollingAppBarLayout>
+        <ToolbarAndroid />
+      </ScrollingAppBarLayout>
+      <View>Main Content</View>
+      <BackdropBottomSheet />
+      <BottomSheetBehavior />
+      <MergedAppBarLayout
+        <ToolbarAndroid />
+      </MergedAppBarLayout>
+      <FloatingActionButton />
+    </CoordinatorLayout>
+  )
+}
+
+```
+
 ## AppBarLayouts
 
 We provide some custom AppBars that has custom behaviors, they automatically connects with BottomSheetBehavior
