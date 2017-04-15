@@ -580,8 +580,7 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
       /**
        * New behavior (added: state == STATE_ANCHOR_POINT ||)
        */
-      if ( state == STATE_COLLAPSED || state == STATE_EXPANDED ||
-          (mAnchorEnabled && state == STATE_ANCHOR_POINT) ||
+      if (state == STATE_COLLAPSED || state == STATE_EXPANDED || state == STATE_ANCHOR_POINT ||
           (mHideable && state == STATE_HIDDEN)) {
         mState = state;
       }
