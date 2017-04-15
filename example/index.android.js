@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import {
   AppRegistry,
 } from 'react-native'
@@ -13,15 +13,9 @@ import {
   GoogleMapsView
 } from './views'
 
-
 const initialRouteName = 'GoogleMaps'
 
 class BSBExample extends Component {
-  static childContextTypes = {
-    openDrawer: PropTypes.func,
-    closeDrawer: PropTypes.func
-  };
-
   state = {
     currentRoute: initialRouteName,
   };
