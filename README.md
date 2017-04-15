@@ -156,6 +156,17 @@ render() {
 
 ```
 
+### Events
+
+In order to get the current bottom sheet state or offset, you can listen to `onStateChange` or `onSlide` respectively.
+
+```jsx
+  <BottomSheetBehavior
+    onSlide={(e) => console.log(e.nativeEvent.offset)}
+    onStateChange={(e) => console.log(e.nativeEvent.state)}
+  />
+```
+
 ## AppBarLayouts
 
 We provide some custom AppBars that has custom behaviors, they automatically connects with BottomSheetBehavior

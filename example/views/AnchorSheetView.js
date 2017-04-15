@@ -54,6 +54,14 @@ class AnchorSheetView extends Component {
     })
   }
 
+  handleSlide(e) {
+    console.log('Offset', e.nativeEvent.offset)
+  }
+
+  handleBottomSheetChange(e) {
+    console.log('State', e.nativeEvent.state)
+  }
+
   renderImage(source) {
     return (
       <View>

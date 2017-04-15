@@ -28,6 +28,14 @@ class SimpleView extends Component {
     }
   };
 
+  handleSlide(e) {
+    console.log('Offset', e.nativeEvent.offset)
+  }
+
+  handleBottomSheetChange(e) {
+    console.log('State', e.nativeEvent.state)
+  }
+
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
