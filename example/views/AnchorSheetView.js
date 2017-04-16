@@ -78,7 +78,10 @@ class AnchorSheetView extends Component {
     return (
       <CoordinatorLayout style={styles.container}>
         <StatusBar translucent backgroundColor='#205cb2' />
-        <ScrollingAppBarLayout style={styles.scrollAppBar} statusBarColor='#205cb2'>
+        <ScrollingAppBarLayout
+          translucent
+          style={styles.scrollAppBar}
+          statusBarColor='#205cb2'>
           <Icon.ToolbarAndroid
             navIconName={'md-menu'}
             style={styles.toolbar}
@@ -114,6 +117,7 @@ class AnchorSheetView extends Component {
           </View>
         </BottomSheetBehavior>
         <MergedAppBarLayout
+          translucent
           mergedColor={this.state.color}
           toolbarColor={this.state.color}
           statusBarColor={this.state.color}

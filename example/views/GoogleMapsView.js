@@ -307,6 +307,7 @@ class GoogleMapsView extends Component {
   renderMergedAppBarLayout() {
     return (
       <MergedAppBarLayout
+        translucent
         mergedColor={PRIMARY_COLOR}
         toolbarColor={PRIMARY_COLOR}
         statusBarColor={STATUS_BAR_COLOR}
@@ -379,6 +380,7 @@ class GoogleMapsView extends Component {
   renderToolbar() {
     return (
       <ScrollingAppBarLayout
+        translucent
         style={styles.scrollAppBar}
         statusBarColor={STATUS_BAR_COLOR}>
         <Icon.ToolbarAndroid
@@ -394,7 +396,7 @@ class GoogleMapsView extends Component {
   render() {
     return (
       <CoordinatorLayout style={styles.container}>
-        <StatusBar translucent backgroundColor={STATUS_BAR_COLOR} />
+        <StatusBar translucent barStyle='dark-content' backgroundColor={STATUS_BAR_COLOR} />
         {this.renderToolbar()}
         <View style={styles.content}>
           {this.renderMaps()}
