@@ -36,20 +36,35 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
     @Override
     public AppBarLayout createViewInstance(ThemedReactContext context) {
         AppBarLayout view = new AppBarLayout(context);
+
         int width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
         int height = CoordinatorLayout.LayoutParams.WRAP_CONTENT;
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
         params.setBehavior(new MergedAppBarLayoutBehavior(context, null));
-
-        if (Build.VERSION.SDK_INT >= 21) {
-            int statusBarHeight = getStatusBarHeight(context);
-            params.setMargins(0, statusBarHeight, 0, 0);
-        }
-
         view.setLayoutParams(params);
         // Set tag to match on ScrollAwareFABBehavior.
         view.setTag("modal-appbar");
+        mergedBehavior = MergedAppBarLayoutBehavior.from(view);
         return view;
+    }
+
+    @ReactProp(name = "translucent")
+    public void setTranslucent(AppBarLayout view, boolean translucent) {
+        if (Build.VERSION.SDK_INT >= 21 && translucent) {
+            int statusBarHeight = getStatusBarHeight(view.getContext());
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+            params.setMargins(0, statusBarHeight, 0, 0);
+        }
+    }
+
+    @ReactProp(name = "barStyle")
+    public void setBarStyle(AppBarLayout view, String barStyle) {
+        mergedBehavior.setBarStyle(barStyle.equals("dark-content") ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : 0);
+    }
+
+    @ReactProp(name = "barStyleTransparent")
+    public void setBarStyleTransparent(AppBarLayout view, String barStyle) {
+        mergedBehavior.setBarStyleTransparent(barStyle.equals("dark-content") ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : 0);
     }
 
     @ReactProp(name = "mergedColor")
@@ -63,23 +78,19 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
     @ReactProp(name = "toolbarColor")
     public void setToolbarColor(AppBarLayout view, String toolbarColor) {
         mToolbarColor = toolbarColor;
-        if (mergedBehavior != null) {
-            int color = Color.parseColor(mToolbarColor);
-            mergedBehavior.setBackgroundColor(color);
-            if (mergedBehavior.getFullbackGroundColor() != android.R.color.transparent) {
-                mergedBehavior.setFullBackGroundColor(color);
-            }
+        int color = Color.parseColor(mToolbarColor);
+        mergedBehavior.setBackgroundColor(color);
+        if (mergedBehavior.getFullbackGroundColor() != android.R.color.transparent) {
+            mergedBehavior.setFullBackGroundColor(color);
         }
     }
 
     @ReactProp(name = "statusBarColor")
     public void setStatusBarColor(AppBarLayout view, String statusBarColor) {
         mStatusBarColor = statusBarColor;
-        if (mergedBehavior != null) {
-            mergedBehavior.setStatusBarColor(Color.parseColor(mStatusBarColor));
-            if (mergedBehavior.getFullbackGroundColor() != android.R.color.transparent) {
-                mergedBehavior.setStatusBarBackgroundVisible(true);
-            }
+        mergedBehavior.setStatusBarColor(Color.parseColor(mStatusBarColor));
+        if (mergedBehavior.getFullbackGroundColor() != android.R.color.transparent) {
+            mergedBehavior.setStatusBarBackgroundVisible(true);
         }
     }
 
@@ -93,50 +104,45 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
     @Override
     public void addView(AppBarLayout parent, View child, int index) {
         if (child instanceof Toolbar) {
-            int width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
-            int height = CoordinatorLayout.LayoutParams.MATCH_PARENT;
-
-            CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
-
-            FrameLayout frame = new FrameLayout(parent.getContext());
-            frame.setLayoutParams(params);
-
-            mergedView = new View((parent.getContext()));
-            FrameLayout.LayoutParams backgroundParams = new FrameLayout.LayoutParams(width, 0);
-            backgroundParams.gravity = Gravity.BOTTOM;
-            mergedView.setLayoutParams(backgroundParams);
+            FrameLayout frame = createFrameLayout(parent.getContext());
+            mergedView = createMergedView(parent.getContext());
             setMergedBackgroundColor();
 
             frame.addView(mergedView);
             parent.addView(frame);
             Toolbar toolbar = (Toolbar) child;
             frame.addView(toolbar);
-            mergedBehavior = MergedAppBarLayoutBehavior.from(parent);
             mergedBehavior.setToolbar(toolbar);
             mergedBehavior.setMergedView(mergedView);
             if (!TextUtils.isEmpty(toolbar.getTitle())) {
                 mergedBehavior.setToolbarTitle(toolbar.getTitle().toString());
             }
-            setFullBackGroundColor();
-            setStatusBarColorBehavior();
         }
+    }
+
+    private FrameLayout createFrameLayout(Context context) {
+        int width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
+        int height = CoordinatorLayout.LayoutParams.MATCH_PARENT;
+
+        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
+
+        FrameLayout frame = new FrameLayout(context);
+        frame.setLayoutParams(params);
+        return frame;
+    }
+
+    private View createMergedView(Context context) {
+        int width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
+        View mergedView = new View(context);
+        FrameLayout.LayoutParams backgroundParams = new FrameLayout.LayoutParams(width, 0);
+        backgroundParams.gravity = Gravity.BOTTOM;
+        mergedView.setLayoutParams(backgroundParams);
+        return mergedView;
     }
 
     private void setMergedBackgroundColor() {
         if (mMergedColor != null) {
             mergedView.setBackgroundColor(Color.parseColor(mMergedColor));
-        }
-    }
-
-    private void setFullBackGroundColor() {
-        if (mToolbarColor != null) {
-            mergedBehavior.setBackgroundColor(Color.parseColor(mToolbarColor));
-        }
-    }
-
-    private void setStatusBarColorBehavior() {
-        if (mStatusBarColor != null) {
-            mergedBehavior.setStatusBarColor(Color.parseColor(mStatusBarColor));
         }
     }
 

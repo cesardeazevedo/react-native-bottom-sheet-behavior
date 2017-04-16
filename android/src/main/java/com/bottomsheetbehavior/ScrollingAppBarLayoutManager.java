@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.view.View;
 
 import com.facebook.react.uimanager.PixelUtil;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -30,14 +31,28 @@ public class ScrollingAppBarLayoutManager extends ViewGroupManager<AppBarLayout>
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
         params.setBehavior(new ScrollingAppBarLayoutBehavior(context, null));
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            int statusBarHeight = getStatusBarHeight(context);
-            params.setMargins(0, statusBarHeight, 0, 0);
-        }
-
         view.setLayoutParams(params);
         scrollingBehavior = ScrollingAppBarLayoutBehavior.from(view);
         return view;
+    }
+
+    @ReactProp(name = "translucent")
+    public void setTranslucent(AppBarLayout view, boolean translucent) {
+        if (Build.VERSION.SDK_INT >= 21 && translucent) {
+            int statusBarHeight = getStatusBarHeight(view.getContext());
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+            params.setMargins(0, statusBarHeight, 0, 0);
+        }
+    }
+
+    @ReactProp(name = "barStyle")
+    public void setBarStyle(AppBarLayout view, String barStyle) {
+        scrollingBehavior.setBarStyle(barStyle.equals("dark-content") ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : 0);
+    }
+
+    @ReactProp(name = "barStyleTransparent")
+    public void setBarStyleTransparent(AppBarLayout view, String barStyle) {
+        scrollingBehavior.setBarStyleTransparent(barStyle.equals("dark-content") ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : 0);
     }
 
     @ReactProp(name = "statusBarColor")

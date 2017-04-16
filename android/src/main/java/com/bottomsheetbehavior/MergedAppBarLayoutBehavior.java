@@ -75,6 +75,8 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     private View mBackground;
     private int mBackgroundColor;
     private int mStatusBarColor;
+    private int mBarStyle;
+    private int mBarStyleTransparent;
 
     private ValueAnimator mTitleAlphaValueAnimator;
     private int mCurrentTitleAlpha = 0;
@@ -225,7 +227,10 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     }
 
     public int getFullbackGroundColor() {
-        return ((ColorDrawable) mToolbar.getBackground()).getColor();
+        if (mToolbar != null) {
+            return ((ColorDrawable) mToolbar.getBackground()).getColor();
+        }
+        return 0;
     }
 
     public void setFullBackGroundColor(int colorRes){
@@ -330,13 +335,11 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mStatusBarColor != 0){
             if(visible){
                 Window window = ((ThemedReactContext) mContext).getCurrentActivity().getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.getDecorView().setSystemUiVisibility(mBarStyle);
                 window.setStatusBarColor(mStatusBarColor);
             }else {
                 Window window = ((ThemedReactContext) mContext).getCurrentActivity().getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.getDecorView().setSystemUiVisibility(mBarStyleTransparent);
                 window.setStatusBarColor(ContextCompat.getColor(mContext,android.R.color.transparent));
             }
         }
@@ -356,6 +359,14 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
 
     public void setStatusBarColor(int color) {
         mStatusBarColor = color;
+    }
+
+    public void setBarStyle(int barStyle) {
+        mBarStyle = barStyle;
+    }
+
+    public void setBarStyleTransparent(int barStyle) {
+        mBarStyleTransparent = barStyle;
     }
 
     public void setToolbarTitle(String title) {

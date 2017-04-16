@@ -49,6 +49,8 @@ public class ScrollingAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBeh
     private Context mContext;
     private boolean mVisible = true;
     private int mStatusBarColor;
+    private int mBarStyle;
+    private int mBarStyleTransparent;
     /**
      * To avoid using multiple "peekheight=" in XML and looking flexibility allowing {@link RNBottomSheetBehavior#mPeekHeight}
      * get changed dynamically we get the {@link NestedScrollView} that has
@@ -173,17 +175,23 @@ public class ScrollingAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBeh
         mStatusBarColor = color;
     }
 
+    public void setBarStyle(int barStyle) {
+        mBarStyle = barStyle;
+    }
+
+    public void setBarStyleTransparent(int barStyle) {
+        mBarStyleTransparent = barStyle;
+    }
+
     private void setStatusBarBackgroundVisible(boolean visible){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mStatusBarColor != 0){
             if(visible){
                 Window window = ((ThemedReactContext) mContext).getCurrentActivity().getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.getDecorView().setSystemUiVisibility(mBarStyle);
                 window.setStatusBarColor(mStatusBarColor);
             }else {
                 Window window = ((ThemedReactContext) mContext).getCurrentActivity().getWindow();
-                window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.getDecorView().setSystemUiVisibility(mBarStyleTransparent);
                 window.setStatusBarColor(ContextCompat.getColor(mContext, android.R.color.transparent));
             }
         }
