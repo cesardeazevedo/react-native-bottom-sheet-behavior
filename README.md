@@ -190,6 +190,9 @@ When the BottomSheet is getting over the MergedAppBar, it will partially sets th
 
 ```jsx
 <MergedAppBarLayout
+  translucent={true}
+  barStyle='light-content'
+  barStyleTransparent='dark-content'  
   mergedColor='#1abc9c'
   toolbarColor='#34495e'
   statusBarColor='#2c3e50'>
@@ -206,6 +209,9 @@ When the BottomSheet is getting over the MergedAppBar, it will partially sets th
 
 ![merged_color](https://cloud.githubusercontent.com/assets/5366959/24860941/41381750-1dcd-11e7-8128-a6dd422e9a19.jpg)
 
+### Translucent App Bars
+
+Both AppBars supports translucent status bar, you can enable with `translucent` prop, which will basically adds top margins and **NOT** change the translucent itself, you should handle the translucent directely on the react-native StatusBar component.
 
 ## FloatingActionButton
 
@@ -328,6 +334,9 @@ BottomSheetBehavior States
 |----------------|------------------------------------|
 | height         | Height of ScrollingAppBarLayout    |
 | statusBarColor | Active status bar color            |
+| translucent    | Adds top margins on the AppBar to not draw behind the status bar |
+| barStyle       | Status Bar style, (default, light-content, dark-content), used when the ScrollingAppBarLayout is present |
+| barStyleTransparent | Status Bar style, (default, light-content, dark-content), used when the ScrollingAppBarLayout is not present and the StatusBar is transparent |
 
 ##### MergedAppBarLayout properties
 
@@ -337,6 +346,9 @@ BottomSheetBehavior States
 | mergedColor    | Merged color when the bottom sheet is overlaying with ToolbarAndroid   |
 | toolbarColor   | The final ToolbarAndroid color when the bottom sheet is fully expanded |
 | statusBarColor | Active status bar color when bottom sheet is expanded                  |
+| translucent    | Adds top margins on the AppBar to not draw behind the status bar       |
+| barStyle       | Status Bar style, (default, light-content, dark-content), used when the BottomSheet is fully expanded |
+| barStyleTransparent | Status Bar style, (default, light-content, dark-content), used when the AppBar is transparent |
 
 ##### BottomSheetHeader properties
 
