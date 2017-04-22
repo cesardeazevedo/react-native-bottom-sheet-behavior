@@ -135,20 +135,7 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
   /**
    * Default constructor for instantiating BottomSheetBehaviors.
    */
-  public RNBottomSheetBehavior() { }
-
-  /**
-   * Default constructor for inflating BottomSheetBehaviors from layout.
-   *
-   * @param context The {@link Context}.
-   * @param attrs   The {@link AttributeSet}.
-   */
-  public RNBottomSheetBehavior(Context context, AttributeSet attrs ) {
-    super( context, attrs );
-    /**
-     * Getting the anchorPoint...
-     */
-    mAnchorPoint = DEFAULT_ANCHOR_POINT;
+  public RNBottomSheetBehavior(Context context) {
     ViewConfiguration configuration = ViewConfiguration.get(context);
     mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
   }

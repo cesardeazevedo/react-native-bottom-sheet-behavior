@@ -23,7 +23,7 @@ public class BottomSheetBehaviorView extends NestedScrollView {
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(width, height);
-        params.setBehavior(new RNBottomSheetBehavior());
+        params.setBehavior(new RNBottomSheetBehavior(context));
 
         this.setLayoutParams(params);
 
