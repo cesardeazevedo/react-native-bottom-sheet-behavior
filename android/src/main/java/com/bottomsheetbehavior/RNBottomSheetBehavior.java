@@ -749,6 +749,8 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         targetState = STATE_COLLAPSED;
         toggleHeaderColor(false);
       }
+
+      mLastStableState = targetState;
       if ( mViewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top) ) {
         setStateInternal(STATE_SETTLING);
         ViewCompat.postOnAnimation(releasedChild,
