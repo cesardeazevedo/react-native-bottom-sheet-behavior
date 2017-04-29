@@ -6,7 +6,6 @@ import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -114,9 +113,6 @@ public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
             frame.addView(toolbar);
             mergedBehavior.setToolbar(toolbar);
             mergedBehavior.setMergedView(mergedView);
-            if (!TextUtils.isEmpty(toolbar.getTitle())) {
-                mergedBehavior.setToolbarTitle(toolbar.getTitle().toString());
-            }
         }
     }
 

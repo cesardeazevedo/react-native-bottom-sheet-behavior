@@ -21,11 +21,11 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewPropertyAnimator;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.views.view.ReactViewGroup;
 
 import java.lang.ref.WeakReference;
 
@@ -68,10 +68,8 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
     private float mInitialY;
     private boolean mVisible = false;
 
-    private String mToolbarTitle;
-
     private Toolbar mToolbar;
-    private TextView mTitleTextView;
+    private View mTitleTextView;
     private View mBackground;
     private int mBackgroundColor;
     private int mStatusBarColor;
@@ -164,11 +162,9 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         mInitialY = child.getY();
 
         child.setVisibility(mVisible ? View.VISIBLE : View.INVISIBLE);
-//        setStatusBarBackgroundVisible(mVisible);
 
-        setFullBackGroundColor(mVisible && mCurrentTitleAlpha == 1 ? Color.parseColor("green") : android.R.color.transparent);
+        setFullBackGroundColor(mVisible && mCurrentTitleAlpha == 1 ? mBackgroundColor : android.R.color.transparent);
         setPartialBackGroundHeight(0);
-        mTitleTextView.setText(mToolbarTitle);
         mTitleTextView.setAlpha(mCurrentTitleAlpha);
         mInit = true;
         setToolbarVisible(false,child);
@@ -239,11 +235,12 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         }
     }
 
-    private TextView findTitleTextView(Toolbar toolbar){
+    private View findTitleTextView(Toolbar toolbar){
         for (int i = 0; i < toolbar.getChildCount(); i++) {
             View toolBarChild = toolbar.getChildAt(i);
-            if (toolBarChild instanceof TextView) {
-                return (TextView) toolBarChild;
+            if (toolBarChild instanceof TextView ||
+                toolBarChild instanceof ReactViewGroup) {
+                return toolBarChild;
             }
         }
         return null;
@@ -306,7 +303,6 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
                 return;
 
             if (mTitleAlphaValueAnimator == null || !mTitleAlphaValueAnimator.isRunning()) {
-                mToolbar.setTitle(mToolbarTitle);
                 int startAlpha = visible ? 0 : 1;
                 int endAlpha = mCurrentTitleAlpha = visible ? 1 : 0;
 
@@ -369,18 +365,9 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         mBarStyleTransparent = barStyle;
     }
 
-    public void setToolbarTitle(String title) {
-        this.mToolbarTitle = title;
-        if(this.mToolbar!=null)
-            this.mToolbar.setTitle(title);
-    }
-
     @Override
     public Parcelable onSaveInstanceState(CoordinatorLayout parent, View child) {
-        return new SavedState(super.onSaveInstanceState(parent, child),
-                mVisible,
-                mToolbarTitle,
-                mCurrentTitleAlpha);
+        return new SavedState(super.onSaveInstanceState(parent, child), mVisible, mCurrentTitleAlpha);
     }
 
     @Override
@@ -388,27 +375,23 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(parent, child, ss.getSuperState());
         this.mVisible = ss.mVisible;
-        this.mToolbarTitle = ss.mToolbarTitle;
         this.mCurrentTitleAlpha = ss.mTitleAlpha;
     }
 
     protected static class SavedState extends View.BaseSavedState {
 
         final boolean mVisible;
-        final String mToolbarTitle;
         final int mTitleAlpha;
 
         public SavedState(Parcel source) {
             super(source);
             mVisible = source.readByte() != 0;
-            mToolbarTitle = source.readString();
             mTitleAlpha = source.readInt();
         }
 
-        public SavedState(Parcelable superState, boolean visible, String toolBarTitle, int titleAlpha) {
+        public SavedState(Parcelable superState, boolean visible, int titleAlpha) {
             super(superState);
             this.mVisible = visible;
-            this.mToolbarTitle = toolBarTitle;
             this.mTitleAlpha = titleAlpha;
         }
 
@@ -416,7 +399,6 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeByte((byte) (mVisible ? 1 : 0));
-            out.writeString(mToolbarTitle);
             out.writeInt(mTitleAlpha);
         }
 
