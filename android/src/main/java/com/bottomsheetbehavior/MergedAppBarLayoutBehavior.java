@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Parcel;
@@ -224,7 +223,10 @@ public class MergedAppBarLayoutBehavior extends AppBarLayout.ScrollingViewBehavi
 
     public int getFullbackGroundColor() {
         if (mToolbar != null) {
-            return ((ColorDrawable) mToolbar.getBackground()).getColor();
+            ColorDrawable drawable = (ColorDrawable) mToolbar.getBackground();
+            if (drawable != null) {
+                return drawable.getColor();
+            }
         }
         return 0;
     }
