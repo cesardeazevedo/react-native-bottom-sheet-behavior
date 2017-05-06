@@ -45,7 +45,7 @@ which is very easy to get started.
 
 ## Install
 
-`$ npm install react-native-bottom-sheet-behavior@1.0.0-beta.4`
+`$ npm install react-native-bottom-sheet-behavior@1.0.0-beta.5`
 
 ### Install with RNPM
 
