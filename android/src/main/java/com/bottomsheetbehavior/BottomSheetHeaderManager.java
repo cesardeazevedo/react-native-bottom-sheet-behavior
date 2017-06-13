@@ -13,7 +13,7 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class BottomSheetHeaderManager extends ViewGroupManager<BottomSheetHeaderView> {
 
-    private static final String REACT_CLASS = "RCTBottomSheetHeader";
+    private static final String REACT_CLASS = "BSBBottomSheetHeader";
 
     @Override
     public String getName() {

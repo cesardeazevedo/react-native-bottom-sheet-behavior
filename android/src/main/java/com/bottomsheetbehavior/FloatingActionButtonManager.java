@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 
 public class FloatingActionButtonManager extends SimpleViewManager<FloatingActionButtonView> {
 
-    private final static String REACT_CLASS = "RCTFloatingActionButtonAndroid";
+    private final static String REACT_CLASS = "BSBFloatingActionButtonAndroid";
 
     private final static int COMMAND_SET_ANCHOR_ID = 1;
     private final static int COMMAND_SHOW = 2;

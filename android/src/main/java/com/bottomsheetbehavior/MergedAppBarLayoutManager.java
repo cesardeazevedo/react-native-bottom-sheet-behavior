@@ -17,7 +17,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 public class MergedAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
 
-    private final static String REACT_CLASS = "RCTMergedAppBarLayout";
+    private final static String REACT_CLASS = "BSBMergedAppBarLayout";
 
     private String mMergedColor;
     private String mToolbarColor;

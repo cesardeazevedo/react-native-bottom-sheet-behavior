@@ -14,7 +14,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 public class ScrollingAppBarLayoutManager extends ViewGroupManager<AppBarLayout> {
 
-    private final static String REACT_CLASS = "RCTScrollingAppBarLayout";
+    private final static String REACT_CLASS = "BSBScrollingAppBarLayout";
 
     private ScrollingAppBarLayoutBehavior scrollingBehavior;
 

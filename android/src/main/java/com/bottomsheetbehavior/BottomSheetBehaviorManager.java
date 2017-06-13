@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBehaviorView> {
 
-    private final static String REACT_CLASS = "RCTBottomSheetBehaviorAndroid";
+    private final static String REACT_CLASS = "BSBBottomSheetBehaviorAndroid";
 
     public static final int COMMAND_SET_REQUEST_LAYOUT = 1;
     public static final int COMMAND_SET_BOTTOM_SHEET_STATE = 2;

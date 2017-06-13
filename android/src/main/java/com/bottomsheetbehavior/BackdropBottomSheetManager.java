@@ -10,7 +10,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 public class BackdropBottomSheetManager extends ViewGroupManager<RelativeLayout> {
 
-    private final static String REACT_CLASS = "RCTBackdropBottomSheet";
+    private final static String REACT_CLASS = "BSBBackdropBottomSheet";
 
     @Override
     public String getName() {

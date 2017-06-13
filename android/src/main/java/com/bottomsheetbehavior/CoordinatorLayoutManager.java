@@ -8,7 +8,7 @@ import com.facebook.react.uimanager.ThemedReactContext;
 
 public class CoordinatorLayoutManager extends ViewGroupManager<CoordinatorLayoutView> {
 
-    private final static String REACT_CLASS = "RCTCoordinatorLayoutAndroid";
+    private final static String REACT_CLASS = "BSBCoordinatorLayoutAndroid";
 
     private BottomSheetHeaderView headerView;
 
