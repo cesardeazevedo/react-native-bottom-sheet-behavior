@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.bottomsheetbehavior.BottomSheetBehaviorPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.rnnestedscrollview.RNNestedScrollViewPackage;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
@@ -31,7 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
           new VectorIconsPackage(),
           new MapsPackage(),
-          new BottomSheetBehaviorPackage()
+          new BottomSheetBehaviorPackage(),
+          new RNNestedScrollViewPackage()
       );
     }
   };

@@ -11,10 +11,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 
 import {
-  NestedScrollView,
   CoordinatorLayout,
   BottomSheetBehavior,
 } from 'react-native-bottom-sheet-behavior'
+
+import NestedScrollView from 'react-native-nested-scroll-view'
 
 const { STATE_COLLAPSED, STATE_EXPANDED } = BottomSheetBehavior
 
@@ -34,6 +35,10 @@ class NestedScroll extends Component {
   state = {
     buttons: [0, 1, 2],
   };
+
+  componentDidMount() {
+    this.bottomSheet.attachNestedScrollChild(this.nestedScroll)
+  }
 
   handleAddButton = () => {
     /* eslint-disable object-curly-spacing */
@@ -100,7 +105,7 @@ class NestedScroll extends Component {
               <Text style={styles.label}>NestedScrollView !</Text>
             </View>
             <View style={styles.bottomSheetContent} >
-              <NestedScrollView style={styles.scroll}>
+              <NestedScrollView ref={ref => { this.nestedScroll = ref }} style={styles.scroll}>
                 {this.state.buttons.map(this.renderButton)}
               </NestedScrollView>
             </View>

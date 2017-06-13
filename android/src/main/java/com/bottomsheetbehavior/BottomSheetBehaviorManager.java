@@ -2,8 +2,10 @@ package com.bottomsheetbehavior;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
@@ -25,6 +27,7 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
 
     public static final int COMMAND_SET_REQUEST_LAYOUT = 1;
     public static final int COMMAND_SET_BOTTOM_SHEET_STATE = 2;
+    public static final int COMMAND_ATTACH_NESTED_SCROLL_CHILD = 3;
 
     @Override
     public String getName() {
@@ -71,44 +74,12 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
         view.setBottomSheetElevation(elevation);
     }
 
-    /**
-     * BottomSheetBehaviorView inherits a NestedScrollView in order to work
-     * with the anchor point, but it breaks any ReactNestedScrollView child,
-     * so we are changing the behavior of ReactNestedScrollView to disable
-     * the nested scroll of the bottom sheet, and enable when the child scroll
-     * reaches the top offset.
-     */
-    @Override
-    public void addView(final BottomSheetBehaviorView parent, View child, int index) {
-        super.addView(parent, child, index);
-
-        final ReactNestedScrollView nestedScroll =
-                (ReactNestedScrollView) parent.findViewWithTag(ReactNestedScrollView.TAG);
-
-        if (nestedScroll != null) {
-            nestedScroll.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    int action = event.getAction();
-                    if (action == MotionEvent.ACTION_MOVE) {
-                        if (nestedScroll.computeVerticalScrollOffset() == 0) {
-                            parent.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
-                        } else {
-                            parent.stopNestedScroll();
-                        }
-                    }
-
-                    return nestedScroll.onTouchEvent(event);
-                }
-            });
-        }
-    }
-
     @Override
     public Map<String, Integer> getCommandsMap() {
         return MapBuilder
           .of("setRequestLayout", COMMAND_SET_REQUEST_LAYOUT,
-              "setBottomSheetState", COMMAND_SET_BOTTOM_SHEET_STATE);
+              "setBottomSheetState", COMMAND_SET_BOTTOM_SHEET_STATE,
+              "attachNestedScrollChild", COMMAND_ATTACH_NESTED_SCROLL_CHILD);
     }
 
     @Nullable
@@ -134,13 +105,21 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
     public void receiveCommand(BottomSheetBehaviorView view, int commandType, @Nullable ReadableArray args) {
         switch (commandType) {
           case COMMAND_SET_REQUEST_LAYOUT:
-            setRequestLayout(view);
-            return;
+              setRequestLayout(view);
+              return;
           case COMMAND_SET_BOTTOM_SHEET_STATE:
-            setBottomSheetState(view, args);
-            return;
+              setBottomSheetState(view, args);
+              return;
+          case COMMAND_ATTACH_NESTED_SCROLL_CHILD:
+              int nestedScrollId = args.getInt(0);
+              ViewGroup child = (ViewGroup) view.getRootView().findViewById(nestedScrollId);
+              if (child != null && child instanceof NestedScrollView) {
+                  this.attachNestedScrollChild(view, (NestedScrollView) child);
+              }
+              return;
+
           default:
-            throw new JSApplicationIllegalArgumentException("Invalid Command");
+              throw new JSApplicationIllegalArgumentException("Invalid Command");
         }
     }
 
@@ -153,6 +132,30 @@ public class BottomSheetBehaviorManager extends ViewGroupManager<BottomSheetBeha
             int newState = args.getInt(0);
             setState(view, newState);
         }
+    }
+
+    /**
+     * BottomSheetBehaviorView inherits a NestedScrollView in order to work
+     * with the anchor point, but it breaks any ReactNestedScrollView child,
+     * so we are changing the behavior of ReactNestedScrollView to disable
+     * the nested scroll of the bottom sheet, and enable when the child scroll
+     * reaches the top offset.
+     */
+    private void attachNestedScrollChild(final BottomSheetBehaviorView parent, final NestedScrollView nestedScroll) {
+        nestedScroll.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                if (action == MotionEvent.ACTION_MOVE) {
+                    if (nestedScroll.computeVerticalScrollOffset() == 0) {
+                        parent.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL);
+                    } else {
+                        parent.stopNestedScroll();
+                    }
+                }
+                return nestedScroll.onTouchEvent(event);
+            }
+        });
     }
 
     public class BottomSheetBehaviorListener extends RNBottomSheetBehavior.BottomSheetCallback {
