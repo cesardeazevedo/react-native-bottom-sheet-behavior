@@ -3,7 +3,7 @@ package com.bottomsheetbehavior;
 import android.view.View;
 import android.view.ViewGroup;
 import com.facebook.yoga.YogaMeasureMode;
-import com.facebook.yoga.YogaNodeAPI;
+import com.facebook.yoga.YogaNode;
 import com.facebook.yoga.YogaMeasureOutput;
 import com.facebook.yoga.YogaMeasureFunction;
 import com.facebook.react.uimanager.LayoutShadowNode;
@@ -18,7 +18,7 @@ public class FloatingActionButtonShadowNode extends LayoutShadowNode implements 
     }
 
     @Override
-    public long measure(YogaNodeAPI node, float width, YogaMeasureMode widthMode, float height, YogaMeasureMode heightMode) {
+    public long measure(YogaNode node, float width, YogaMeasureMode widthMode, float height, YogaMeasureMode heightMode) {
         if(!mMeasured) {
             FloatingActionButtonView nodeView = new FloatingActionButtonView(getThemedContext());
             final int spec = View.MeasureSpec.makeMeasureSpec(
