@@ -1,5 +1,5 @@
 # react-native-bottom-sheet-behavior
-react-native wrapper for android [BottomSheetBehavior](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html), supports [FloatingActionButton](https://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html) and [NestedScrollView](https://developer.android.com/reference/android/support/v4/widget/NestedScrollView.html).
+react-native wrapper for android [BottomSheetBehavior](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html), supports [FloatingActionButton](https://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html).
 
 [![npm version](https://badge.fury.io/js/react-native-bottom-sheet-behavior.svg)](https://badge.fury.io/js/react-native-bottom-sheet-behavior)
 
@@ -26,15 +26,13 @@ The following components are included in this package:
 * CoordinatorLayout
 * BottomSheetBehavior
 * FloatingActionButton
-* NestedScrollView
 * MergedAppBarLayout
 * ScrollingAppBarLayout
 * BackdropBottomSheet
 * BottomSheetHeader
 
 **NOTE** We expose some android core components such as `CoordinatorLayout`, `AppBarLayout`, `FloatingActionButton`,
-but they are NOT meant to be general purposed (with exception of NestedScrollView, which is basically
-a fork from react-native ScrollView), and it may not work out of the context of this library,
+but they are NOT meant to be general purposed, and it may not work out of the context of this library,
 so use at your own risk.
 
 ### iOS Alternative
@@ -45,7 +43,7 @@ which is very easy to get started.
 
 ## Install
 
-`$ npm install react-native-bottom-sheet-behavior@1.0.0-beta.5`
+`$ npm install react-native-bottom-sheet-behavior@1.0.0-beta.6`
 
 ### Install with RNPM
 
@@ -264,7 +262,10 @@ it will find all <Text /> and <Icon /> components recursively and handles everyt
 
 ## NestedScrollView
 
-NestedScrollView allows you to scroll inside bottom sheet continuously, it's a fork from react-native `ScrollView`, and it should work the same way.
+If you are not using the anchor point, and want to add some nested scroll, you will need to install the [react-native-nested-scroll-view](https://github.com/cesardeazevedo/react-native-nested-scroll-view)
+to allows you to scroll inside bottom sheet continuously.
+
+**Note** the `react-native-nested-scroll-view` is only useful when you are **NOT** using the anchorPoint.
 
 ![react-native](http://i.imgur.com/EaXBCa0.gif)
 
