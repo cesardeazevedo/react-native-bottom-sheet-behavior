@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "react": "16.0.0-alpha.12",
-    "react-native": "^0.47.1",
+    "react-native": "^0.48.4",
     "react-native-bottom-sheet-behavior": "file:../",
-    "react-native-maps": "^0.10.0",
-    "react-native-nested-scroll-view": "3.0.0",
+    "react-native-maps": "^0.16.4",
+    "react-native-nested-scroll-view": "4.0.0",
     "react-native-vector-icons": "^4.3.0",
     "react-navigation": "git@github.com:react-community/react-navigation.git#7edd9a79aab07a5da969be2d4e254f7524faad03"
   },
