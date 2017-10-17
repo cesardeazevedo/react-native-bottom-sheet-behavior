@@ -9,13 +9,14 @@
     "lint:fix": "eslint -c .eslintrc.js views index.android.js --fix"
   },
   "dependencies": {
-    "react": "16.0.0-alpha.12",
-    "react-native": "^0.48.4",
+    "prop-types": "^15.6.0",
+    "react": "16.0.0",
+    "react-native": "^0.49.3",
     "react-native-bottom-sheet-behavior": "file:../",
     "react-native-maps": "^0.16.4",
-    "react-native-nested-scroll-view": "4.0.0",
+    "react-native-nested-scroll-view": "5.0.0",
     "react-native-vector-icons": "^4.3.0",
-    "react-navigation": "git@github.com:react-community/react-navigation.git#7edd9a79aab07a5da969be2d4e254f7524faad03"
+    "react-navigation": "1.0.0-beta.13"
   },
   "devDependencies": {
     "babel-preset-react-native": "^1.9.0",
