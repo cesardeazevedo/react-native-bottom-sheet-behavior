@@ -29,6 +29,8 @@ import {
   ScrollingAppBarLayout,
 } from 'react-native-bottom-sheet-behavior'
 
+import NestedScrollView from 'react-native-nested-scroll-view'
+
 const { width, height } = Dimensions.get('window')
 
 const anchorPoint = 235
@@ -237,7 +239,7 @@ class GoogleMapsView extends Component {
         <View style={[styles.section, styles.takeoutSection]}>
           <Text style={[styles.sectionTitle, {marginLeft: 20}]}>Takeout</Text>
           <View style={styles.cards}>
-            <ScrollView
+            <NestedScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
               style={{flex: 1}}>
@@ -246,7 +248,7 @@ class GoogleMapsView extends Component {
               {this.renderCard(images[2], 'Donec ultrices')}
               {this.renderCard(images[0], 'Cras tincidunt')}
               {this.renderCard(images[1], 'Proin eu feugiat')}
-            </ScrollView>
+            </NestedScrollView>
           </View>
         </View>
       </View>
