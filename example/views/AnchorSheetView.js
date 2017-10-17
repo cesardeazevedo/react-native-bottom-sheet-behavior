@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Text,
   View,
@@ -32,12 +33,6 @@ const images = [
 class AnchorSheetView extends Component {
   static contextTypes = {
     openDrawer: PropTypes.func,
-  };
-
-  static navigationOptions = {
-    header: {
-      visible: false
-    }
   };
 
   state = {

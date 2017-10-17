@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   View,
   Text,
@@ -60,12 +61,6 @@ const initialRegion = {
 class GoogleMapsView extends Component {
   static contextTypes = {
     openDrawer: PropTypes.func,
-  };
-
-  static navigationOptions = {
-    header: {
-      visible: false
-    }
   };
 
   state = {

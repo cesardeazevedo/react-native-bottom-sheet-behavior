@@ -50,6 +50,9 @@ const NavigatorStack = StackNavigator({
   NestedScroll: { screen: NestedScrollView },
   AnchorSheet: { screen: AnchorSheetView },
   GoogleMaps: { screen: GoogleMapsView },
-}, { initialRouteName })
+}, {
+  initialRouteName,
+  navigationOptions: () => ({ header: false })
+})
 
 AppRegistry.registerComponent('BSBExample', () => BSBExample)
