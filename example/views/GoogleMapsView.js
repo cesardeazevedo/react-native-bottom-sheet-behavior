@@ -259,7 +259,7 @@ class GoogleMapsView extends Component {
         autoAnchor
         elevation={18}
         rippleEffect={true}
-        rippleColor="grey"
+        rippleColor="#55ffffff"
         icon="directions"
         iconProvider={IconMDI}
         iconColor={WHITE}

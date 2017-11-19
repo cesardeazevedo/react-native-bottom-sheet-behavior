@@ -134,7 +134,7 @@ class AnchorSheetView extends Component {
           autoAnchor
           elevation={18}
           backgroundColor={'#ffffff'}
-          rippleColor="grey"
+          rippleColor={'#55ffffff'}
         />
       </CoordinatorLayout>
     )

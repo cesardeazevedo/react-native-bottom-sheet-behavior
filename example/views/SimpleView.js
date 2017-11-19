@@ -66,7 +66,7 @@ class SimpleView extends Component {
           iconColor='#4589f2'
           iconProvider={Icon}
           backgroundColor={'#ffffff'}
-          rippleColor="grey"
+          rippleColor={'#55ffffff'}
         />
       </CoordinatorLayout>
     )
