@@ -38,7 +38,7 @@ so use at your own risk.
 ### iOS Alternative
 
 If you are wondering some iOS alternative, i highly recommend [react-native-interactable](https://github.com/wix/react-native-interactable) by [wix](https://github.com/wix),
-you can see their google maps approach [here](https://github.com/wix/react-native-interactable/blob/master/real-life-example/src/MapPanel.js),
+you can see their google maps approach [here](https://github.com/wix/react-native-interactable/blob/master/playground/src/real-life-examples/MapPanel.js),
 which is very easy to get started.
 
 ## Install
