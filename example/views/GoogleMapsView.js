@@ -15,7 +15,6 @@ import {
   TouchableNativeFeedback,
 } from 'react-native'
 
-import MapView from 'react-native-maps'
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconMDI from 'react-native-vector-icons/MaterialIcons'
 
@@ -64,6 +63,7 @@ class GoogleMapsView extends Component {
   };
 
   state = {
+    hidden: false,
     viewPagerSelected: 0,
   };
 
@@ -367,7 +367,6 @@ class GoogleMapsView extends Component {
   renderMaps() {
     return (
       <View style={styles.containerMap}>
-        <MapView style={styles.map} initialRegion={initialRegion} />
       </View>
     )
   }

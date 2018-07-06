@@ -35,4 +35,3 @@ module.exports = {
     "react/jsx-closing-bracket-location": 0,
   }
 };
-

@@ -1,15 +1,12 @@
-package com.example;
+package com.bsbexample;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.bottomsheetbehavior.BottomSheetBehaviorPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnnestedscrollview.RNNestedScrollViewPackage;
 
-import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -31,10 +28,14 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new VectorIconsPackage(),
-          new MapsPackage(),
           new BottomSheetBehaviorPackage(),
           new RNNestedScrollViewPackage()
       );
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
     }
   };
 

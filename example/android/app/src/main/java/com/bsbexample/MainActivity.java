@@ -1,4 +1,4 @@
-package com.example;
+package com.bsbexample;
 
 import com.facebook.react.ReactActivity;
 

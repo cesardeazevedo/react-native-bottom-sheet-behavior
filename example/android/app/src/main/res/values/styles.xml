@@ -5,8 +5,4 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
-        <item name="borderWidth">0dp</item>
-    </style>
-
 </resources>

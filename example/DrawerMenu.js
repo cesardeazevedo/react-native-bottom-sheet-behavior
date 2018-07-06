@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons'
-import npm from './node_modules/react-native-bottom-sheet-behavior/package.json'
 
 const MENU = [
   { name: 'Simple', icon: 'ios-navigate-outline' },
@@ -96,8 +95,6 @@ class DrawerMenu extends Component {
 
   renderHeader = () => (
     <View style={styles.header}>
-      <Text style={styles.title}>{npm.name}</Text>
-      <Text style={styles.title}>v{npm.version}</Text>
     </View>
   )
 

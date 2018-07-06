@@ -1,25 +1,25 @@
 {
-  "name": "example",
-  "version": "0.0.2",
+  "name": "bsbexample",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "android": "trash node_modules/react-native-bottom-sheet-behavior && npm install && react-native run-android",
-    "lint": "eslint -c .eslintrc.js views index.android.js",
-    "lint:fix": "eslint -c .eslintrc.js views index.android.js --fix"
+    "test": "jest"
   },
   "dependencies": {
     "prop-types": "^15.6.0",
-    "react": "16.0.0",
-    "react-native": "^0.51.0",
-    "react-native-bottom-sheet-behavior": "file:../",
-    "react-native-maps": "^0.16.4",
+    "react": "16.4.1",
+    "react-native": "0.56.0",
+    "react-native-bottom-sheet-behavior": "1.0.0-beta.8",
     "react-native-nested-scroll-view": "6.0.0",
-    "react-native-vector-icons": "^4.3.0",
+    "react-native-vector-icons": "^4.6.0",
     "react-navigation": "1.0.0-beta.13"
   },
   "devDependencies": {
-    "babel-preset-react-native": "^1.9.0",
+    "babel-jest": "23.2.0",
+    "babel-preset-react-native": "^5",
+    "jest": "23.3.0",
+    "react-test-renderer": "16.4.1",
     "eslint": "^3.9.1",
     "eslint-config-airbnb": "13.0.0",
     "eslint-plugin-babel": "^3.3.0",
@@ -27,5 +27,8 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.6.0",
     "eslint-plugin-react-native": "2.1.0"
+  },
+  "jest": {
+    "preset": "react-native"
   }
 }
