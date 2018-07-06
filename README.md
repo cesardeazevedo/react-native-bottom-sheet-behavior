@@ -3,15 +3,15 @@ react-native wrapper for android [BottomSheetBehavior](https://developer.android
 
 [![npm version](https://badge.fury.io/js/react-native-bottom-sheet-behavior.svg)](https://badge.fury.io/js/react-native-bottom-sheet-behavior)
 
-## Demo (v1.0.0-beta anchor state support)
+## Demo
 
 ![react-native-bottom-sheet-behavior](https://cloud.githubusercontent.com/assets/5366959/24594266/c59667bc-1801-11e7-840c-97588658a8ae.gif)
 
 [See the Google Maps gif implementation](https://github.com/cesardeazevedo/react-native-bottom-sheet-behavior/blob/master/example/views/GoogleMapsView.js)
 
-## v1.0.0-beta 🎉
+## v1.0.0
 
-This major release v1.0.0-beta supports anchor state 🎉, which means that you can have a middle state between collapsed and expanded.
+This major release v1.0.0 supports anchor state, which means that you can have a middle state between collapsed and expanded.
 
 This version now uses a custom BottomSheetBehavior implementation from
 [miguelhincapie/CustomBottomSheetBehavior](https://github.com/miguelhincapie/CustomBottomSheetBehavior)
@@ -43,7 +43,7 @@ which is very easy to get started.
 
 ## Install
 
-`$ npm install react-native-bottom-sheet-behavior@1.0.0-beta.8`
+`$ npm install react-native-bottom-sheet-behavior@1.0.0`
 
 ### Install with RNPM
 

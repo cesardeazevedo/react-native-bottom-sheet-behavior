@@ -10,7 +10,7 @@
     "prop-types": "^15.6.0",
     "react": "16.4.1",
     "react-native": "0.56.0",
-    "react-native-bottom-sheet-behavior": "1.0.0-beta.8",
+    "react-native-bottom-sheet-behavior": "1.0.0",
     "react-native-nested-scroll-view": "6.0.0",
     "react-native-vector-icons": "^4.6.0",
     "react-navigation": "1.0.0-beta.13"
