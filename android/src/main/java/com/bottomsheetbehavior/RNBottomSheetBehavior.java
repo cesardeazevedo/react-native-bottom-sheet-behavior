@@ -270,6 +270,10 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
       return true;
     }
 
+    if (mViewDragHelper == null) {
+      mViewDragHelper = ViewDragHelper.create(parent, mDragCallback);
+    }
+
     mViewDragHelper.processTouchEvent( event );
 
     if ( action == MotionEvent.ACTION_DOWN ) {
