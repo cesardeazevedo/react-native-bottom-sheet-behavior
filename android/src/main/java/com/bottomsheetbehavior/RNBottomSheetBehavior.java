@@ -189,9 +189,14 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
       toggleHeaderColor(false);
       ViewCompat.offsetTopAndBottom(child, mMaxOffset);
     }
+    
+    /**
+     * Workaround for support SDK 27 race condition
+     */ 
     if ( mViewDragHelper == null ) {
       mViewDragHelper = ViewDragHelper.create( parent, mDragCallback );
     }
+    
     mViewRef = new WeakReference<>(child);
     mNestedScrollingChildRef = new WeakReference<>( findScrollingChild( child ) );
     return true;
@@ -219,6 +224,7 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
           return false;
         }
         break;
+    
       case MotionEvent.ACTION_DOWN:
         int initialX = (int) event.getX();
         mInitialY = (int) event.getY();
@@ -235,6 +241,7 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
         mIgnoreEvents = mActivePointerId == MotionEvent.INVALID_POINTER_ID &&
             !parent.isPointInChildBounds(child, initialX, mInitialY);
         break;
+  
       case MotionEvent.ACTION_MOVE:
         break;
     }
@@ -243,7 +250,14 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
       // We don't want to trigger a BottomSheet fling as a result of a Cancel MotionEvent (e.g., parent horizontal scroll view taking over touch events)
       mScrollVelocityTracker.clear();
     }
-
+    
+    /**
+     * Workaround for Support SDK 27 race condition
+     */ 
+    if ( mViewDragHelper == null ) {
+      mViewDragHelper = ViewDragHelper.create( parent, mDragCallback );
+    }
+    
     if ( ! mIgnoreEvents  &&  mViewDragHelper.shouldInterceptTouchEvent( event ) ) {
       return true;
     }
