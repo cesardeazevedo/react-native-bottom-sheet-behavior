@@ -208,6 +208,13 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
       return false;
     }
 
+    /**
+     * Workaround for Support SDK 27 race condition. We'll wait until mViewDragHelper is available
+     */ 
+    if ( mViewDragHelper == null ) {
+      return false;
+    }
+    
     int action = MotionEventCompat.getActionMasked( event );
     if ( action == MotionEvent.ACTION_DOWN ) {
       reset();
@@ -250,14 +257,7 @@ public class RNBottomSheetBehavior<V extends View> extends CoordinatorLayout.Beh
       // We don't want to trigger a BottomSheet fling as a result of a Cancel MotionEvent (e.g., parent horizontal scroll view taking over touch events)
       mScrollVelocityTracker.clear();
     }
-    
-    /**
-     * Workaround for Support SDK 27 race condition
-     */ 
-    if ( mViewDragHelper == null ) {
-      mViewDragHelper = ViewDragHelper.create( parent, mDragCallback );
-    }
-    
+       
     if ( ! mIgnoreEvents  &&  mViewDragHelper.shouldInterceptTouchEvent( event ) ) {
       return true;
     }
