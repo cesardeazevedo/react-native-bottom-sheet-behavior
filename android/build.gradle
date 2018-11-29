@@ -33,6 +33,6 @@ allprojects {
 
 dependencies {
     compile "com.facebook.react:react-native:+"
-    compile "com.android.support:appcompat-v7:26.1.0"
-    compile 'com.android.support:design:26.1.0'
+    compile "com.android.support:appcompat-v7:27.1.1"
+    compile "com.android.support:design:27.1.1"
 }
