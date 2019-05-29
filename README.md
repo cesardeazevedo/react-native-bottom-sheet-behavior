@@ -53,6 +53,33 @@ which is very easy to get started.
 
 Edit the current files as follows.
 
+android/settings.gradle
+
+```diff
+
+include ':app'
+
++   include ':react-native-bottom-sheet-behavior'
++   project(':react-native-bottom-sheet-behavior').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bottom-sheet-behavior/android')
+
+```
+
+android/app/build.gradle
+
+
+```diff
+
+    dependencies {
+        implementation fileTree(dir: "libs", include: ["*.jar"])
+        implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
++       implementation "com.android.support:design:${rootProject.ext.supportLibVersion}"
+        implementation "com.facebook.react:react-native:+"  // From node_modules
++       implementation project(':react-native-bottom-sheet-behavior')
+    }
+
+```
+
+
 MainApplication.java
 
 ```diff
@@ -69,31 +96,6 @@ MainApplication.java
         );
       }
     }
-
-```
-
-android/app/build.gradle
-
-
-```diff
-
-    dependencies {
-        compile fileTree(dir: "libs", include: ["*.jar"])
-        compile "com.android.support:appcompat-v7:23.0.1"
-        compile "com.facebook.react:react-native:+"  // From node_modules
-+       compile project(':react-native-bottom-sheet-behavior')
-    }
-
-```
-
-android/settings.gradle
-
-```diff
-
-include ':app'
-
-+   include ':react-native-bottom-sheet-behavior'
-+   project(':react-native-bottom-sheet-behavior').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-bottom-sheet-behavior/android')
 
 ```
 
@@ -190,7 +192,7 @@ When the BottomSheet is getting over the MergedAppBar, it will partially sets th
 <MergedAppBarLayout
   translucent={true}
   barStyle='light-content'
-  barStyleTransparent='dark-content'  
+  barStyleTransparent='dark-content'
   mergedColor='#1abc9c'
   toolbarColor='#34495e'
   statusBarColor='#2c3e50'>
