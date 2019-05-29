@@ -2,6 +2,7 @@ package com.bsbexample;
 
 import android.app.Application;
 
+import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import com.bottomsheetbehavior.BottomSheetBehaviorPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.rnnestedscrollview.RNNestedScrollViewPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
           new VectorIconsPackage(),
+          new RNCViewPagerPackage(),
           new BottomSheetBehaviorPackage(),
           new RNNestedScrollViewPackage()
       );

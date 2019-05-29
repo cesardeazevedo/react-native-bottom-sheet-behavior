@@ -11,9 +11,10 @@ import {
   StyleSheet,
   Dimensions,
   ToastAndroid,
-  ViewPagerAndroid,
   TouchableNativeFeedback,
 } from 'react-native'
+
+import ViewPagerAndroid from '@react-native-community/viewpager'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 import IconMDI from 'react-native-vector-icons/MaterialIcons'
@@ -49,13 +50,6 @@ const images = [
   require('../images/beer2.jpg'),
   require('../images/beer3.jpg'),
 ]
-
-const initialRegion = {
-  latitude: -22.920,
-  longitude: -43.190,
-  latitudeDelta: 0.1022,
-  longitudeDelta: 0.0421,
-}
 
 class GoogleMapsView extends Component {
   static contextTypes = {
@@ -431,25 +425,6 @@ const styles = StyleSheet.create({
     width,
     justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  buttonIcon: {
-    padding: 16,
-    borderRadius: 50,
-  },
-  toolbarInput: {
-    flex: 1,
-  },
-  textInput: {
-    flex: 1,
-    fontSize: 18,
-    marginHorizontal: 8,
   },
   bottomSheet: {
     // height,
