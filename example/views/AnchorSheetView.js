@@ -6,12 +6,12 @@ import {
   Image,
   Button,
   StatusBar,
-  ViewPagerAndroid,
   Dimensions,
   StyleSheet,
 } from 'react-native'
 
 import Icon from 'react-native-vector-icons/Ionicons'
+import ViewPagerAndroid from '@react-native-community/viewpager'
 
 import {
   MergedAppBarLayout,
