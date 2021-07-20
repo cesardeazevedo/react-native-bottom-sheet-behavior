@@ -10,7 +10,7 @@
     "@react-native-community/viewpager": "^1.1.7",
     "prop-types": "^15.7.2",
     "react": "16.4.1",
-    "react-native": "0.59.8",
+    "react-native": "0.62.3",
     "react-native-bottom-sheet-behavior": "file:../",
     "react-native-nested-scroll-view": "8.0.0",
     "react-native-vector-icons": "^4.6.0",
